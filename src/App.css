@@ -1,0 +1,167 @@
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  background: #121212;
+  color: #e0e0e0;
+}
+
+.main-content {
+  margin-left: 280px;
+  flex: 1;
+  padding: 2rem;
+}
+
+.example-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.example-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #333;
+}
+
+.example-header h1 {
+  font-size: 2rem;
+  margin: 0 0 0.5rem 0;
+  color: #61dafb;
+}
+
+.example-header p {
+  margin: 0;
+  color: #999;
+  font-size: 1rem;
+}
+
+.example-section {
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.example-section h2 {
+  font-size: 1.25rem;
+  margin: 0 0 1rem 0;
+  color: #e0e0e0;
+}
+
+button {
+  background: #61dafb;
+  color: #121212;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover {
+  background: #4fa8c5;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button:disabled {
+  background: #333;
+  color: #666;
+  cursor: not-allowed;
+  transform: none;
+}
+
+button.secondary {
+  background: #2a2a2a;
+  color: #e0e0e0;
+  border: 1px solid #444;
+}
+
+button.secondary:hover {
+  background: #333;
+}
+
+button.danger {
+  background: #e74c3c;
+  color: #fff;
+}
+
+button.danger:hover {
+  background: #c0392b;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+textarea,
+select {
+  background: #2a2a2a;
+  color: #e0e0e0;
+  border: 1px solid #444;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-family: inherit;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #61dafb;
+}
+
+.button-group {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #999;
+}
+
+.error {
+  background: #e74c3c22;
+  border: 1px solid #e74c3c;
+  color: #e74c3c;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.success {
+  background: #2ecc7122;
+  border: 1px solid #2ecc71;
+  color: #2ecc71;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+code {
+  background: #2a2a2a;
+  color: #61dafb;
+  padding: 0.125rem 0.25rem;
+  border-radius: 3px;
+  font-size: 0.875em;
+}
+
+pre {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+}
