@@ -1,59 +1,57 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+import { configureStore, createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import type { Product, CartItem } from "../../types";
 
-export interface Product {
-  id: number
-  name: string
-  price: number
-  image: string
-}
-
-export interface CartItem extends Product {
-  quantity: number
-}
+export type { Product, CartItem };
 
 interface CartState {
-  items: CartItem[]
+  items: CartItem[];
 }
 
 const initialState: CartState = {
   items: [],
-}
+};
 
 const cartSlice = createSlice({
-  name: 'cart',
+  name: "cart",
   initialState,
   reducers: {
     addToCart: (state, action: PayloadAction<Product>) => {
-      const existingItem = state.items.find(item => item.id === action.payload.id)
+      const existingItem = state.items.find(
+        (item) => item.id === action.payload.id
+      );
       if (existingItem) {
-        existingItem.quantity += 1
+        existingItem.quantity += 1;
       } else {
-        state.items.push({ ...action.payload, quantity: 1 })
+        state.items.push({ ...action.payload, quantity: 1 });
       }
     },
     removeFromCart: (state, action: PayloadAction<number>) => {
-      state.items = state.items.filter(item => item.id !== action.payload)
+      state.items = state.items.filter((item) => item.id !== action.payload);
     },
-    updateQuantity: (state, action: PayloadAction<{ id: number; quantity: number }>) => {
-      const item = state.items.find(item => item.id === action.payload.id)
+    updateQuantity: (
+      state,
+      action: PayloadAction<{ id: number; quantity: number }>
+    ) => {
+      const item = state.items.find((item) => item.id === action.payload.id);
       if (item) {
-        item.quantity = action.payload.quantity
+        item.quantity = action.payload.quantity;
       }
     },
     clearCart: (state) => {
-      state.items = []
+      state.items = [];
     },
   },
-})
+});
 
-export const { addToCart, removeFromCart, updateQuantity, clearCart } = cartSlice.actions
+export const { addToCart, removeFromCart, updateQuantity, clearCart } =
+  cartSlice.actions;
 
 export const store = configureStore({
   reducer: {
     cart: cartSlice.reducer,
   },
-})
+});
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

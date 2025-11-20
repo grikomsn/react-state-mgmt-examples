@@ -1,113 +1,131 @@
-import { usePreferencesStore } from '../../stores/zustand/store.ts'
+import { usePreferencesStore } from "../../stores/zustand/store";
 
 const UserSettings = () => {
-  const user = usePreferencesStore((state) => state.user)
-  const updateUser = usePreferencesStore((state) => state.updateUser)
+  const user = usePreferencesStore((state) => state.user);
+  const updateUser = usePreferencesStore((state) => state.updateUser);
 
   return (
-    <div className="example-section">
-      <h2>User Settings</h2>
-      <div style={{ display: 'grid', gap: '1rem' }}>
+    <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+      <h2 className="mb-4 text-xl text-gray-200">User Settings</h2>
+      <div className="grid gap-4">
         <div>
-          <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.875rem', color: '#999' }}>
-            Name
-          </label>
+          <label className="mb-1 block text-sm text-gray-500">Name</label>
           <input
             type="text"
             value={user.name}
             onChange={(e) => updateUser({ name: e.target.value })}
-            style={{ width: '100%' }}
+            className="w-full rounded border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-200 focus:border-cyan-400 focus:outline-none"
           />
         </div>
         <div>
-          <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.875rem', color: '#999' }}>
-            Email
-          </label>
+          <label className="mb-1 block text-sm text-gray-500">Email</label>
           <input
             type="email"
             value={user.email}
             onChange={(e) => updateUser({ email: e.target.value })}
-            style={{ width: '100%' }}
+            className="w-full rounded border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-200 focus:border-cyan-400 focus:outline-none"
           />
         </div>
         <div>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+          <label className="flex cursor-pointer items-center gap-2">
             <input
               type="checkbox"
               checked={user.notifications}
               onChange={(e) => updateUser({ notifications: e.target.checked })}
+              className="h-4 w-4 cursor-pointer"
             />
-            <span>Enable notifications</span>
+            <span className="text-sm text-gray-200">Enable notifications</span>
           </label>
         </div>
         <div>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+          <label className="flex cursor-pointer items-center gap-2">
             <input
               type="checkbox"
               checked={user.autoSave}
               onChange={(e) => updateUser({ autoSave: e.target.checked })}
+              className="h-4 w-4 cursor-pointer"
             />
-            <span>Auto-save preferences</span>
+            <span className="text-sm text-gray-200">Auto-save preferences</span>
           </label>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const AppearanceSettings = () => {
-  const user = usePreferencesStore((state) => state.user)
-  const updateUser = usePreferencesStore((state) => state.updateUser)
+  const user = usePreferencesStore((state) => state.user);
+  const updateUser = usePreferencesStore((state) => state.updateUser);
 
   return (
-    <div className="example-section">
-      <h2>Appearance</h2>
-      <div style={{ display: 'grid', gap: '1rem' }}>
+    <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+      <h2 className="mb-4 text-xl text-gray-200">Appearance</h2>
+      <div className="grid gap-4">
         <div>
-          <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: '#999' }}>
-            Theme
-          </label>
-          <div className="button-group">
+          <label className="mb-2 block text-sm text-gray-500">Theme</label>
+          <div className="flex flex-wrap gap-2">
             <button
-              className={user.theme === 'light' ? '' : 'secondary'}
-              onClick={() => updateUser({ theme: 'light' })}
+              className={`rounded px-4 py-2 text-sm font-medium transition-all active:scale-95 ${
+                user.theme === "light"
+                  ? "bg-cyan-500 text-gray-950 hover:bg-cyan-600"
+                  : "border border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700"
+              }`}
+              onClick={() => updateUser({ theme: "light" })}
             >
               Light
             </button>
             <button
-              className={user.theme === 'dark' ? '' : 'secondary'}
-              onClick={() => updateUser({ theme: 'dark' })}
+              className={`rounded px-4 py-2 text-sm font-medium transition-all active:scale-95 ${
+                user.theme === "dark"
+                  ? "bg-cyan-500 text-gray-950 hover:bg-cyan-600"
+                  : "border border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700"
+              }`}
+              onClick={() => updateUser({ theme: "dark" })}
             >
               Dark
             </button>
             <button
-              className={user.theme === 'auto' ? '' : 'secondary'}
-              onClick={() => updateUser({ theme: 'auto' })}
+              className={`rounded px-4 py-2 text-sm font-medium transition-all active:scale-95 ${
+                user.theme === "auto"
+                  ? "bg-cyan-500 text-gray-950 hover:bg-cyan-600"
+                  : "border border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700"
+              }`}
+              onClick={() => updateUser({ theme: "auto" })}
             >
               Auto
             </button>
           </div>
         </div>
         <div>
-          <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: '#999' }}>
-            Font Size
-          </label>
-          <div className="button-group">
+          <label className="mb-2 block text-sm text-gray-500">Font Size</label>
+          <div className="flex flex-wrap gap-2">
             <button
-              className={user.fontSize === 'small' ? '' : 'secondary'}
-              onClick={() => updateUser({ fontSize: 'small' })}
+              className={`rounded px-4 py-2 text-sm font-medium transition-all active:scale-95 ${
+                user.fontSize === "small"
+                  ? "bg-cyan-500 text-gray-950 hover:bg-cyan-600"
+                  : "border border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700"
+              }`}
+              onClick={() => updateUser({ fontSize: "small" })}
             >
               Small
             </button>
             <button
-              className={user.fontSize === 'medium' ? '' : 'secondary'}
-              onClick={() => updateUser({ fontSize: 'medium' })}
+              className={`rounded px-4 py-2 text-sm font-medium transition-all active:scale-95 ${
+                user.fontSize === "medium"
+                  ? "bg-cyan-500 text-gray-950 hover:bg-cyan-600"
+                  : "border border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700"
+              }`}
+              onClick={() => updateUser({ fontSize: "medium" })}
             >
               Medium
             </button>
             <button
-              className={user.fontSize === 'large' ? '' : 'secondary'}
-              onClick={() => updateUser({ fontSize: 'large' })}
+              className={`rounded px-4 py-2 text-sm font-medium transition-all active:scale-95 ${
+                user.fontSize === "large"
+                  ? "bg-cyan-500 text-gray-950 hover:bg-cyan-600"
+                  : "border border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700"
+              }`}
+              onClick={() => updateUser({ fontSize: "large" })}
             >
               Large
             </button>
@@ -115,44 +133,61 @@ const AppearanceSettings = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const UISettings = () => {
-  const ui = usePreferencesStore((state) => state.ui)
-  const updateUI = usePreferencesStore((state) => state.updateUI)
-  const toggleSidebar = usePreferencesStore((state) => state.toggleSidebar)
+  const ui = usePreferencesStore((state) => state.ui);
+  const updateUI = usePreferencesStore((state) => state.updateUI);
+  const toggleSidebar = usePreferencesStore((state) => state.toggleSidebar);
 
   return (
-    <div className="example-section">
-      <h2>UI Preferences</h2>
-      <div style={{ display: 'grid', gap: '1rem' }}>
+    <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+      <h2 className="mb-4 text-xl text-gray-200">UI Preferences</h2>
+      <div className="grid gap-4">
         <div>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-            <input type="checkbox" checked={ui.sidebarOpen} onChange={toggleSidebar} />
-            <span>Show sidebar</span>
+          <label className="flex cursor-pointer items-center gap-2">
+            <input
+              type="checkbox"
+              checked={ui.sidebarOpen}
+              onChange={toggleSidebar}
+              className="h-4 w-4 cursor-pointer"
+            />
+            <span className="text-sm text-gray-200">Show sidebar</span>
           </label>
         </div>
         <div>
-          <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: '#999' }}>
+          <label className="mb-2 block text-sm text-gray-500">
             Layout Mode
           </label>
-          <div className="button-group">
+          <div className="flex flex-wrap gap-2">
             <button
-              className={ui.layoutMode === 'compact' ? '' : 'secondary'}
-              onClick={() => updateUI({ layoutMode: 'compact' })}
+              className={`rounded px-4 py-2 text-sm font-medium transition-all active:scale-95 ${
+                ui.layoutMode === "compact"
+                  ? "bg-cyan-500 text-gray-950 hover:bg-cyan-600"
+                  : "border border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700"
+              }`}
+              onClick={() => updateUI({ layoutMode: "compact" })}
             >
               Compact
             </button>
             <button
-              className={ui.layoutMode === 'comfortable' ? '' : 'secondary'}
-              onClick={() => updateUI({ layoutMode: 'comfortable' })}
+              className={`rounded px-4 py-2 text-sm font-medium transition-all active:scale-95 ${
+                ui.layoutMode === "comfortable"
+                  ? "bg-cyan-500 text-gray-950 hover:bg-cyan-600"
+                  : "border border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700"
+              }`}
+              onClick={() => updateUI({ layoutMode: "comfortable" })}
             >
               Comfortable
             </button>
             <button
-              className={ui.layoutMode === 'spacious' ? '' : 'secondary'}
-              onClick={() => updateUI({ layoutMode: 'spacious' })}
+              className={`rounded px-4 py-2 text-sm font-medium transition-all active:scale-95 ${
+                ui.layoutMode === "spacious"
+                  ? "bg-cyan-500 text-gray-950 hover:bg-cyan-600"
+                  : "border border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700"
+              }`}
+              onClick={() => updateUI({ layoutMode: "spacious" })}
             >
               Spacious
             </button>
@@ -160,54 +195,52 @@ const UISettings = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const PreferencesPreview = () => {
-  const user = usePreferencesStore((state) => state.user)
-  const ui = usePreferencesStore((state) => state.ui)
+  const user = usePreferencesStore((state) => state.user);
+  const ui = usePreferencesStore((state) => state.ui);
 
   return (
-    <div className="example-section">
-      <h2>Current Preferences (Live)</h2>
-      <div
-        style={{
-          background: '#1a1a1a',
-          border: '1px solid #333',
-          borderRadius: '4px',
-          padding: '1rem',
-        }}
-      >
-        <pre style={{ margin: 0, fontSize: '0.875rem' }}>
+    <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+      <h2 className="mb-4 text-xl text-gray-200">Current Preferences (Live)</h2>
+      <div className="rounded border border-gray-800 bg-gray-950 p-4">
+        <pre className="m-0 text-sm">
           {JSON.stringify({ user, ui }, null, 2)}
         </pre>
       </div>
-      <p style={{ color: '#999', fontSize: '0.875rem', marginTop: '0.5rem' }}>
+      <p className="mt-2 text-sm text-gray-500">
         💾 These preferences are automatically saved to localStorage
       </p>
     </div>
-  )
-}
+  );
+};
 
 const ZustandExample = () => {
-  const resetToDefaults = usePreferencesStore((state) => state.resetToDefaults)
+  const resetToDefaults = usePreferencesStore((state) => state.resetToDefaults);
 
   return (
-    <div className="example-container">
-      <div className="example-header">
-        <h1>Zustand</h1>
-        <p>Lightweight state management with automatic persistence</p>
+    <div className="mx-auto max-w-4xl">
+      <div className="mb-8 border-b-2 border-gray-800 pb-4">
+        <h1 className="mb-2 text-3xl text-cyan-400">Zustand</h1>
+        <p className="text-gray-500">
+          Lightweight state management with automatic persistence
+        </p>
       </div>
 
-      <div className="example-section">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <div className="flex items-center justify-between">
           <div>
-            <h2 style={{ margin: 0 }}>Preferences Manager</h2>
-            <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.875rem', color: '#999' }}>
+            <h2 className="m-0 text-xl text-gray-200">Preferences Manager</h2>
+            <p className="m-0 mt-1 text-sm text-gray-500">
               Changes are automatically persisted to localStorage
             </p>
           </div>
-          <button className="danger" onClick={resetToDefaults}>
+          <button
+            onClick={resetToDefaults}
+            className="rounded border border-red-800 bg-red-900/50 px-4 py-2 text-sm font-medium text-red-200 transition-all hover:bg-red-900 active:scale-95"
+          >
             Reset to Defaults
           </button>
         </div>
@@ -218,30 +251,44 @@ const ZustandExample = () => {
       <UISettings />
       <PreferencesPreview />
 
-      <div className="example-section">
-        <h2>Key Concepts</h2>
-        <ul style={{ color: '#999', lineHeight: '1.8' }}>
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <h2 className="mb-4 text-xl text-gray-200">Key Concepts</h2>
+        <ul className="list-inside space-y-2 leading-relaxed text-gray-500">
           <li>
-            <strong>Zustand</strong> is a small, fast, and scalable state management solution
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              Zustand
+            </code>{" "}
+            is a small, fast, and scalable state management solution
           </li>
           <li>Uses hooks API - no providers needed</li>
           <li>Minimal boilerplate compared to Redux</li>
           <li>
-            <code>create</code> function defines store with state and actions
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              create
+            </code>{" "}
+            function defines store with state and actions
           </li>
-          <li>Selectors allow fine-grained subscriptions to specific state slices</li>
+          <li>
+            Selectors allow fine-grained subscriptions to specific state slices
+          </li>
           <li>Middleware support (persist, devtools, immer, etc.)</li>
-          <li>Automatic persistence to localStorage with <code>persist</code> middleware</li>
+          <li>
+            Automatic persistence to localStorage with{" "}
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              persist
+            </code>{" "}
+            middleware
+          </li>
           <li>TypeScript support out of the box</li>
         </ul>
       </div>
 
-      <div className="example-section">
-        <h2>Why Zustand?</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <h2 className="mb-4 text-xl text-gray-200">Why Zustand?</h2>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <h3 style={{ color: '#2ecc71', fontSize: '1rem', marginBottom: '0.5rem' }}>✓ Advantages</h3>
-            <ul style={{ color: '#999', fontSize: '0.875rem', lineHeight: '1.6' }}>
+            <h3 className="mb-2 text-base text-green-400">✓ Advantages</h3>
+            <ul className="space-y-1 text-sm leading-relaxed text-gray-500">
               <li>Very small bundle size (~1kb)</li>
               <li>Simple, hook-based API</li>
               <li>No providers/wrappers needed</li>
@@ -251,8 +298,8 @@ const ZustandExample = () => {
             </ul>
           </div>
           <div>
-            <h3 style={{ color: '#61dafb', fontSize: '1rem', marginBottom: '0.5rem' }}>📋 Best For</h3>
-            <ul style={{ color: '#999', fontSize: '0.875rem', lineHeight: '1.6' }}>
+            <h3 className="mb-2 text-base text-cyan-400">📋 Best For</h3>
+            <ul className="space-y-1 text-sm leading-relaxed text-gray-500">
               <li>Small to medium apps</li>
               <li>Simple state management needs</li>
               <li>When you want less boilerplate</li>
@@ -263,7 +310,7 @@ const ZustandExample = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ZustandExample
+export default ZustandExample;

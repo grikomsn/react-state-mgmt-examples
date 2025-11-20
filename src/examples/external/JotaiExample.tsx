@@ -88,44 +88,39 @@ const JotaiExample = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formValid) {
-      alert("Form submitted successfully! Check console for data.");
-      console.log("Form Data:", formData);
+      alert("Form submitted successfully!");
     }
   };
 
   const getStrengthColor = (score: number) => {
-    if (score === 0) return "#666";
-    if (score === 1) return "#e74c3c";
-    if (score === 2) return "#f39c12";
-    return "#2ecc71";
+    if (score === 0) return "bg-gray-800";
+    if (score === 1) return "bg-red-500";
+    if (score === 2) return "bg-yellow-500";
+    return "bg-green-500";
+  };
+
+  const getStrengthTextColor = (score: number) => {
+    if (score === 0) return "text-gray-500";
+    if (score === 1) return "text-red-400";
+    if (score === 2) return "text-yellow-400";
+    return "text-green-400";
   };
 
   return (
-    <div className="example-container">
-      <div className="example-header">
-        <h1>Jotai</h1>
-        <p>Atomic state management with derived values and dependencies</p>
+    <div className="mx-auto max-w-4xl">
+      <div className="mb-8 border-b-2 border-gray-800 pb-4">
+        <h1 className="mb-2 text-3xl text-cyan-400">Jotai</h1>
+        <p className="text-gray-500">
+          Atomic state management with derived values and dependencies
+        </p>
       </div>
 
-      <div className="example-section">
-        <h2>Registration Form</h2>
-        <form onSubmit={handleSubmit} style={{ display: "grid", gap: "1rem" }}>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "1rem",
-            }}
-          >
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <h2 className="mb-4 text-xl text-gray-200">Registration Form</h2>
+        <form onSubmit={handleSubmit} className="grid gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <label
-                style={{
-                  display: "block",
-                  marginBottom: "0.25rem",
-                  fontSize: "0.875rem",
-                  color: "#999",
-                }}
-              >
+              <label className="mb-1 block text-sm text-gray-500">
                 First Name
               </label>
               <input
@@ -133,18 +128,11 @@ const JotaiExample = () => {
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="John"
-                style={{ width: "100%" }}
+                className="w-full rounded border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-200 focus:border-cyan-400 focus:outline-none"
               />
             </div>
             <div>
-              <label
-                style={{
-                  display: "block",
-                  marginBottom: "0.25rem",
-                  fontSize: "0.875rem",
-                  color: "#999",
-                }}
-              >
+              <label className="mb-1 block text-sm text-gray-500">
                 Last Name
               </label>
               <input
@@ -152,45 +140,31 @@ const JotaiExample = () => {
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Doe"
-                style={{ width: "100%" }}
+                className="w-full rounded border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-200 focus:border-cyan-400 focus:outline-none"
               />
             </div>
           </div>
 
           {fullName && (
-            <div
-              className="success"
-              style={{ padding: "0.5rem", fontSize: "0.875rem" }}
-            >
+            <div className="rounded bg-green-900/30 p-2 text-sm text-green-400">
               Welcome, <strong>{fullName}</strong>!
             </div>
           )}
 
           <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "0.25rem",
-                fontSize: "0.875rem",
-                color: "#999",
-              }}
-            >
-              Email
-            </label>
+            <label className="mb-1 block text-sm text-gray-500">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="john@example.com"
-              style={{ width: "100%" }}
+              className="w-full rounded border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-200 focus:border-cyan-400 focus:outline-none"
             />
             {email && (
               <div
-                style={{
-                  marginTop: "0.25rem",
-                  fontSize: "0.75rem",
-                  color: emailValid ? "#2ecc71" : "#e74c3c",
-                }}
+                className={`mt-1 text-xs ${
+                  emailValid ? "text-green-400" : "text-red-400"
+                }`}
               >
                 {emailValid ? "✓ Valid email" : "✗ Invalid email format"}
               </div>
@@ -198,20 +172,11 @@ const JotaiExample = () => {
           </div>
 
           <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "0.25rem",
-                fontSize: "0.875rem",
-                color: "#999",
-              }}
-            >
-              Country
-            </label>
+            <label className="mb-1 block text-sm text-gray-500">Country</label>
             <select
               value={country}
               onChange={(e) => setCountry(e.target.value)}
-              style={{ width: "100%" }}
+              className="w-full rounded border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-200 focus:border-cyan-400 focus:outline-none"
             >
               <option value="us">United States</option>
               <option value="uk">United Kingdom</option>
@@ -222,54 +187,30 @@ const JotaiExample = () => {
           </div>
 
           <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "0.25rem",
-                fontSize: "0.875rem",
-                color: "#999",
-              }}
-            >
-              Password
-            </label>
+            <label className="mb-1 block text-sm text-gray-500">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter password"
-              style={{ width: "100%" }}
+              className="w-full rounded border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-200 focus:border-cyan-400 focus:outline-none"
             />
             {password && (
-              <div style={{ marginTop: "0.5rem" }}>
-                <div
-                  style={{
-                    fontSize: "0.75rem",
-                    color: "#999",
-                    marginBottom: "0.25rem",
-                  }}
-                >
+              <div className="mt-2">
+                <div className="mb-1 text-xs text-gray-500">
                   Password strength:{" "}
                   <span
-                    style={{ color: getStrengthColor(passwordStrength.score) }}
+                    className={getStrengthTextColor(passwordStrength.score)}
                   >
                     {passwordStrength.label}
                   </span>
                 </div>
-                <div
-                  style={{
-                    height: "4px",
-                    background: "#2a2a2a",
-                    borderRadius: "2px",
-                    overflow: "hidden",
-                  }}
-                >
+                <div className="h-1 overflow-hidden rounded bg-gray-950">
                   <div
-                    style={{
-                      height: "100%",
-                      width: `${(passwordStrength.score / 3) * 100}%`,
-                      background: getStrengthColor(passwordStrength.score),
-                      transition: "width 0.3s, background-color 0.3s",
-                    }}
+                    className={`h-full transition-all duration-300 ${getStrengthColor(
+                      passwordStrength.score
+                    )}`}
+                    style={{ width: `${(passwordStrength.score / 3) * 100}%` }}
                   />
                 </div>
               </div>
@@ -277,14 +218,7 @@ const JotaiExample = () => {
           </div>
 
           <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "0.25rem",
-                fontSize: "0.875rem",
-                color: "#999",
-              }}
-            >
+            <label className="mb-1 block text-sm text-gray-500">
               Confirm Password
             </label>
             <input
@@ -292,15 +226,13 @@ const JotaiExample = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Confirm password"
-              style={{ width: "100%" }}
+              className="w-full rounded border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-200 focus:border-cyan-400 focus:outline-none"
             />
             {confirmPassword && (
               <div
-                style={{
-                  marginTop: "0.25rem",
-                  fontSize: "0.75rem",
-                  color: passwordsMatch ? "#2ecc71" : "#e74c3c",
-                }}
+                className={`mt-1 text-xs ${
+                  passwordsMatch ? "text-green-400" : "text-red-400"
+                }`}
               >
                 {passwordsMatch
                   ? "✓ Passwords match"
@@ -310,28 +242,18 @@ const JotaiExample = () => {
           </div>
 
           <div>
-            <label
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                cursor: "pointer",
-              }}
-            >
+            <label className="flex cursor-pointer items-center gap-2">
               <input
                 type="checkbox"
                 checked={agreeToTerms}
                 onChange={(e) => setAgreeToTerms(e.target.checked)}
+                className="h-4 w-4 cursor-pointer"
               />
-              <span>I agree to the terms and conditions</span>
+              <span className="text-sm text-gray-200">
+                I agree to the terms and conditions
+              </span>
             </label>
-            <p
-              style={{
-                margin: "0.25rem 0 0 1.75rem",
-                fontSize: "0.75rem",
-                color: "#999",
-              }}
-            >
+            <p className="ml-6 mt-1 text-xs text-gray-500">
               (Persisted to localStorage)
             </p>
           </div>
@@ -339,7 +261,11 @@ const JotaiExample = () => {
           <button
             type="submit"
             disabled={!formValid}
-            style={{ padding: "0.75rem" }}
+            className={`rounded px-4 py-3 text-sm font-medium transition-all ${
+              formValid
+                ? "bg-cyan-500 text-gray-950 hover:bg-cyan-600 active:scale-95"
+                : "cursor-not-allowed bg-gray-800 text-gray-500"
+            }`}
           >
             {formValid
               ? "Submit Registration"
@@ -348,49 +274,52 @@ const JotaiExample = () => {
         </form>
       </div>
 
-      <div className="example-section">
-        <h2>Form State (Live)</h2>
-        <div
-          style={{
-            background: "#1a1a1a",
-            border: "1px solid #333",
-            borderRadius: "4px",
-            padding: "1rem",
-          }}
-        >
-          <pre style={{ margin: 0, fontSize: "0.875rem" }}>
-            {JSON.stringify(formData, null, 2)}
-          </pre>
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <h2 className="mb-4 text-xl text-gray-200">Form State (Live)</h2>
+        <div className="rounded border border-gray-800 bg-gray-950 p-4">
+          <pre className="m-0 text-sm">{JSON.stringify(formData, null, 2)}</pre>
         </div>
-        <div
-          style={{ marginTop: "0.5rem", fontSize: "0.875rem", color: "#999" }}
-        >
+        <div className="mt-2 text-sm text-gray-500">
           Form valid:{" "}
-          <code style={{ color: formValid ? "#2ecc71" : "#e74c3c" }}>
+          <code className={formValid ? "text-green-400" : "text-red-400"}>
             {formValid ? "true" : "false"}
           </code>
         </div>
       </div>
 
-      <div className="example-section">
-        <h2>Key Concepts</h2>
-        <ul style={{ color: "#999", lineHeight: "1.8" }}>
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <h2 className="mb-4 text-xl text-gray-200">Key Concepts</h2>
+        <ul className="list-inside space-y-2 leading-relaxed text-gray-500">
           <li>
-            <strong>Jotai</strong> provides primitive and flexible atomic state
-            management
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              Jotai
+            </code>{" "}
+            provides primitive and flexible atomic state management
           </li>
           <li>
-            <code>atom()</code> creates a piece of state (primitive atom)
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              atom()
+            </code>{" "}
+            creates a piece of state (primitive atom)
           </li>
           <li>Derived atoms automatically compute values from other atoms</li>
           <li>
-            <code>useAtom()</code> hook provides both value and setter
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              useAtom()
+            </code>{" "}
+            hook provides both value and setter
           </li>
           <li>
-            <code>useAtomValue()</code> for read-only access (optimization)
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              useAtomValue()
+            </code>{" "}
+            for read-only access (optimization)
           </li>
           <li>
-            <code>atomWithStorage()</code> persists atom value to localStorage
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              atomWithStorage()
+            </code>{" "}
+            persists atom value to localStorage
           </li>
           <li>
             Fine-grained reactivity - components only re-render when their atoms
@@ -401,28 +330,12 @@ const JotaiExample = () => {
         </ul>
       </div>
 
-      <div className="example-section">
-        <h2>Atomic State Benefits</h2>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "1rem",
-          }}
-        >
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <h2 className="mb-4 text-xl text-gray-200">Atomic State Benefits</h2>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <h3
-              style={{
-                color: "#2ecc71",
-                fontSize: "1rem",
-                marginBottom: "0.5rem",
-              }}
-            >
-              ✓ Advantages
-            </h3>
-            <ul
-              style={{ color: "#999", fontSize: "0.875rem", lineHeight: "1.6" }}
-            >
+            <h3 className="mb-2 text-base text-green-400">✓ Advantages</h3>
+            <ul className="space-y-1 text-sm leading-relaxed text-gray-500">
               <li>Minimal boilerplate</li>
               <li>Natural composition of state</li>
               <li>Derived state is easy and efficient</li>
@@ -432,18 +345,8 @@ const JotaiExample = () => {
             </ul>
           </div>
           <div>
-            <h3
-              style={{
-                color: "#61dafb",
-                fontSize: "1rem",
-                marginBottom: "0.5rem",
-              }}
-            >
-              📋 Best For
-            </h3>
-            <ul
-              style={{ color: "#999", fontSize: "0.875rem", lineHeight: "1.6" }}
-            >
+            <h3 className="mb-2 text-base text-cyan-400">📋 Best For</h3>
+            <ul className="space-y-1 text-sm leading-relaxed text-gray-500">
               <li>Complex forms with dependencies</li>
               <li>Computed/derived values</li>
               <li>Fine-grained reactivity</li>

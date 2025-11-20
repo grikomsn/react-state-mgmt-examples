@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { fetchDashboardData } from "../../api/mockApi.ts";
-import type { DashboardData } from "../../api/mockApi.ts";
+import { fetchDashboardData } from "../../api";
+import type { DashboardData } from "../../types";
 
 class DashboardStore {
   data: DashboardData = {

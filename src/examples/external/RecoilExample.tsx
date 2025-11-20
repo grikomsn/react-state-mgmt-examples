@@ -101,35 +101,16 @@ const Editor = () => {
   };
 
   return (
-    <div className="example-section">
-      <h2>Document Editor</h2>
-      <div style={{ position: "relative" }}>
+    <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+      <h2 className="mb-4 text-xl text-gray-200">Document Editor</h2>
+      <div className="relative">
         <textarea
           value={text}
           onChange={handleTextChange}
           onSelect={handleSelect}
-          style={{
-            width: "100%",
-            minHeight: "300px",
-            padding: "1rem",
-            fontSize: "1rem",
-            lineHeight: "1.6",
-            fontFamily: "monospace",
-            resize: "vertical",
-          }}
+          className="min-h-[300px] w-full resize-y rounded border border-gray-700 bg-gray-800 p-4 font-mono text-base leading-relaxed text-gray-200 focus:border-cyan-400 focus:outline-none"
         />
-        <div
-          style={{
-            position: "absolute",
-            top: "0.5rem",
-            right: "0.5rem",
-            fontSize: "0.75rem",
-            color: "#999",
-            background: "#1a1a1a",
-            padding: "0.25rem 0.5rem",
-            borderRadius: "4px",
-          }}
-        >
+        <div className="absolute right-2 top-2 rounded bg-gray-950 px-2 py-1 text-xs text-gray-500">
           Your cursor: {selectionStart}
         </div>
       </div>
@@ -141,44 +122,16 @@ const DocumentStats = () => {
   const stats = useRecoilValue(documentStatsSelector);
 
   return (
-    <div className="example-section">
-      <h2>Document Statistics</h2>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "1rem",
-        }}
-      >
+    <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+      <h2 className="mb-4 text-xl text-gray-200">Document Statistics</h2>
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         {Object.entries(stats).map(([key, value]) => (
           <div
             key={key}
-            style={{
-              background: "#1a1a1a",
-              border: "1px solid #333",
-              borderRadius: "4px",
-              padding: "1rem",
-              textAlign: "center",
-            }}
+            className="rounded border border-gray-800 bg-gray-950 p-4 text-center"
           >
-            <div
-              style={{
-                fontSize: "1.5rem",
-                fontWeight: "bold",
-                color: "#61dafb",
-              }}
-            >
-              {value}
-            </div>
-            <div
-              style={{
-                fontSize: "0.875rem",
-                color: "#999",
-                textTransform: "capitalize",
-              }}
-            >
-              {key}
-            </div>
+            <div className="text-2xl font-bold text-cyan-400">{value}</div>
+            <div className="capitalize text-sm text-gray-500">{key}</div>
           </div>
         ))}
       </div>
@@ -192,43 +145,31 @@ const CollaboratorsList = () => {
   const currentUserId = useRecoilValue(currentUserIdAtom);
 
   return (
-    <div className="example-section">
-      <h2>Active Collaborators</h2>
-      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+    <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+      <h2 className="mb-4 text-xl text-gray-200">Active Collaborators</h2>
+      <div className="flex flex-col gap-2">
         {users.map((user) => (
           <div
             key={user.id}
+            className="flex items-center gap-3 rounded border p-3"
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.75rem",
-              padding: "0.75rem",
-              background: user.id === currentUserId ? "#264f5f" : "#1a1a1a",
-              border: `1px solid ${
-                user.id === currentUserId ? user.color : "#333"
-              }`,
-              borderRadius: "4px",
+              backgroundColor:
+                user.id === currentUserId ? "#264f5f" : "#1a1a1a",
+              borderColor: user.id === currentUserId ? user.color : "#333",
             }}
           >
             <div
-              style={{
-                width: "12px",
-                height: "12px",
-                borderRadius: "50%",
-                background: user.color,
-              }}
+              className="h-3 w-3 rounded-full"
+              style={{ backgroundColor: user.color }}
             />
-            <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 500 }}>
+            <div className="flex-1">
+              <div className="font-medium text-gray-200">
                 {user.name}
                 {user.id === currentUserId && (
-                  <span style={{ color: "#999", fontSize: "0.875rem" }}>
-                    {" "}
-                    (You)
-                  </span>
+                  <span className="text-sm text-gray-500"> (You)</span>
                 )}
               </div>
-              <div style={{ fontSize: "0.75rem", color: "#999" }}>
+              <div className="text-xs text-gray-500">
                 Cursor at position {cursorPositions[user.id] || 0}
               </div>
             </div>
@@ -244,16 +185,20 @@ const UserSwitcher = () => {
   const activeUsers = useRecoilValue(activeUsersAtom);
 
   return (
-    <div className="example-section">
-      <h2>Switch User</h2>
-      <p style={{ color: "#999", fontSize: "0.875rem", marginBottom: "1rem" }}>
+    <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+      <h2 className="mb-4 text-xl text-gray-200">Switch User</h2>
+      <p className="mb-4 text-sm text-gray-500">
         Simulate different users editing the document
       </p>
-      <div className="button-group">
+      <div className="flex flex-wrap gap-2">
         {activeUsers.map((userId) => (
           <button
             key={userId}
-            className={currentUserId === userId ? "" : "secondary"}
+            className={`rounded px-4 py-2 text-sm font-medium transition-all active:scale-95 ${
+              currentUserId === userId
+                ? "bg-cyan-500 text-gray-950 hover:bg-cyan-600"
+                : "border border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700"
+            }`}
             onClick={() => setCurrentUserId(userId)}
           >
             User {userId.replace("user", "")}
@@ -266,10 +211,12 @@ const UserSwitcher = () => {
 
 const RecoilExampleContent = () => {
   return (
-    <div className="example-container">
-      <div className="example-header">
-        <h1>Recoil</h1>
-        <p>Collaborative document editor with atomic state</p>
+    <div className="mx-auto max-w-4xl">
+      <div className="mb-8 border-b-2 border-gray-800 pb-4">
+        <h1 className="mb-2 text-3xl text-cyan-400">Recoil</h1>
+        <p className="text-gray-500">
+          Collaborative document editor with atomic state
+        </p>
       </div>
 
       <UserSwitcher />
@@ -277,30 +224,44 @@ const RecoilExampleContent = () => {
       <DocumentStats />
       <CollaboratorsList />
 
-      <div className="example-section">
-        <h2>Key Concepts</h2>
-        <ul style={{ color: "#999", lineHeight: "1.8" }}>
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <h2 className="mb-4 text-xl text-gray-200">Key Concepts</h2>
+        <ul className="list-inside space-y-2 leading-relaxed text-gray-500">
           <li>
-            <strong>Recoil</strong> provides atomic and flexible state
-            management for React
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              Recoil
+            </code>{" "}
+            provides atomic and flexible state management for React
           </li>
           <li>
-            <code>atom()</code> creates a unit of state with a unique key
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              atom()
+            </code>{" "}
+            creates a unit of state with a unique key
           </li>
           <li>
-            <code>selector()</code> defines derived state with automatic
-            memoization
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              selector()
+            </code>{" "}
+            defines derived state with automatic memoization
           </li>
           <li>
-            <code>atomFamily()</code> creates a collection of related atoms with
-            parameters
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              atomFamily()
+            </code>{" "}
+            creates a collection of related atoms with parameters
           </li>
           <li>
-            <code>useRecoilState()</code> works like useState but for Recoil
-            atoms
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              useRecoilState()
+            </code>{" "}
+            works like useState but for Recoil atoms
           </li>
           <li>
-            <code>useRecoilValue()</code> subscribes to atom value (read-only)
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              useRecoilValue()
+            </code>{" "}
+            subscribes to atom value (read-only)
           </li>
           <li>Atoms can be shared across components without prop drilling</li>
           <li>
@@ -310,28 +271,12 @@ const RecoilExampleContent = () => {
         </ul>
       </div>
 
-      <div className="example-section">
-        <h2>Recoil Features</h2>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "1rem",
-          }}
-        >
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <h2 className="mb-4 text-xl text-gray-200">Recoil Features</h2>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <h3
-              style={{
-                color: "#2ecc71",
-                fontSize: "1rem",
-                marginBottom: "0.5rem",
-              }}
-            >
-              ✓ Advantages
-            </h3>
-            <ul
-              style={{ color: "#999", fontSize: "0.875rem", lineHeight: "1.6" }}
-            >
+            <h3 className="mb-2 text-base text-green-400">✓ Advantages</h3>
+            <ul className="space-y-1 text-sm leading-relaxed text-gray-500">
               <li>Designed specifically for React</li>
               <li>Concurrent mode compatible</li>
               <li>Powerful selector system</li>
@@ -341,18 +286,8 @@ const RecoilExampleContent = () => {
             </ul>
           </div>
           <div>
-            <h3
-              style={{
-                color: "#61dafb",
-                fontSize: "1rem",
-                marginBottom: "0.5rem",
-              }}
-            >
-              📋 Best For
-            </h3>
-            <ul
-              style={{ color: "#999", fontSize: "0.875rem", lineHeight: "1.6" }}
-            >
+            <h3 className="mb-2 text-base text-cyan-400">📋 Best For</h3>
+            <ul className="space-y-1 text-sm leading-relaxed text-gray-500">
               <li>Complex derived state</li>
               <li>Collaborative applications</li>
               <li>Dynamic collections of state</li>
@@ -363,71 +298,21 @@ const RecoilExampleContent = () => {
         </div>
       </div>
 
-      <div className="example-section">
-        <h2>Atom vs Selector</h2>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "1rem",
-          }}
-        >
-          <div
-            style={{
-              background: "#1a1a1a",
-              border: "1px solid #333",
-              borderRadius: "4px",
-              padding: "1rem",
-            }}
-          >
-            <h3
-              style={{
-                fontSize: "1rem",
-                marginBottom: "0.5rem",
-                color: "#61dafb",
-              }}
-            >
-              Atoms
-            </h3>
-            <ul
-              style={{
-                color: "#999",
-                fontSize: "0.875rem",
-                lineHeight: "1.6",
-                margin: 0,
-              }}
-            >
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <h2 className="mb-4 text-xl text-gray-200">Atom vs Selector</h2>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="rounded border border-gray-800 bg-gray-950 p-4">
+            <h3 className="mb-2 text-base text-cyan-400">Atoms</h3>
+            <ul className="m-0 space-y-1 text-sm leading-relaxed text-gray-500">
               <li>Units of state</li>
               <li>Can be written to</li>
               <li>Source of truth</li>
               <li>Examples: text, cursor position</li>
             </ul>
           </div>
-          <div
-            style={{
-              background: "#1a1a1a",
-              border: "1px solid #333",
-              borderRadius: "4px",
-              padding: "1rem",
-            }}
-          >
-            <h3
-              style={{
-                fontSize: "1rem",
-                marginBottom: "0.5rem",
-                color: "#2ecc71",
-              }}
-            >
-              Selectors
-            </h3>
-            <ul
-              style={{
-                color: "#999",
-                fontSize: "0.875rem",
-                lineHeight: "1.6",
-                margin: 0,
-              }}
-            >
+          <div className="rounded border border-gray-800 bg-gray-950 p-4">
+            <h3 className="mb-2 text-base text-green-400">Selectors</h3>
+            <ul className="m-0 space-y-1 text-sm leading-relaxed text-gray-500">
               <li>Derived state</li>
               <li>Read-only (or writable with set)</li>
               <li>Computed from atoms</li>

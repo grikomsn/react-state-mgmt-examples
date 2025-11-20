@@ -1,6 +1,12 @@
-import { QueryClient, QueryClientProvider, useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
-import { fetchPosts, createPost } from '../../api/mockApi.ts'
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { useState } from "react";
+import { fetchPosts, createPost } from "../../api";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -9,57 +15,57 @@ const queryClient = new QueryClient({
       retry: 1,
     },
   },
-})
+});
 
 const PostsList = () => {
-  const [page, setPage] = useState(1)
-  const queryClient = useQueryClient()
+  const [page, setPage] = useState(1);
+  const queryClient = useQueryClient();
 
   const { data, isLoading, error, isFetching } = useQuery({
-    queryKey: ['posts', page],
+    queryKey: ["posts", page],
     queryFn: () => fetchPosts(page, 3),
-  })
+  });
 
   // Prefetch next page
   const prefetchNextPage = () => {
     if (data && page * 3 < data.total) {
       queryClient.prefetchQuery({
-        queryKey: ['posts', page + 1],
+        queryKey: ["posts", page + 1],
         queryFn: () => fetchPosts(page + 1, 3),
-      })
+      });
     }
-  }
+  };
 
-  const totalPages = data ? Math.ceil(data.total / 3) : 0
+  const totalPages = data ? Math.ceil(data.total / 3) : 0;
 
   if (isLoading) {
-    return <div className="loading">Loading posts...</div>
+    return (
+      <div className="py-8 text-center text-gray-500">Loading posts...</div>
+    );
   }
 
   if (error) {
     return (
-      <div className="error">
-        Error loading posts: {error instanceof Error ? error.message : 'Unknown error'}
+      <div className="rounded border border-red-800 bg-red-900/30 p-4 text-red-200">
+        Error loading posts:{" "}
+        {error instanceof Error ? error.message : "Unknown error"}
       </div>
-    )
+    );
   }
 
   return (
     <div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        {data?.posts.map(post => (
+      <div className="flex flex-col gap-4">
+        {data?.posts.map((post) => (
           <div
             key={post.id}
-            style={{
-              background: '#1a1a1a',
-              border: '1px solid #333',
-              borderRadius: '8px',
-              padding: '1.5rem',
-            }}
+            className="rounded-lg border border-gray-800 bg-gray-950 p-6"
           >
-            <h3 style={{ margin: '0 0 0.5rem 0', color: '#61dafb' }}>{post.title}</h3>
-            <p style={{ margin: '0 0 1rem 0', color: '#e0e0e0', lineHeight: '1.6' }}>{post.body}</p>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem', color: '#999' }}>
+            <h3 className="m-0 mb-2 text-lg text-cyan-400">{post.title}</h3>
+            <p className="m-0 mb-4 leading-relaxed text-gray-200">
+              {post.body}
+            </p>
+            <div className="flex justify-between text-sm text-gray-500">
               <span>By {post.author}</span>
               <span>{new Date(post.createdAt).toLocaleDateString()}</span>
             </div>
@@ -67,186 +73,210 @@ const PostsList = () => {
         ))}
       </div>
 
-      <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div className="button-group">
-          <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}>
+      <div className="mt-6 flex items-center justify-between">
+        <div className="flex gap-2">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="rounded bg-cyan-500 px-4 py-2 text-sm font-medium text-gray-950 transition-all hover:bg-cyan-600 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+          >
             Previous
           </button>
           <button
             onClick={() => {
-              setPage(p => p + 1)
-              prefetchNextPage()
+              setPage((p) => p + 1);
+              prefetchNextPage();
             }}
             disabled={page >= totalPages}
             onMouseEnter={prefetchNextPage}
+            className="rounded bg-cyan-500 px-4 py-2 text-sm font-medium text-gray-950 transition-all hover:bg-cyan-600 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Next
           </button>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <span style={{ fontSize: '0.875rem', color: '#999' }}>
+        <div className="flex items-center gap-4">
+          <span className="text-sm text-gray-500">
             Page {page} of {totalPages}
           </span>
           {isFetching && (
-            <span style={{ fontSize: '0.75rem', color: '#61dafb' }}>Updating...</span>
+            <span className="text-xs text-cyan-400">Updating...</span>
           )}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const CreatePostForm = () => {
-  const [title, setTitle] = useState('')
-  const [body, setBody] = useState('')
-  const [author, setAuthor] = useState('')
-  const queryClient = useQueryClient()
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [author, setAuthor] = useState("");
+  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: createPost,
     onSuccess: () => {
       // Invalidate and refetch posts queries
-      queryClient.invalidateQueries({ queryKey: ['posts'] })
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
       // Reset form
-      setTitle('')
-      setBody('')
-      setAuthor('')
+      setTitle("");
+      setBody("");
+      setAuthor("");
     },
-  })
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (title && body && author) {
-      mutation.mutate({ title, body, author })
+      mutation.mutate({ title, body, author });
     }
-  }
+  };
 
   return (
-    <div className="example-section">
-      <h2>Create New Post</h2>
-      <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1rem' }}>
+    <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+      <h2 className="mb-4 text-xl text-gray-200">Create New Post</h2>
+      <form onSubmit={handleSubmit} className="grid gap-4">
         <div>
-          <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.875rem', color: '#999' }}>
-            Title
-          </label>
+          <label className="mb-1 block text-sm text-gray-500">Title</label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter post title"
-            style={{ width: '100%' }}
             disabled={mutation.isPending}
+            className="w-full rounded border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-200 focus:border-cyan-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
           />
         </div>
 
         <div>
-          <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.875rem', color: '#999' }}>
-            Content
-          </label>
+          <label className="mb-1 block text-sm text-gray-500">Content</label>
           <textarea
             value={body}
             onChange={(e) => setBody(e.target.value)}
             placeholder="Enter post content"
-            style={{ width: '100%', minHeight: '100px', resize: 'vertical' }}
             disabled={mutation.isPending}
+            className="min-h-[100px] w-full resize-y rounded border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-200 focus:border-cyan-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
           />
         </div>
 
         <div>
-          <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.875rem', color: '#999' }}>
-            Author
-          </label>
+          <label className="mb-1 block text-sm text-gray-500">Author</label>
           <input
             type="text"
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
             placeholder="Your name"
-            style={{ width: '100%' }}
             disabled={mutation.isPending}
+            className="w-full rounded border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-200 focus:border-cyan-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
           />
         </div>
 
         {mutation.isError && (
-          <div className="error">
-            Error: {mutation.error instanceof Error ? mutation.error.message : 'Failed to create post'}
+          <div className="rounded border border-red-800 bg-red-900/30 p-3 text-sm text-red-200">
+            Error:{" "}
+            {mutation.error instanceof Error
+              ? mutation.error.message
+              : "Failed to create post"}
           </div>
         )}
 
         {mutation.isSuccess && (
-          <div className="success">Post created successfully!</div>
+          <div className="rounded border border-green-800 bg-green-900/30 p-3 text-sm text-green-200">
+            Post created successfully!
+          </div>
         )}
 
-        <button type="submit" disabled={mutation.isPending || !title || !body || !author}>
-          {mutation.isPending ? 'Creating...' : 'Create Post'}
+        <button
+          type="submit"
+          disabled={mutation.isPending || !title || !body || !author}
+          className="rounded bg-cyan-500 px-4 py-2 text-sm font-medium text-gray-950 transition-all hover:bg-cyan-600 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {mutation.isPending ? "Creating..." : "Create Post"}
         </button>
       </form>
     </div>
-  )
-}
+  );
+};
 
 const QueryStats = () => {
-  const queries = queryClient.getQueryCache().getAll()
-  const mutations = queryClient.getMutationCache().getAll()
+  const queries = queryClient.getQueryCache().getAll();
+  const mutations = queryClient.getMutationCache().getAll();
 
   return (
-    <div className="example-section">
-      <h2>Query Cache Status</h2>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
-        <div style={{ background: '#1a1a1a', border: '1px solid #333', borderRadius: '4px', padding: '1rem' }}>
-          <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#61dafb' }}>
+    <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+      <h2 className="mb-4 text-xl text-gray-200">Query Cache Status</h2>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="rounded border border-gray-800 bg-gray-950 p-4">
+          <div className="text-2xl font-bold text-cyan-400">
             {queries.length}
           </div>
-          <div style={{ fontSize: '0.875rem', color: '#999' }}>Cached Queries</div>
+          <div className="text-sm text-gray-500">Cached Queries</div>
         </div>
-        <div style={{ background: '#1a1a1a', border: '1px solid #333', borderRadius: '4px', padding: '1rem' }}>
-          <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#2ecc71' }}>
-            {queries.filter(q => q.state.status === 'success').length}
+        <div className="rounded border border-gray-800 bg-gray-950 p-4">
+          <div className="text-2xl font-bold text-green-400">
+            {queries.filter((q) => q.state.status === "success").length}
           </div>
-          <div style={{ fontSize: '0.875rem', color: '#999' }}>Successful</div>
+          <div className="text-sm text-gray-500">Successful</div>
         </div>
-        <div style={{ background: '#1a1a1a', border: '1px solid #333', borderRadius: '4px', padding: '1rem' }}>
-          <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#f39c12' }}>
+        <div className="rounded border border-gray-800 bg-gray-950 p-4">
+          <div className="text-2xl font-bold text-yellow-400">
             {mutations.length}
           </div>
-          <div style={{ fontSize: '0.875rem', color: '#999' }}>Mutations</div>
+          <div className="text-sm text-gray-500">Mutations</div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const TanStackQueryExampleContent = () => {
   return (
-    <div className="example-container">
-      <div className="example-header">
-        <h1>TanStack Query (React Query)</h1>
-        <p>Server state management with caching, pagination, and mutations</p>
+    <div className="mx-auto max-w-4xl">
+      <div className="mb-8 border-b-2 border-gray-800 pb-4">
+        <h1 className="mb-2 text-3xl text-cyan-400">
+          TanStack Query (React Query)
+        </h1>
+        <p className="text-gray-500">
+          Server state management with caching, pagination, and mutations
+        </p>
       </div>
 
       <CreatePostForm />
 
-      <div className="example-section">
-        <h2>Posts</h2>
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <h2 className="mb-4 text-xl text-gray-200">Posts</h2>
         <PostsList />
       </div>
 
       <QueryStats />
 
-      <div className="example-section">
-        <h2>Key Concepts</h2>
-        <ul style={{ color: '#999', lineHeight: '1.8' }}>
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <h2 className="mb-4 text-xl text-gray-200">Key Concepts</h2>
+        <ul className="list-inside space-y-2 leading-relaxed text-gray-500">
           <li>
-            <strong>TanStack Query</strong> (React Query) manages server state with automatic caching
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              TanStack Query
+            </code>{" "}
+            (React Query) manages server state with automatic caching
           </li>
           <li>
-            <code>useQuery</code> fetches and caches data with automatic background updates
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              useQuery
+            </code>{" "}
+            fetches and caches data with automatic background updates
           </li>
           <li>
-            <code>useMutation</code> handles data modifications (POST, PUT, DELETE)
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              useMutation
+            </code>{" "}
+            handles data modifications (POST, PUT, DELETE)
           </li>
           <li>Query keys identify and organize cached data</li>
-          <li>Automatic refetching on window focus, network reconnect, and intervals</li>
+          <li>
+            Automatic refetching on window focus, network reconnect, and
+            intervals
+          </li>
           <li>Built-in loading, error, and success states</li>
           <li>Query invalidation triggers automatic refetch</li>
           <li>Prefetching improves perceived performance</li>
@@ -254,12 +284,12 @@ const TanStackQueryExampleContent = () => {
         </ul>
       </div>
 
-      <div className="example-section">
-        <h2>TanStack Query Features</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <h2 className="mb-4 text-xl text-gray-200">TanStack Query Features</h2>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <h3 style={{ color: '#2ecc71', fontSize: '1rem', marginBottom: '0.5rem' }}>✓ Advantages</h3>
-            <ul style={{ color: '#999', fontSize: '0.875rem', lineHeight: '1.6' }}>
+            <h3 className="mb-2 text-base text-green-400">✓ Advantages</h3>
+            <ul className="space-y-1 text-sm leading-relaxed text-gray-500">
               <li>Automatic caching and deduplication</li>
               <li>Background refetching</li>
               <li>Pagination and infinite scroll</li>
@@ -269,8 +299,8 @@ const TanStackQueryExampleContent = () => {
             </ul>
           </div>
           <div>
-            <h3 style={{ color: '#61dafb', fontSize: '1rem', marginBottom: '0.5rem' }}>📋 Best For</h3>
-            <ul style={{ color: '#999', fontSize: '0.875rem', lineHeight: '1.6' }}>
+            <h3 className="mb-2 text-base text-cyan-400">📋 Best For</h3>
+            <ul className="space-y-1 text-sm leading-relaxed text-gray-500">
               <li>Apps with server data</li>
               <li>RESTful APIs</li>
               <li>Real-time data updates</li>
@@ -281,12 +311,12 @@ const TanStackQueryExampleContent = () => {
         </div>
       </div>
 
-      <div className="example-section">
-        <h2>Cache Behavior</h2>
-        <p style={{ color: '#999', marginBottom: '1rem' }}>
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <h2 className="mb-4 text-xl text-gray-200">Cache Behavior</h2>
+        <p className="mb-4 text-gray-500">
           TanStack Query automatically manages cache lifecycle:
         </p>
-        <ul style={{ color: '#999', lineHeight: '1.8' }}>
+        <ul className="list-inside space-y-2 leading-relaxed text-gray-500">
           <li>Fresh data is served immediately from cache</li>
           <li>Stale data is refetched in the background</li>
           <li>Failed queries are retried automatically</li>
@@ -295,15 +325,15 @@ const TanStackQueryExampleContent = () => {
         </ul>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const TanStackQueryExample = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TanStackQueryExampleContent />
     </QueryClientProvider>
-  )
-}
+  );
+};
 
-export default TanStackQueryExample
+export default TanStackQueryExample;

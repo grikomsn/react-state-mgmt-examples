@@ -22,60 +22,53 @@ const UseStateExample = () => {
   };
 
   return (
-    <div className="example-container">
-      <div className="example-header">
-        <h1>useState Hook</h1>
-        <p>Basic state management with counter and history tracking</p>
+    <div className="mx-auto max-w-4xl">
+      <div className="mb-8 border-b-2 border-gray-800 pb-4">
+        <h1 className="mb-2 text-3xl text-cyan-400">useState Hook</h1>
+        <p className="text-gray-500">
+          Basic state management with counter and history tracking
+        </p>
       </div>
 
-      <div className="example-section">
-        <h2>Counter</h2>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "1rem",
-            marginBottom: "1rem",
-          }}
-        >
-          <button onClick={decrement}>-</button>
-          <span
-            style={{ fontSize: "2rem", fontWeight: "bold", color: "#61dafb" }}
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <h2 className="mb-4 text-xl text-gray-200">Counter</h2>
+        <div className="mb-4 flex items-center gap-4">
+          <button
+            onClick={decrement}
+            className="rounded bg-cyan-500 px-4 py-2 text-sm font-medium text-gray-950 transition-all hover:bg-cyan-600 active:scale-95"
           >
-            {count}
-          </span>
-          <button onClick={increment}>+</button>
-          <button onClick={reset} className="secondary">
+            -
+          </button>
+          <span className="text-3xl font-bold text-cyan-400">{count}</span>
+          <button
+            onClick={increment}
+            className="rounded bg-cyan-500 px-4 py-2 text-sm font-medium text-gray-950 transition-all hover:bg-cyan-600 active:scale-95"
+          >
+            +
+          </button>
+          <button
+            onClick={reset}
+            className="rounded border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-200 transition-all hover:bg-gray-700"
+          >
             Reset
           </button>
         </div>
       </div>
 
-      <div className="example-section">
-        <h2>History</h2>
-        <p style={{ color: "#999", marginBottom: "0.5rem" }}>
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <h2 className="mb-4 text-xl text-gray-200">History</h2>
+        <p className="mb-2 text-sm text-gray-500">
           All count values: {history.length} entries
         </p>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "0.5rem",
-            padding: "1rem",
-            background: "#1a1a1a",
-            borderRadius: "4px",
-          }}
-        >
+        <div className="flex flex-wrap gap-2 rounded bg-gray-950 p-4">
           {history.map((value, index) => (
             <span
               key={index}
-              style={{
-                padding: "0.25rem 0.5rem",
-                background: value === count ? "#264f5f" : "#2a2a2a",
-                color: value === count ? "#61dafb" : "#e0e0e0",
-                borderRadius: "4px",
-                fontSize: "0.875rem",
-              }}
+              className={`rounded px-2 py-1 text-sm ${
+                value === count
+                  ? "bg-cyan-900/50 text-cyan-400"
+                  : "bg-gray-800 text-gray-200"
+              }`}
             >
               {value}
             </span>
@@ -83,12 +76,14 @@ const UseStateExample = () => {
         </div>
       </div>
 
-      <div className="example-section">
-        <h2>Key Concepts</h2>
-        <ul style={{ color: "#999", lineHeight: "1.8" }}>
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <h2 className="mb-4 text-xl text-gray-200">Key Concepts</h2>
+        <ul className="list-inside space-y-2 leading-relaxed text-gray-500">
           <li>
-            <code>useState</code> is the most basic React hook for managing
-            component state
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              useState
+            </code>{" "}
+            is the most basic React hook for managing component state
           </li>
           <li>Returns a state value and a setter function</li>
           <li>State updates trigger component re-renders</li>

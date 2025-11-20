@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
-import { dashboardStore } from "../../stores/mobx/store.ts";
+import { dashboardStore } from "../../stores/mobx/store";
 
 const StatCard = observer(
   ({
@@ -15,49 +15,22 @@ const StatCard = observer(
     trend?: "up" | "down" | "neutral";
   }) => {
     const trendColors = {
-      up: "#2ecc71",
-      down: "#e74c3c",
-      neutral: "#999",
+      up: "text-green-400",
+      down: "text-red-400",
+      neutral: "text-gray-500",
     };
 
     return (
-      <div
-        style={{
-          background: "#1a1a1a",
-          border: "1px solid #333",
-          borderRadius: "8px",
-          padding: "1.5rem",
-        }}
-      >
-        <div
-          style={{
-            fontSize: "0.875rem",
-            color: "#999",
-            marginBottom: "0.5rem",
-          }}
-        >
-          {title}
-        </div>
-        <div
-          style={{ display: "flex", alignItems: "baseline", gap: "0.25rem" }}
-        >
-          <span
-            style={{ fontSize: "2rem", fontWeight: "bold", color: "#61dafb" }}
-          >
+      <div className="rounded-lg border border-gray-800 bg-gray-950 p-6">
+        <div className="mb-2 text-sm text-gray-500">{title}</div>
+        <div className="flex items-baseline gap-1">
+          <span className="text-3xl font-bold text-cyan-400">
             {typeof value === "number" ? value.toLocaleString() : value}
           </span>
-          {suffix && (
-            <span style={{ fontSize: "1rem", color: "#999" }}>{suffix}</span>
-          )}
+          {suffix && <span className="text-base text-gray-500">{suffix}</span>}
         </div>
         {trend && (
-          <div
-            style={{
-              fontSize: "0.75rem",
-              color: trendColors[trend],
-              marginTop: "0.25rem",
-            }}
-          >
+          <div className={`mt-1 text-xs ${trendColors[trend]}`}>
             {trend === "up" ? "↑" : trend === "down" ? "↓" : "→"} {trend}
           </div>
         )}
@@ -68,13 +41,7 @@ const StatCard = observer(
 
 const DashboardMetrics = observer(() => {
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-        gap: "1rem",
-      }}
-    >
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
       <StatCard
         title="Visitors"
         value={dashboardStore.data.visitors}
@@ -103,70 +70,30 @@ const DashboardMetrics = observer(() => {
 const ComputedMetrics = observer(() => {
   const qualityColor =
     dashboardStore.dataQuality === "Excellent"
-      ? "#2ecc71"
+      ? "text-green-400"
       : dashboardStore.dataQuality === "Good"
-      ? "#61dafb"
+      ? "text-cyan-400"
       : dashboardStore.dataQuality === "Fair"
-      ? "#f39c12"
-      : "#e74c3c";
+      ? "text-yellow-400"
+      : "text-red-400";
 
   return (
-    <div className="example-section">
-      <h2>Computed Metrics</h2>
-      <p style={{ color: "#999", fontSize: "0.875rem", marginBottom: "1rem" }}>
+    <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+      <h2 className="mb-4 text-xl text-gray-200">Computed Metrics</h2>
+      <p className="mb-4 text-sm text-gray-500">
         These values are automatically computed from observable data using MobX
         getters
       </p>
-      <div
-        style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}
-      >
-        <div
-          style={{
-            background: "#1a1a1a",
-            border: "1px solid #333",
-            borderRadius: "4px",
-            padding: "1rem",
-          }}
-        >
-          <div
-            style={{
-              fontSize: "0.875rem",
-              color: "#999",
-              marginBottom: "0.25rem",
-            }}
-          >
-            Conversion Rate
-          </div>
-          <div
-            style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#61dafb" }}
-          >
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="rounded border border-gray-800 bg-gray-950 p-4">
+          <div className="mb-1 text-sm text-gray-500">Conversion Rate</div>
+          <div className="text-2xl font-bold text-cyan-400">
             {dashboardStore.conversionRate}%
           </div>
         </div>
-        <div
-          style={{
-            background: "#1a1a1a",
-            border: "1px solid #333",
-            borderRadius: "4px",
-            padding: "1rem",
-          }}
-        >
-          <div
-            style={{
-              fontSize: "0.875rem",
-              color: "#999",
-              marginBottom: "0.25rem",
-            }}
-          >
-            Data Quality
-          </div>
-          <div
-            style={{
-              fontSize: "1.5rem",
-              fontWeight: "bold",
-              color: qualityColor,
-            }}
-          >
+        <div className="rounded border border-gray-800 bg-gray-950 p-4">
+          <div className="mb-1 text-sm text-gray-500">Data Quality</div>
+          <div className={`text-2xl font-bold ${qualityColor}`}>
             {dashboardStore.dataQuality}
           </div>
         </div>
@@ -177,43 +104,33 @@ const ComputedMetrics = observer(() => {
 
 const DashboardControls = observer(() => {
   return (
-    <div className="example-section">
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: "1rem",
-        }}
-      >
-        <div className="button-group">
+    <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap gap-2">
           <button
             onClick={() => dashboardStore.fetchData()}
             disabled={dashboardStore.isLoading}
+            className="rounded bg-cyan-500 px-4 py-2 text-sm font-medium text-gray-950 transition-all hover:bg-cyan-600 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {dashboardStore.isLoading ? "Loading..." : "Refresh Data"}
           </button>
-          <button className="secondary" onClick={() => dashboardStore.reset()}>
+          <button
+            onClick={() => dashboardStore.reset()}
+            className="rounded border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-200 transition-all hover:bg-gray-700 active:scale-95"
+          >
             Reset
           </button>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <label
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              cursor: "pointer",
-            }}
-          >
+        <div className="flex items-center gap-4">
+          <label className="flex cursor-pointer items-center gap-2">
             <input
               type="checkbox"
               checked={dashboardStore.autoRefresh}
               onChange={(e) => dashboardStore.setAutoRefresh(e.target.checked)}
+              className="h-4 w-4 cursor-pointer"
             />
-            <span style={{ fontSize: "0.875rem" }}>Auto-refresh</span>
+            <span className="text-sm text-gray-200">Auto-refresh</span>
           </label>
 
           {dashboardStore.autoRefresh && (
@@ -222,7 +139,7 @@ const DashboardControls = observer(() => {
               onChange={(e) =>
                 dashboardStore.setRefreshInterval(Number(e.target.value))
               }
-              style={{ fontSize: "0.875rem" }}
+              className="rounded border border-gray-700 bg-gray-800 px-2 py-1 text-sm text-gray-200 focus:border-cyan-400 focus:outline-none"
             >
               <option value={3000}>3s</option>
               <option value={5000}>5s</option>
@@ -233,9 +150,7 @@ const DashboardControls = observer(() => {
       </div>
 
       {dashboardStore.lastUpdated && (
-        <p
-          style={{ margin: "0.5rem 0 0 0", fontSize: "0.75rem", color: "#999" }}
-        >
+        <p className="mt-2 text-xs text-gray-500">
           Last updated: {dashboardStore.lastUpdated.toLocaleTimeString()}
         </p>
       )}
@@ -287,22 +202,28 @@ const MobXExample = observer(() => {
   }, [dashboardStore.autoRefresh, dashboardStore.refreshInterval]);
 
   return (
-    <div className="example-container">
-      <div className="example-header">
-        <h1>MobX</h1>
-        <p>Real-time dashboard with observable state and computed values</p>
+    <div className="mx-auto max-w-4xl">
+      <div className="mb-8 border-b-2 border-gray-800 pb-4">
+        <h1 className="mb-2 text-3xl text-cyan-400">MobX</h1>
+        <p className="text-gray-500">
+          Real-time dashboard with observable state and computed values
+        </p>
       </div>
 
       <DashboardControls />
 
       {dashboardStore.error && (
-        <div className="error">Error: {dashboardStore.error}</div>
+        <div className="mb-6 rounded border border-red-800 bg-red-900/30 p-4 text-red-200">
+          Error: {dashboardStore.error}
+        </div>
       )}
 
-      <div className="example-section">
-        <h2>Dashboard Metrics</h2>
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <h2 className="mb-4 text-xl text-gray-200">Dashboard Metrics</h2>
         {dashboardStore.isLoading && !dashboardStore.lastUpdated ? (
-          <div className="loading">Loading dashboard data...</div>
+          <div className="py-8 text-center text-gray-500">
+            Loading dashboard data...
+          </div>
         ) : (
           <DashboardMetrics />
         )}
@@ -310,17 +231,10 @@ const MobXExample = observer(() => {
 
       <ComputedMetrics />
 
-      <div className="example-section">
-        <h2>Observable State</h2>
-        <div
-          style={{
-            background: "#1a1a1a",
-            border: "1px solid #333",
-            borderRadius: "4px",
-            padding: "1rem",
-          }}
-        >
-          <pre style={{ margin: 0, fontSize: "0.875rem" }}>
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <h2 className="mb-4 text-xl text-gray-200">Observable State</h2>
+        <div className="rounded border border-gray-800 bg-gray-950 p-4">
+          <pre className="m-0 text-sm">
             {JSON.stringify(
               {
                 data: dashboardStore.data,
@@ -336,28 +250,36 @@ const MobXExample = observer(() => {
         </div>
       </div>
 
-      <div className="example-section">
-        <h2>Key Concepts</h2>
-        <ul style={{ color: "#999", lineHeight: "1.8" }}>
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <h2 className="mb-4 text-xl text-gray-200">Key Concepts</h2>
+        <ul className="list-inside space-y-2 leading-relaxed text-gray-500">
           <li>
-            <strong>MobX</strong> provides reactive state management through
-            observables
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              MobX
+            </code>{" "}
+            provides reactive state management through observables
           </li>
           <li>
-            <code>makeAutoObservable</code> automatically makes class properties
-            observable
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              makeAutoObservable
+            </code>{" "}
+            automatically makes class properties observable
           </li>
           <li>
-            <code>observer</code> HOC makes React components reactive to
-            observable changes
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              observer
+            </code>{" "}
+            HOC makes React components reactive to observable changes
           </li>
           <li>
             Computed values (getters) are cached and only recompute when
             dependencies change
           </li>
           <li>
-            <code>runInAction</code> ensures state modifications in async code
-            are tracked
+            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
+              runInAction
+            </code>{" "}
+            ensures state modifications in async code are tracked
           </li>
           <li>
             Fine-grained reactivity - components only re-render when observables
@@ -370,28 +292,12 @@ const MobXExample = observer(() => {
         </ul>
       </div>
 
-      <div className="example-section">
-        <h2>MobX Features</h2>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "1rem",
-          }}
-        >
+      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
+        <h2 className="mb-4 text-xl text-gray-200">MobX Features</h2>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <h3
-              style={{
-                color: "#2ecc71",
-                fontSize: "1rem",
-                marginBottom: "0.5rem",
-              }}
-            >
-              ✓ Advantages
-            </h3>
-            <ul
-              style={{ color: "#999", fontSize: "0.875rem", lineHeight: "1.6" }}
-            >
+            <h3 className="mb-2 text-base text-green-400">✓ Advantages</h3>
+            <ul className="space-y-1 text-sm leading-relaxed text-gray-500">
               <li>Minimal boilerplate</li>
               <li>Automatic dependency tracking</li>
               <li>Excellent performance</li>
@@ -401,18 +307,8 @@ const MobXExample = observer(() => {
             </ul>
           </div>
           <div>
-            <h3
-              style={{
-                color: "#61dafb",
-                fontSize: "1rem",
-                marginBottom: "0.5rem",
-              }}
-            >
-              📋 Best For
-            </h3>
-            <ul
-              style={{ color: "#999", fontSize: "0.875rem", lineHeight: "1.6" }}
-            >
+            <h3 className="mb-2 text-base text-cyan-400">📋 Best For</h3>
+            <ul className="space-y-1 text-sm leading-relaxed text-gray-500">
               <li>Complex domain models</li>
               <li>Real-time data dashboards</li>
               <li>Applications with computed values</li>

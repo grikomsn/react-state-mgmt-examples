@@ -1,41 +1,26 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Navigation from './components/Navigation.tsx'
-import Home from './components/Home.tsx'
-import UseStateExample from './examples/built-in/UseStateExample.tsx'
-import UseReducerExample from './examples/built-in/UseReducerExample.tsx'
-import UseContextExample from './examples/built-in/UseContextExample.tsx'
-import ReduxExample from './examples/external/ReduxExample.tsx'
-import ZustandExample from './examples/external/ZustandExample.tsx'
-import JotaiExample from './examples/external/JotaiExample.tsx'
-import MobXExample from './examples/external/MobXExample.tsx'
-import RecoilExample from './examples/external/RecoilExample.tsx'
-import TanStackQueryExample from './examples/server-state/TanStackQueryExample.tsx'
-import SWRExample from './examples/server-state/SWRExample.tsx'
-import './App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navigation from "./components/Navigation";
+import { routes } from "./config/routes";
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="app-container">
+      <div className="flex min-h-screen bg-gray-950 text-gray-200">
         <Navigation />
-        <main className="main-content">
+        <main className="ml-[280px] flex-1 p-8">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/usestate" element={<UseStateExample />} />
-            <Route path="/usereducer" element={<UseReducerExample />} />
-            <Route path="/usecontext" element={<UseContextExample />} />
-            <Route path="/redux" element={<ReduxExample />} />
-            <Route path="/zustand" element={<ZustandExample />} />
-            <Route path="/jotai" element={<JotaiExample />} />
-            <Route path="/mobx" element={<MobXExample />} />
-            <Route path="/recoil" element={<RecoilExample />} />
-            <Route path="/tanstack-query" element={<TanStackQueryExample />} />
-            <Route path="/swr" element={<SWRExample />} />
+            {routes.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={<route.component />}
+              />
+            ))}
           </Routes>
         </main>
       </div>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

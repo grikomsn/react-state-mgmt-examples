@@ -149,6 +149,57 @@ Vercel's stale-while-revalidate strategy. Lightweight and perfect for real-time 
 - 💾 LocalStorage persistence
 - ⚡ Fast HMR with Vite
 
+## 📁 Project Structure
+
+```
+src/
+├── api/              # API layer with domain-specific modules
+│   ├── posts.ts      # Posts API endpoints
+│   ├── users.ts      # Users API endpoints
+│   ├── dashboard.ts  # Dashboard API endpoints
+│   ├── utils.ts      # Shared API utilities
+│   └── index.ts      # API barrel exports
+├── components/       # React components
+│   ├── shared/       # Reusable components
+│   ├── Home.tsx      # Landing page
+│   └── Navigation.tsx # Sidebar navigation
+├── config/           # Configuration files
+│   └── routes.ts     # Centralized route configuration
+├── examples/         # State management examples
+│   ├── built-in/     # React hooks examples
+│   ├── external/     # External library examples
+│   ├── server-state/ # Server state management examples
+│   └── index.ts      # Examples barrel exports
+├── stores/           # State management stores
+│   ├── redux/        # Redux store
+│   ├── zustand/      # Zustand store
+│   ├── mobx/         # MobX store
+│   └── index.ts      # Stores barrel exports
+├── types/            # TypeScript type definitions
+│   └── index.ts      # Centralized types
+├── App.tsx           # Main app component
+└── main.tsx          # Application entry point
+```
+
+## 🏗️ Architecture
+
+This project follows a **modular architecture** with clear separation of concerns:
+
+- **API Layer**: Domain-specific modules (posts, users, dashboard) with shared utilities
+- **Type System**: Centralized type definitions for consistency
+- **Component Library**: Reusable shared components (ExampleLayout, StateViewer, ConceptsList)
+- **Configuration**: Centralized route configuration for easy maintenance
+- **Barrel Exports**: Simplified imports across the codebase
+
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for detailed information.
+
+## ⚡ Performance Optimizations
+
+- **Utility CSS Classes**: Reduced inline styles for smaller bundle size
+- **Modular API**: Split API reduces unused code in bundles
+- **Barrel Exports**: Tree-shaking friendly structure
+- **Type Imports**: Proper type-only imports for optimal compilation
+
 ## 📝 License
 
 This project is provided as an educational resource.

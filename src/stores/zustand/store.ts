@@ -1,42 +1,31 @@
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import type { UserPreferences, UIState } from "../../types";
 
-export interface UserPreferences {
-  name: string
-  email: string
-  notifications: boolean
-  theme: 'light' | 'dark' | 'auto'
-  fontSize: 'small' | 'medium' | 'large'
-  autoSave: boolean
-}
-
-interface UIState {
-  sidebarOpen: boolean
-  layoutMode: 'compact' | 'comfortable' | 'spacious'
-}
+export type { UserPreferences };
 
 interface PreferencesState {
-  user: UserPreferences
-  ui: UIState
-  updateUser: (updates: Partial<UserPreferences>) => void
-  updateUI: (updates: Partial<UIState>) => void
-  toggleSidebar: () => void
-  resetToDefaults: () => void
+  user: UserPreferences;
+  ui: UIState;
+  updateUser: (updates: Partial<UserPreferences>) => void;
+  updateUI: (updates: Partial<UIState>) => void;
+  toggleSidebar: () => void;
+  resetToDefaults: () => void;
 }
 
 const defaultUser: UserPreferences = {
-  name: 'Guest User',
-  email: '',
+  name: "Guest User",
+  email: "",
   notifications: true,
-  theme: 'dark',
-  fontSize: 'medium',
+  theme: "dark",
+  fontSize: "medium",
   autoSave: true,
-}
+};
 
 const defaultUI: UIState = {
   sidebarOpen: true,
-  layoutMode: 'comfortable',
-}
+  layoutMode: "comfortable",
+};
 
 export const usePreferencesStore = create<PreferencesState>()(
   persist(
@@ -62,7 +51,7 @@ export const usePreferencesStore = create<PreferencesState>()(
         }),
     }),
     {
-      name: 'preferences-storage',
+      name: "preferences-storage",
     }
   )
-)
+);
