@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { dashboardStore } from "../../stores/mobx/store";
+import { ViewSourceLink } from "../../components/ui";
 
 const StatCard = observer(
   ({
@@ -204,10 +205,15 @@ const MobXExample = observer(() => {
   return (
     <div className="mx-auto max-w-4xl">
       <div className="mb-8 border-b-2 border-gray-800 pb-4">
-        <h1 className="mb-2 text-3xl text-cyan-400">MobX</h1>
-        <p className="text-gray-500">
-          Real-time dashboard with observable state and computed values
-        </p>
+        <div className="mb-2 flex items-start justify-between gap-4">
+          <div className="flex-1">
+            <h1 className="mb-2 text-3xl text-cyan-400">MobX</h1>
+            <p className="text-gray-500">
+              Real-time dashboard with observable state and computed values
+            </p>
+          </div>
+          <ViewSourceLink url={import.meta.url} />
+        </div>
       </div>
 
       <DashboardControls />

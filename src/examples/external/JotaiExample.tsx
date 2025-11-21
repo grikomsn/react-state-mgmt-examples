@@ -1,5 +1,6 @@
 import { atom, useAtom, useAtomValue } from "jotai";
 import { atomWithStorage } from "jotai/utils";
+import { ViewSourceLink } from "../../components/ui";
 
 // Base atoms
 const firstNameAtom = atom("");
@@ -109,10 +110,15 @@ const JotaiExample = () => {
   return (
     <div className="mx-auto max-w-4xl">
       <div className="mb-8 border-b-2 border-gray-800 pb-4">
-        <h1 className="mb-2 text-3xl text-cyan-400">Jotai</h1>
-        <p className="text-gray-500">
-          Atomic state management with derived values and dependencies
-        </p>
+        <div className="mb-2 flex items-start justify-between gap-4">
+          <div className="flex-1">
+            <h1 className="mb-2 text-3xl text-cyan-400">Jotai</h1>
+            <p className="text-gray-500">
+              Atomic state management with derived values and dependencies
+            </p>
+          </div>
+          <ViewSourceLink url={import.meta.url} />
+        </div>
       </div>
 
       <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">

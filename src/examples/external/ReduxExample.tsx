@@ -7,6 +7,7 @@ import {
   clearCart,
 } from "../../stores/redux/store";
 import type { Product, RootState, AppDispatch } from "../../stores/redux/store";
+import { ViewSourceLink } from "../../components/ui";
 
 const products: Product[] = [
   { id: 1, name: "React Fundamentals Course", price: 49.99, image: "📚" },
@@ -140,10 +141,15 @@ const ReduxExampleContent = () => {
   return (
     <div className="mx-auto max-w-4xl">
       <div className="mb-8 border-b-2 border-gray-800 pb-4">
-        <h1 className="mb-2 text-3xl text-cyan-400">Redux Toolkit</h1>
-        <p className="text-gray-500">
-          Shopping cart with centralized state management
-        </p>
+        <div className="mb-2 flex items-start justify-between gap-4">
+          <div className="flex-1">
+            <h1 className="mb-2 text-3xl text-cyan-400">Redux Toolkit</h1>
+            <p className="text-gray-500">
+              Shopping cart with centralized state management
+            </p>
+          </div>
+          <ViewSourceLink url={import.meta.url} />
+        </div>
       </div>
 
       <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">

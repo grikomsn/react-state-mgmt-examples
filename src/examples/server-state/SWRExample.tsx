@@ -2,6 +2,7 @@ import useSWR, { mutate, SWRConfig } from "swr";
 import { useState } from "react";
 import { fetchUser, updateUser } from "../../api";
 import type { User } from "../../types";
+import { ViewSourceLink } from "../../components/ui";
 
 const UserProfile = ({ userId }: { userId: number }) => {
   const { data, error, isLoading, isValidating } = useSWR<User>(
@@ -264,13 +265,18 @@ const SWRExampleContent = () => {
   return (
     <div className="mx-auto max-w-4xl">
       <div className="mb-8 border-b-2 border-gray-800 pb-4">
-        <h1 className="mb-2 text-3xl text-cyan-400">
-          SWR (Stale-While-Revalidate)
-        </h1>
-        <p className="text-gray-500">
-          Server state management with automatic revalidation and optimistic
-          updates
-        </p>
+        <div className="mb-2 flex items-start justify-between gap-4">
+          <div className="flex-1">
+            <h1 className="mb-2 text-3xl text-cyan-400">
+              SWR (Stale-While-Revalidate)
+            </h1>
+            <p className="text-gray-500">
+              Server state management with automatic revalidation and optimistic
+              updates
+            </p>
+          </div>
+          <ViewSourceLink url={import.meta.url} />
+        </div>
       </div>
 
       <UserSelector userId={userId} onUserChange={setUserId} />
