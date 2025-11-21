@@ -1,15 +1,46 @@
 import { usePreferencesStore } from "../../stores/zustand/store";
 import { ExampleLayout } from "../../components/layout";
 import { Button } from "../../components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "../../components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "../../components/ui/card";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { Checkbox } from "../../components/ui/checkbox";
 import { Kbd } from "../../components/ui/kbd";
+import { createExampleSnippets } from "../../utils/example-snippets";
+import rawSource from "./ZustandExample.tsx?raw";
+
+const snippetIds = [
+  "ZustandExampleUserSettings",
+  "ZustandExampleAppearanceSettings",
+  "ZustandExampleUISettings",
+  "ZustandExamplePreferencesPreview",
+  "ZustandExampleMain",
+];
+const snippets = createExampleSnippets(rawSource, snippetIds).map((s) => ({
+  ...s,
+  label:
+    s.id === "ZustandExampleUserSettings"
+      ? "UserSettings.tsx"
+      : s.id === "ZustandExampleAppearanceSettings"
+      ? "AppearanceSettings.tsx"
+      : s.id === "ZustandExampleUISettings"
+      ? "UISettings.tsx"
+      : s.id === "ZustandExamplePreferencesPreview"
+      ? "PreferencesPreview.tsx"
+      : "Main.tsx",
+  language: "tsx" as const,
+}));
 
 const UserSettings = () => {
-  const user = usePreferencesStore((state) => state.user);
-  const updateUser = usePreferencesStore((state) => state.updateUser);
+  // @example-start ZustandExampleUserSettings
+  const user = usePreferencesStore((state) => state.user); // [!code highlight]
+  const updateUser = usePreferencesStore((state) => state.updateUser); // [!code highlight]
+  // @example-end ZustandExampleUserSettings
 
   return (
     <Card className="mb-6">
@@ -63,8 +94,10 @@ const UserSettings = () => {
 };
 
 const AppearanceSettings = () => {
-  const user = usePreferencesStore((state) => state.user);
-  const updateUser = usePreferencesStore((state) => state.updateUser);
+  // @example-start ZustandExampleAppearanceSettings
+  const user = usePreferencesStore((state) => state.user); // [!code highlight]
+  const updateUser = usePreferencesStore((state) => state.updateUser); // [!code highlight]
+  // @example-end ZustandExampleAppearanceSettings
 
   return (
     <Card className="mb-6">
@@ -126,9 +159,11 @@ const AppearanceSettings = () => {
 };
 
 const UISettings = () => {
-  const ui = usePreferencesStore((state) => state.ui);
-  const updateUI = usePreferencesStore((state) => state.updateUI);
-  const toggleSidebar = usePreferencesStore((state) => state.toggleSidebar);
+  // @example-start ZustandExampleUISettings
+  const ui = usePreferencesStore((state) => state.ui); // [!code highlight]
+  const updateUI = usePreferencesStore((state) => state.updateUI); // [!code highlight]
+  const toggleSidebar = usePreferencesStore((state) => state.toggleSidebar); // [!code highlight]
+  // @example-end ZustandExampleUISettings
 
   return (
     <Card className="mb-6">
@@ -156,7 +191,9 @@ const UISettings = () => {
                 Compact
               </Button>
               <Button
-                variant={ui.layoutMode === "comfortable" ? "default" : "outline"}
+                variant={
+                  ui.layoutMode === "comfortable" ? "default" : "outline"
+                }
                 onClick={() => updateUI({ layoutMode: "comfortable" })}
               >
                 Comfortable
@@ -176,8 +213,10 @@ const UISettings = () => {
 };
 
 const PreferencesPreview = () => {
-  const user = usePreferencesStore((state) => state.user);
-  const ui = usePreferencesStore((state) => state.ui);
+  // @example-start ZustandExamplePreferencesPreview
+  const user = usePreferencesStore((state) => state.user); // [!code highlight]
+  const ui = usePreferencesStore((state) => state.ui); // [!code highlight]
+  // @example-end ZustandExamplePreferencesPreview
 
   return (
     <Card className="mb-6">
@@ -199,7 +238,9 @@ const PreferencesPreview = () => {
 };
 
 const ZustandExample = () => {
-  const resetToDefaults = usePreferencesStore((state) => state.resetToDefaults);
+  // @example-start ZustandExampleMain
+  const resetToDefaults = usePreferencesStore((state) => state.resetToDefaults); // [!code highlight]
+  // @example-end ZustandExampleMain
 
   return (
     <ExampleLayout
@@ -207,6 +248,7 @@ const ZustandExample = () => {
       description="Lightweight state management with automatic persistence"
       sourcePath="src/examples/external/ZustandExample.tsx"
       sourceLine={205}
+      snippets={snippets}
     >
       <Card className="mb-6">
         <CardContent>
@@ -236,7 +278,8 @@ const ZustandExample = () => {
         <CardContent>
           <ul className="list-inside space-y-2 leading-relaxed text-muted-foreground">
             <li>
-              <Kbd>Zustand</Kbd> is a small, fast, and scalable state management solution
+              <Kbd>Zustand</Kbd> is a small, fast, and scalable state management
+              solution
             </li>
             <li>Uses hooks API - no providers needed</li>
             <li>Minimal boilerplate compared to Redux</li>
@@ -244,11 +287,13 @@ const ZustandExample = () => {
               <Kbd>create</Kbd> function defines store with state and actions
             </li>
             <li>
-              Selectors allow fine-grained subscriptions to specific state slices
+              Selectors allow fine-grained subscriptions to specific state
+              slices
             </li>
             <li>Middleware support (persist, devtools, immer, etc.)</li>
             <li>
-              Automatic persistence to localStorage with <Kbd>persist</Kbd> middleware
+              Automatic persistence to localStorage with <Kbd>persist</Kbd>{" "}
+              middleware
             </li>
             <li>TypeScript support out of the box</li>
           </ul>

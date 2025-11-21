@@ -1,5 +1,9 @@
 {
   "mcpServers": {
+    "kibo-ui": {
+      "command": "bunx",
+      "args": ["mcp-remote", "https://www.kibo-ui.com/api/mcp/mcp"]
+    },
     "shadcn": {
       "command": "bunx",
       "args": ["shadcn@latest", "mcp"]

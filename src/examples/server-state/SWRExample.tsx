@@ -15,9 +15,19 @@ import { Label } from "../../components/ui/label";
 import { Textarea } from "../../components/ui/textarea";
 import { Alert, AlertDescription } from "../../components/ui/alert";
 import { Kbd } from "../../components/ui/kbd";
+import { createExampleSnippets } from "../../utils/example-snippets";
+import rawSource from "./SWRExample.tsx?raw";
+
+const snippetIds = ["SWRExampleUserProfile", "SWRExampleMain"];
+const snippets = createExampleSnippets(rawSource, snippetIds).map((s) => ({
+  ...s,
+  label: s.id === "SWRExampleUserProfile" ? "UserProfile.tsx" : "Main.tsx",
+  language: "tsx" as const,
+}));
 
 const UserProfile = ({ userId }: { userId: number }) => {
-  const { data, error, isLoading, isValidating } = useSWR<User>(
+  // @example-start SWRExampleUserProfile
+  const { data, error, isLoading, isValidating } = useSWR<User>( // [!code highlight]
     `user-${userId}`,
     () => fetchUser(userId),
     {
@@ -46,13 +56,13 @@ const UserProfile = ({ userId }: { userId: number }) => {
 
     try {
       // Optimistic update
-      mutate(`user-${userId}`, { ...data, ...editForm }, false);
+      mutate(`user-${userId}`, { ...data, ...editForm }, false); // [!code highlight]
 
       // Update on server
       await updateUser(userId, editForm);
 
       // Revalidate to get fresh data
-      mutate(`user-${userId}`);
+      mutate(`user-${userId}`); // [!code highlight]
 
       setIsEditing(false);
     } catch {
@@ -61,6 +71,7 @@ const UserProfile = ({ userId }: { userId: number }) => {
       alert("Failed to update user");
     }
   };
+  // @example-end SWRExampleUserProfile
 
   if (isLoading) {
     return (
@@ -100,7 +111,9 @@ const UserProfile = ({ userId }: { userId: number }) => {
           <div className="flex items-center gap-4">
             <CardTitle>User Profile</CardTitle>
             {isValidating && (
-              <span className="text-xs text-muted-foreground">Revalidating...</span>
+              <span className="text-xs text-muted-foreground">
+                Revalidating...
+              </span>
             )}
           </div>
           <div className="flex gap-2">
@@ -135,8 +148,12 @@ const UserProfile = ({ userId }: { userId: number }) => {
 
           {!isEditing ? (
             <div className="flex-1">
-              <h3 className="m-0 mb-2 text-2xl text-cyan-600 dark:text-cyan-400">{data.name}</h3>
-              <p className="m-0 mb-4 text-sm text-muted-foreground">{data.email}</p>
+              <h3 className="m-0 mb-2 text-2xl text-cyan-600 dark:text-cyan-400">
+                {data.name}
+              </h3>
+              <p className="m-0 mb-4 text-sm text-muted-foreground">
+                {data.email}
+              </p>
               <p className="m-0 leading-relaxed">{data.bio}</p>
             </div>
           ) : (
@@ -178,10 +195,7 @@ const UserProfile = ({ userId }: { userId: number }) => {
                 >
                   Save Changes
                 </Button>
-                <Button
-                  onClick={() => setIsEditing(false)}
-                  variant="outline"
-                >
+                <Button onClick={() => setIsEditing(false)} variant="outline">
                   Cancel
                 </Button>
               </div>
@@ -210,9 +224,7 @@ const UserSelector = ({
           <Button
             variant={userId === 1 ? "default" : "outline"}
             className={
-              userId === 1
-                ? "bg-cyan-500 text-gray-950 hover:bg-cyan-600"
-                : ""
+              userId === 1 ? "bg-cyan-500 text-gray-950 hover:bg-cyan-600" : ""
             }
             onClick={() => onUserChange(1)}
           >
@@ -221,9 +233,7 @@ const UserSelector = ({
           <Button
             variant={userId === 2 ? "default" : "outline"}
             className={
-              userId === 2
-                ? "bg-cyan-500 text-gray-950 hover:bg-cyan-600"
-                : ""
+              userId === 2 ? "bg-cyan-500 text-gray-950 hover:bg-cyan-600" : ""
             }
             onClick={() => onUserChange(2)}
           >
@@ -242,9 +252,7 @@ const RevalidationDemo = () => {
   return (
     <Card className="mb-6">
       <CardHeader>
-        <CardTitle className="text-xl">
-          Automatic Revalidation
-        </CardTitle>
+        <CardTitle className="text-xl">Automatic Revalidation</CardTitle>
       </CardHeader>
       <CardContent>
         <p className="mb-4 text-sm text-muted-foreground">
@@ -304,7 +312,9 @@ const RevalidationDemo = () => {
 };
 
 const SWRExampleContent = () => {
-  const [userId, setUserId] = useState(1);
+  // @example-start SWRExampleMain
+  const [userId, setUserId] = useState(1); // [!code highlight]
+  // @example-end SWRExampleMain
 
   return (
     <ExampleLayout
@@ -312,8 +322,8 @@ const SWRExampleContent = () => {
       description="Server state management with automatic revalidation and optimistic updates"
       sourcePath="src/examples/server-state/SWRExample.tsx"
       sourceLine={310}
+      snippets={snippets}
     >
-
       <UserSelector userId={userId} onUserChange={setUserId} />
       <UserProfile userId={userId} />
       <RevalidationDemo />
@@ -325,19 +335,22 @@ const SWRExampleContent = () => {
         <CardContent>
           <ul className="list-inside space-y-2 leading-relaxed text-muted-foreground">
             <li>
-              <Kbd>SWR</Kbd> is a React Hooks library for data fetching by Vercel
+              <Kbd>SWR</Kbd> is a React Hooks library for data fetching by
+              Vercel
             </li>
             <li>
               Stale-While-Revalidate strategy: show cached data first, then
               fetch fresh data
             </li>
             <li>
-              <Kbd>useSWR(key, fetcher)</Kbd> hook manages data fetching and caching
+              <Kbd>useSWR(key, fetcher)</Kbd> hook manages data fetching and
+              caching
             </li>
             <li>Automatic revalidation on focus, reconnect, and intervals</li>
             <li>Request deduplication prevents duplicate requests</li>
             <li>
-              <Kbd>mutate()</Kbd> function for manual revalidation and optimistic updates
+              <Kbd>mutate()</Kbd> function for manual revalidation and
+              optimistic updates
             </li>
             <li>Built-in error retry with exponential backoff</li>
             <li>Real-time experience with automatic refetch</li>
@@ -353,7 +366,9 @@ const SWRExampleContent = () => {
         <CardContent>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <h3 className="mb-2 text-base font-semibold text-green-600 dark:text-green-400">✓ Advantages</h3>
+              <h3 className="mb-2 text-base font-semibold text-green-600 dark:text-green-400">
+                ✓ Advantages
+              </h3>
               <ul className="space-y-1 text-sm leading-relaxed text-muted-foreground">
                 <li>Lightweight (5kb gzipped)</li>
                 <li>Real-time experience</li>
@@ -393,7 +408,9 @@ const SWRExampleContent = () => {
               </ul>
             </div>
             <div className="rounded-lg border bg-muted p-4">
-              <h3 className="mb-2 text-base font-semibold text-green-600 dark:text-green-400">TanStack Query</h3>
+              <h3 className="mb-2 text-base font-semibold text-green-600 dark:text-green-400">
+                TanStack Query
+              </h3>
               <ul className="m-0 space-y-1 text-sm leading-relaxed text-muted-foreground">
                 <li>More features</li>
                 <li>Powerful DevTools</li>

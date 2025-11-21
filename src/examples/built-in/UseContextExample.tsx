@@ -9,7 +9,12 @@ import {
   CardContent,
 } from "../../components/ui/card";
 import { Kbd } from "../../components/ui/kbd";
+import { createExampleSnippet } from "../../utils/example-snippets";
+import rawSource from "./UseContextExample.tsx?raw";
 
+const snippet = createExampleSnippet(rawSource, "UseContextExample");
+
+// @example-start UseContextExample
 type Theme = "light" | "dark" | "blue";
 
 interface ThemeContextType {
@@ -17,10 +22,10 @@ interface ThemeContextType {
   setTheme: (theme: Theme) => void;
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined); // [!code highlight]
 
 const useTheme = () => {
-  const context = useContext(ThemeContext);
+  const context = useContext(ThemeContext); // [!code highlight]
   if (!context) {
     throw new Error("useTheme must be used within ThemeProvider");
   }
@@ -28,10 +33,10 @@ const useTheme = () => {
 };
 
 const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme>("dark"); // [!code highlight]
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme }}> {/* [!code highlight] */}
       {children}
     </ThemeContext.Provider>
   );
@@ -114,6 +119,7 @@ const ThemeStatus = () => {
     </p>
   );
 };
+// @example-end UseContextExample
 
 const UseContextExample = () => {
   return (
@@ -123,6 +129,7 @@ const UseContextExample = () => {
         description="Global theme management with Context API"
         sourcePath="src/examples/built-in/UseContextExample.tsx"
         sourceLine={121}
+        snippet={snippet}
       >
         <Card className="mb-6">
           <CardHeader>

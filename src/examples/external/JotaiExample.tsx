@@ -20,18 +20,22 @@ import {
 } from "../../components/ui/select";
 import { Checkbox } from "../../components/ui/checkbox";
 import { Kbd } from "../../components/ui/kbd";
+import { createExampleSnippet } from "../../utils/example-snippets";
+import rawSource from "./JotaiExample.tsx?raw";
+
+const snippet = createExampleSnippet(rawSource, "JotaiExample");
 
 // Base atoms
-const firstNameAtom = atom("");
+const firstNameAtom = atom(""); // [!code highlight]
 const lastNameAtom = atom("");
 const emailAtom = atom("");
 const passwordAtom = atom("");
 const confirmPasswordAtom = atom("");
-const agreeToTermsAtom = atomWithStorage("agreeToTerms", false);
+const agreeToTermsAtom = atomWithStorage("agreeToTerms", false); // [!code highlight]
 const countryAtom = atom("us");
 
 // Derived atoms
-const fullNameAtom = atom((get) => {
+const fullNameAtom = atom((get) => { // [!code highlight]
   const firstName = get(firstNameAtom);
   const lastName = get(lastNameAtom);
   return firstName && lastName ? `${firstName} ${lastName}` : "";
@@ -89,7 +93,8 @@ const formDataAtom = atom((get) => ({
 }));
 
 const JotaiExample = () => {
-  const [firstName, setFirstName] = useAtom(firstNameAtom);
+  // @example-start JotaiExample
+  const [firstName, setFirstName] = useAtom(firstNameAtom); // [!code highlight]
   const [lastName, setLastName] = useAtom(lastNameAtom);
   const [email, setEmail] = useAtom(emailAtom);
   const [password, setPassword] = useAtom(passwordAtom);
@@ -98,7 +103,7 @@ const JotaiExample = () => {
   const [country, setCountry] = useAtom(countryAtom);
 
   // Derived values
-  const fullName = useAtomValue(fullNameAtom);
+  const fullName = useAtomValue(fullNameAtom); // [!code highlight]
   const emailValid = useAtomValue(emailValidAtom);
   const passwordsMatch = useAtomValue(passwordsMatchAtom);
   const passwordStrength = useAtomValue(passwordStrengthAtom);
@@ -125,6 +130,7 @@ const JotaiExample = () => {
     if (score === 2) return "text-yellow-600 dark:text-yellow-400";
     return "text-green-600 dark:text-green-400";
   };
+  // @example-end JotaiExample
 
   return (
     <ExampleLayout
@@ -132,6 +138,7 @@ const JotaiExample = () => {
       description="Atomic state management with derived values and dependencies"
       sourcePath="src/examples/external/JotaiExample.tsx"
       sourceLine={130}
+      snippet={snippet}
     >
       <Card className="mb-6">
         <CardHeader>
@@ -179,7 +186,9 @@ const JotaiExample = () => {
               {email && (
                 <div
                   className={`mt-1 text-xs ${
-                    emailValid ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"
+                    emailValid
+                      ? "text-green-600 dark:text-green-400"
+                      : "text-red-600 dark:text-red-400"
                   }`}
                 >
                   {emailValid ? "✓ Valid email" : "✗ Invalid email format"}
@@ -246,7 +255,9 @@ const JotaiExample = () => {
               {confirmPassword && (
                 <div
                   className={`mt-1 text-xs ${
-                    passwordsMatch ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"
+                    passwordsMatch
+                      ? "text-green-600 dark:text-green-400"
+                      : "text-red-600 dark:text-red-400"
                   }`}
                 >
                   {passwordsMatch
@@ -277,9 +288,7 @@ const JotaiExample = () => {
               type="submit"
               disabled={!formValid}
               className={
-                formValid
-                  ? "bg-cyan-500 text-gray-950 hover:bg-cyan-600"
-                  : ""
+                formValid ? "bg-cyan-500 text-gray-950 hover:bg-cyan-600" : ""
               }
             >
               {formValid
@@ -302,7 +311,13 @@ const JotaiExample = () => {
           </div>
           <div className="mt-2 text-sm text-muted-foreground">
             Form valid:{" "}
-            <code className={formValid ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
+            <code
+              className={
+                formValid
+                  ? "text-green-600 dark:text-green-400"
+                  : "text-red-600 dark:text-red-400"
+              }
+            >
               {formValid ? "true" : "false"}
             </code>
           </div>
@@ -316,7 +331,8 @@ const JotaiExample = () => {
         <CardContent>
           <ul className="list-inside space-y-2 leading-relaxed text-muted-foreground">
             <li>
-              <Kbd>Jotai</Kbd> provides primitive and flexible atomic state management
+              <Kbd>Jotai</Kbd> provides primitive and flexible atomic state
+              management
             </li>
             <li>
               <Kbd>atom()</Kbd> creates a piece of state (primitive atom)
@@ -348,7 +364,9 @@ const JotaiExample = () => {
         <CardContent>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <h3 className="mb-2 text-base font-semibold text-green-600 dark:text-green-400">✓ Advantages</h3>
+              <h3 className="mb-2 text-base font-semibold text-green-600 dark:text-green-400">
+                ✓ Advantages
+              </h3>
               <ul className="space-y-1 text-sm leading-relaxed text-muted-foreground">
                 <li>Minimal boilerplate</li>
                 <li>Natural composition of state</li>

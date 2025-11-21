@@ -20,6 +20,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../components/ui/select";
+import { createExampleSnippet } from "../../utils/example-snippets";
+import rawSource from "./MobXExample.tsx?raw";
+
+const snippet = createExampleSnippet(rawSource, "MobXExample");
 
 const StatCard = observer(
   ({
@@ -46,7 +50,9 @@ const StatCard = observer(
           <span className="text-3xl font-bold text-cyan-600 dark:text-cyan-400">
             {typeof value === "number" ? value.toLocaleString() : value}
           </span>
-          {suffix && <span className="text-base text-muted-foreground">{suffix}</span>}
+          {suffix && (
+            <span className="text-base text-muted-foreground">{suffix}</span>
+          )}
         </div>
         {trend && (
           <div className={`mt-1 text-xs ${trendColors[trend]}`}>
@@ -99,9 +105,7 @@ const ComputedMetrics = observer(() => {
   return (
     <Card className="mb-6">
       <CardHeader>
-        <CardTitle className="text-xl">
-          Computed Metrics
-        </CardTitle>
+        <CardTitle className="text-xl">Computed Metrics</CardTitle>
       </CardHeader>
       <CardContent>
         <p className="mb-4 text-sm text-muted-foreground">
@@ -110,13 +114,17 @@ const ComputedMetrics = observer(() => {
         </p>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="rounded border p-4">
-            <div className="mb-1 text-sm text-muted-foreground">Conversion Rate</div>
+            <div className="mb-1 text-sm text-muted-foreground">
+              Conversion Rate
+            </div>
             <div className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">
               {dashboardStore.conversionRate}%
             </div>
           </div>
           <div className="rounded border p-4">
-            <div className="mb-1 text-sm text-muted-foreground">Data Quality</div>
+            <div className="mb-1 text-sm text-muted-foreground">
+              Data Quality
+            </div>
             <div className={`text-2xl font-bold ${qualityColor}`}>
               {dashboardStore.dataQuality}
             </div>
@@ -140,10 +148,7 @@ const DashboardControls = observer(() => {
             >
               {dashboardStore.isLoading ? "Loading..." : "Refresh Data"}
             </Button>
-            <Button
-              onClick={() => dashboardStore.reset()}
-              variant="outline"
-            >
+            <Button onClick={() => dashboardStore.reset()} variant="outline">
               Reset
             </Button>
           </div>
@@ -190,10 +195,11 @@ const DashboardControls = observer(() => {
   );
 });
 
-const MobXExample = observer(() => {
+const MobXExample = observer(() => { // [!code highlight]
+  // @example-start MobXExample
   useEffect(() => {
     // Initial fetch
-    dashboardStore.fetchData();
+    dashboardStore.fetchData(); // [!code highlight]
 
     // Auto-refresh setup
     let intervalId: number | undefined;
@@ -232,6 +238,7 @@ const MobXExample = observer(() => {
       }
     };
   }, [dashboardStore.autoRefresh, dashboardStore.refreshInterval]);
+  // @example-end MobXExample
 
   return (
     <ExampleLayout
@@ -239,6 +246,7 @@ const MobXExample = observer(() => {
       description="Real-time dashboard with observable state and computed values"
       sourcePath="src/examples/external/MobXExample.tsx"
       sourceLine={237}
+      snippet={snippet}
     >
       <DashboardControls />
 
@@ -267,9 +275,7 @@ const MobXExample = observer(() => {
 
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle className="text-xl">
-            Observable State
-          </CardTitle>
+          <CardTitle className="text-xl">Observable State</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="rounded border bg-muted p-4">
@@ -297,20 +303,24 @@ const MobXExample = observer(() => {
         <CardContent>
           <ul className="list-inside space-y-2 leading-relaxed text-muted-foreground">
             <li>
-              <Kbd>MobX</Kbd> provides reactive state management through observables
+              <Kbd>MobX</Kbd> provides reactive state management through
+              observables
             </li>
             <li>
-              <Kbd>makeAutoObservable</Kbd> automatically makes class properties observable
+              <Kbd>makeAutoObservable</Kbd> automatically makes class properties
+              observable
             </li>
             <li>
-              <Kbd>observer</Kbd> HOC makes React components reactive to observable changes
+              <Kbd>observer</Kbd> HOC makes React components reactive to
+              observable changes
             </li>
             <li>
               Computed values (getters) are cached and only recompute when
               dependencies change
             </li>
             <li>
-              <Kbd>runInAction</Kbd> ensures state modifications in async code are tracked
+              <Kbd>runInAction</Kbd> ensures state modifications in async code
+              are tracked
             </li>
             <li>
               Fine-grained reactivity - components only re-render when
@@ -331,7 +341,9 @@ const MobXExample = observer(() => {
         <CardContent>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <h3 className="mb-2 text-base font-semibold text-green-600 dark:text-green-400">✓ Advantages</h3>
+              <h3 className="mb-2 text-base font-semibold text-green-600 dark:text-green-400">
+                ✓ Advantages
+              </h3>
               <ul className="space-y-1 text-sm leading-relaxed text-muted-foreground">
                 <li>Minimal boilerplate</li>
                 <li>Automatic dependency tracking</li>

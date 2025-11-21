@@ -9,9 +9,24 @@ import {
 import type { Product, RootState, AppDispatch } from "../../stores/redux/store";
 import { ExampleLayout } from "../../components/layout";
 import { Button } from "../../components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "../../components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "../../components/ui/card";
 import { Badge } from "../../components/ui/badge";
 import { Kbd } from "../../components/ui/kbd";
+import { createExampleSnippets } from "../../utils/example-snippets";
+import rawSource from "./ReduxExample.tsx?raw";
+
+const snippetIds = ["ReduxExampleProductCard", "ReduxExampleCart"];
+const snippets = createExampleSnippets(rawSource, snippetIds).map((s) => ({
+  ...s,
+  label: s.id === "ReduxExampleProductCard" ? "ProductCard.tsx" : "Cart.tsx",
+  language: "tsx" as const,
+}));
 
 const products: Product[] = [
   { id: 1, name: "React Fundamentals Course", price: 49.99, image: "📚" },
@@ -23,10 +38,12 @@ const products: Product[] = [
 ];
 
 const ProductCard = ({ product }: { product: Product }) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const cartItem = useSelector((state: RootState) =>
+  // @example-start ReduxExampleProductCard
+  const dispatch = useDispatch<AppDispatch>(); // [!code highlight]
+  const cartItem = useSelector((state: RootState) => // [!code highlight]
     state.cart.items.find((item) => item.id === product.id)
   );
+  // @example-end ReduxExampleProductCard
 
   return (
     <Card className="flex h-full flex-col">
@@ -35,9 +52,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         <CardTitle className="text-base">{product.name}</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-4">
-        <div className="text-xl font-bold">
-          ${product.price.toFixed(2)}
-        </div>
+        <div className="text-xl font-bold">${product.price.toFixed(2)}</div>
         {cartItem && (
           <Badge variant="secondary" className="mt-2">
             ✓ In cart ({cartItem.quantity})
@@ -45,7 +60,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         )}
       </CardContent>
       <CardFooter>
-        <Button onClick={() => dispatch(addToCart(product))} className="w-full">
+        <Button onClick={() => dispatch(addToCart(product))} className="w-full"> {/* [!code highlight] */}
           Add to Cart
         </Button>
       </CardFooter>
@@ -54,8 +69,10 @@ const ProductCard = ({ product }: { product: Product }) => {
 };
 
 const Cart = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const items = useSelector((state: RootState) => state.cart.items);
+  // @example-start ReduxExampleCart
+  const dispatch = useDispatch<AppDispatch>(); // [!code highlight]
+  const items = useSelector((state: RootState) => state.cart.items); // [!code highlight]
+  // @example-end ReduxExampleCart
 
   const total = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -64,16 +81,16 @@ const Cart = () => {
 
   if (items.length === 0) {
     return (
-      <div className="py-8 text-center text-muted-foreground">Your cart is empty</div>
+      <div className="py-8 text-center text-muted-foreground">
+        Your cart is empty
+      </div>
     );
   }
 
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="m-0 text-xl">
-          Cart ({items.length} items)
-        </h2>
+        <h2 className="m-0 text-xl">Cart ({items.length} items)</h2>
         <Button onClick={() => dispatch(clearCart())} variant="destructive">
           Clear Cart
         </Button>
@@ -136,9 +153,7 @@ const Cart = () => {
 
       <div className="mt-4 flex items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 p-4">
         <span className="text-xl font-bold">Total:</span>
-        <span className="text-2xl font-bold">
-          ${total.toFixed(2)}
-        </span>
+        <span className="text-2xl font-bold">${total.toFixed(2)}</span>
       </div>
     </div>
   );
@@ -151,6 +166,7 @@ const ReduxExampleContent = () => {
       description="Shopping cart with centralized state management"
       sourcePath="src/examples/external/ReduxExample.tsx"
       sourceLine={149}
+      snippets={snippets}
     >
       <Card className="mb-6">
         <CardHeader>
@@ -178,15 +194,20 @@ const ReduxExampleContent = () => {
         <CardContent>
           <ul className="list-inside space-y-2 leading-relaxed text-muted-foreground">
             <li>
-              <Kbd>Redux Toolkit</Kbd> simplifies Redux with built-in best practices
+              <Kbd>Redux Toolkit</Kbd> simplifies Redux with built-in best
+              practices
             </li>
             <li>
-              <Kbd>createSlice</Kbd> automatically generates action creators and action types
+              <Kbd>createSlice</Kbd> automatically generates action creators and
+              action types
             </li>
             <li>
-              <Kbd>configureStore</Kbd> sets up store with good defaults (Redux DevTools, etc.)
+              <Kbd>configureStore</Kbd> sets up store with good defaults (Redux
+              DevTools, etc.)
             </li>
-            <li>Immer integration allows "mutating" state in reducers safely</li>
+            <li>
+              Immer integration allows "mutating" state in reducers safely
+            </li>
             <li>
               <Kbd>useSelector</Kbd> hook extracts data from store
             </li>

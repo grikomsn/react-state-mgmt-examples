@@ -1,10 +1,5 @@
 import { Link } from "react-router-dom";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "./ui/card";
+import { Card, CardHeader, CardTitle, CardDescription } from "./ui/card";
 import { PageContent, PageHeader } from "./layout";
 
 const ExampleCard = ({

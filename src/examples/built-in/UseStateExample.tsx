@@ -9,14 +9,19 @@ import {
 } from "../../components/ui/card";
 import { Badge } from "../../components/ui/badge";
 import { Kbd } from "../../components/ui/kbd";
+import { createExampleSnippet } from "../../utils/example-snippets";
+import rawSource from "./UseStateExample.tsx?raw";
+
+const snippet = createExampleSnippet(rawSource, "UseStateExample");
 
 const UseStateExample = () => {
-  const [count, setCount] = useState(0);
+  // @example-start UseStateExample
+  const [count, setCount] = useState(0); // [!code highlight]
   const [history, setHistory] = useState<number[]>([0]);
 
   const increment = () => {
     const newCount = count + 1;
-    setCount(newCount);
+    setCount(newCount); // [!code highlight]
     setHistory([...history, newCount]);
   };
 
@@ -30,6 +35,7 @@ const UseStateExample = () => {
     setCount(0);
     setHistory([0]);
   };
+  // @example-end UseStateExample
 
   return (
     <ExampleLayout
@@ -37,6 +43,7 @@ const UseStateExample = () => {
       description="Basic state management with counter and history tracking"
       sourcePath="src/examples/built-in/UseStateExample.tsx"
       sourceLine={30}
+      snippet={snippet}
     >
       <Card className="mb-6">
         <CardHeader>

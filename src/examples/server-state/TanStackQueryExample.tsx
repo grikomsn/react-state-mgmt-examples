@@ -20,6 +20,21 @@ import { Label } from "../../components/ui/label";
 import { Textarea } from "../../components/ui/textarea";
 import { Alert, AlertDescription } from "../../components/ui/alert";
 import { Kbd } from "../../components/ui/kbd";
+import { createExampleSnippets } from "../../utils/example-snippets";
+import rawSource from "./TanStackQueryExample.tsx?raw";
+
+const snippetIds = [
+  "TanStackQueryExamplePostsList",
+  "TanStackQueryExampleCreatePostForm",
+];
+const snippets = createExampleSnippets(rawSource, snippetIds).map((s) => ({
+  ...s,
+  label:
+    s.id === "TanStackQueryExamplePostsList"
+      ? "PostsList.tsx"
+      : "CreatePostForm.tsx",
+  language: "tsx" as const,
+}));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -31,10 +46,11 @@ const queryClient = new QueryClient({
 });
 
 const PostsList = () => {
+  // @example-start TanStackQueryExamplePostsList
   const [page, setPage] = useState(1);
   const queryClient = useQueryClient();
 
-  const { data, isLoading, error, isFetching } = useQuery({
+  const { data, isLoading, error, isFetching } = useQuery({ // [!code highlight]
     queryKey: ["posts", page],
     queryFn: () => fetchPosts(page, 3),
   });
@@ -42,7 +58,7 @@ const PostsList = () => {
   // Prefetch next page
   const prefetchNextPage = () => {
     if (data && page * 3 < data.total) {
-      queryClient.prefetchQuery({
+      queryClient.prefetchQuery({ // [!code highlight]
         queryKey: ["posts", page + 1],
         queryFn: () => fetchPosts(page + 1, 3),
       });
@@ -77,9 +93,7 @@ const PostsList = () => {
         {data?.posts.map((post) => (
           <Card key={post.id}>
             <CardHeader>
-              <CardTitle className="text-lg">
-                {post.title}
-              </CardTitle>
+              <CardTitle className="text-lg">{post.title}</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="m-0 mb-4 leading-relaxed text-muted-foreground">
@@ -121,25 +135,29 @@ const PostsList = () => {
             Page {page} of {totalPages}
           </span>
           {isFetching && (
-            <span className="text-xs text-cyan-600 dark:text-cyan-400">Updating...</span>
+            <span className="text-xs text-cyan-600 dark:text-cyan-400">
+              Updating...
+            </span>
           )}
         </div>
       </div>
     </div>
   );
 };
+// @example-end TanStackQueryExamplePostsList
 
 const CreatePostForm = () => {
+  // @example-start TanStackQueryExampleCreatePostForm
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [author, setAuthor] = useState("");
   const queryClient = useQueryClient();
 
-  const mutation = useMutation({
+  const mutation = useMutation({ // [!code highlight]
     mutationFn: createPost,
     onSuccess: () => {
       // Invalidate and refetch posts queries
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] }); // [!code highlight]
       // Reset form
       setTitle("");
       setBody("");
@@ -150,9 +168,10 @@ const CreatePostForm = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (title && body && author) {
-      mutation.mutate({ title, body, author });
+      mutation.mutate({ title, body, author }); // [!code highlight]
     }
   };
+  // @example-end TanStackQueryExampleCreatePostForm
 
   return (
     <Card className="mb-6">
@@ -234,9 +253,7 @@ const QueryStats = () => {
   return (
     <Card className="mb-6">
       <CardHeader>
-        <CardTitle className="text-xl">
-          Query Cache Status
-        </CardTitle>
+        <CardTitle className="text-xl">Query Cache Status</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -271,8 +288,8 @@ const TanStackQueryExampleContent = () => {
       description="Server state management with caching, pagination, and mutations"
       sourcePath="src/examples/server-state/TanStackQueryExample.tsx"
       sourceLine={269}
+      snippets={snippets}
     >
-
       <CreatePostForm />
 
       <Card className="mb-6">
@@ -293,13 +310,16 @@ const TanStackQueryExampleContent = () => {
         <CardContent>
           <ul className="list-inside space-y-2 leading-relaxed text-muted-foreground">
             <li>
-              <Kbd>TanStack Query</Kbd> (React Query) manages server state with automatic caching
+              <Kbd>TanStack Query</Kbd> (React Query) manages server state with
+              automatic caching
             </li>
             <li>
-              <Kbd>useQuery</Kbd> fetches and caches data with automatic background updates
+              <Kbd>useQuery</Kbd> fetches and caches data with automatic
+              background updates
             </li>
             <li>
-              <Kbd>useMutation</Kbd> handles data modifications (POST, PUT, DELETE)
+              <Kbd>useMutation</Kbd> handles data modifications (POST, PUT,
+              DELETE)
             </li>
             <li>Query keys identify and organize cached data</li>
             <li>
@@ -321,7 +341,9 @@ const TanStackQueryExampleContent = () => {
         <CardContent>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <h3 className="mb-2 text-base font-semibold text-green-600 dark:text-green-400">✓ Advantages</h3>
+              <h3 className="mb-2 text-base font-semibold text-green-600 dark:text-green-400">
+                ✓ Advantages
+              </h3>
               <ul className="space-y-1 text-sm leading-relaxed text-muted-foreground">
                 <li>Automatic caching and deduplication</li>
                 <li>Background refetching</li>

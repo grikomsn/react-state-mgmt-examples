@@ -11,6 +11,10 @@ import { Input } from "../../components/ui/input";
 import { Checkbox } from "../../components/ui/checkbox";
 import { Kbd } from "../../components/ui/kbd";
 import { Badge } from "../../components/ui/badge";
+import { createExampleSnippet } from "../../utils/example-snippets";
+import rawSource from "./UseReducerExample.tsx?raw";
+
+const snippet = createExampleSnippet(rawSource, "UseReducerExample");
 
 interface Todo {
   id: number;
@@ -41,7 +45,8 @@ const initialState: State = {
   filter: "all",
 };
 
-function todoReducer(state: State, action: Action): State {
+// @example-start UseReducerExample
+function todoReducer(state: State, action: Action): State { // [!code highlight]
   switch (action.type) {
     case "ADD_TODO":
       return {
@@ -83,7 +88,7 @@ function todoReducer(state: State, action: Action): State {
 }
 
 const UseReducerExample = () => {
-  const [state, dispatch] = useReducer(todoReducer, initialState);
+  const [state, dispatch] = useReducer(todoReducer, initialState); // [!code highlight]
   const [input, setInput] = useState("");
 
   const filteredTodos = state.todos.filter((todo) => {
@@ -95,13 +100,14 @@ const UseReducerExample = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim()) {
-      dispatch({ type: "ADD_TODO", text: input });
+      dispatch({ type: "ADD_TODO", text: input }); // [!code highlight]
       setInput("");
     }
   };
 
   const activeCount = state.todos.filter((t) => !t.completed).length;
   const completedCount = state.todos.filter((t) => t.completed).length;
+  // @example-end UseReducerExample
 
   return (
     <ExampleLayout
@@ -109,6 +115,7 @@ const UseReducerExample = () => {
       description="Todo list with complex state management and filters"
       sourcePath="src/examples/built-in/UseReducerExample.tsx"
       sourceLine={102}
+      snippet={snippet}
     >
       <Card className="mb-6">
         <CardHeader>

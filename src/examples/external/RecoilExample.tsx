@@ -17,9 +17,30 @@ import {
   CardContent,
 } from "../../components/ui/card";
 import { Textarea } from "../../components/ui/textarea";
+import { createExampleSnippets } from "../../utils/example-snippets";
+import rawSource from "./RecoilExample.tsx?raw";
+
+const snippetIds = [
+  "RecoilExampleEditor",
+  "RecoilExampleDocumentStats",
+  "RecoilExampleCollaboratorsList",
+  "RecoilExampleUserSwitcher",
+];
+const snippets = createExampleSnippets(rawSource, snippetIds).map((s) => ({
+  ...s,
+  label:
+    s.id === "RecoilExampleEditor"
+      ? "Editor.tsx"
+      : s.id === "RecoilExampleDocumentStats"
+      ? "DocumentStats.tsx"
+      : s.id === "RecoilExampleCollaboratorsList"
+      ? "CollaboratorsList.tsx"
+      : "UserSwitcher.tsx",
+  language: "tsx" as const,
+}));
 
 // Atoms
-const documentTextAtom = atom({
+const documentTextAtom = atom({ // [!code highlight]
   key: "documentText",
   default:
     "Start typing your document here...\n\nRecoil provides atomic state management for React applications.",
@@ -45,7 +66,7 @@ const currentUserIdAtom = atom({
 });
 
 // Atom Family for user colors
-const userColorFamily = atomFamily({
+const userColorFamily = atomFamily({ // [!code highlight]
   key: "userColor",
   default: (userId: string) => {
     const colors = ["#61dafb", "#2ecc71", "#f39c12", "#e74c3c", "#9b59b6"];
@@ -55,7 +76,7 @@ const userColorFamily = atomFamily({
 });
 
 // Selectors
-const documentStatsSelector = selector({
+const documentStatsSelector = selector({ // [!code highlight]
   key: "documentStats",
   get: ({ get }) => {
     const text = get(documentTextAtom);
@@ -86,9 +107,10 @@ const userNamesSelector = selector({
 });
 
 const Editor = () => {
-  const [text, setText] = useRecoilState(documentTextAtom);
+  // @example-start RecoilExampleEditor
+  const [text, setText] = useRecoilState(documentTextAtom); // [!code highlight]
   const [, setCursorPositions] = useRecoilState(cursorPositionsAtom);
-  const currentUserId = useRecoilValue(currentUserIdAtom);
+  const currentUserId = useRecoilValue(currentUserIdAtom); // [!code highlight]
   const [selectionStart, setSelectionStart] = useState(0);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -109,6 +131,7 @@ const Editor = () => {
     }));
     setSelectionStart(newPosition);
   };
+  // @example-end RecoilExampleEditor
 
   return (
     <Card className="mb-6">
@@ -133,24 +156,25 @@ const Editor = () => {
 };
 
 const DocumentStats = () => {
-  const stats = useRecoilValue(documentStatsSelector);
+  // @example-start RecoilExampleDocumentStats
+  const stats = useRecoilValue(documentStatsSelector); // [!code highlight]
+  // @example-end RecoilExampleDocumentStats
 
   return (
     <Card className="mb-6">
       <CardHeader>
-        <CardTitle className="text-xl">
-          Document Statistics
-        </CardTitle>
+        <CardTitle className="text-xl">Document Statistics</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {Object.entries(stats).map(([key, value]) => (
-            <div
-              key={key}
-              className="rounded border p-4 text-center"
-            >
-              <div className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">{value}</div>
-              <div className="capitalize text-sm text-muted-foreground">{key}</div>
+            <div key={key} className="rounded border p-4 text-center">
+              <div className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">
+                {value}
+              </div>
+              <div className="capitalize text-sm text-muted-foreground">
+                {key}
+              </div>
             </div>
           ))}
         </div>
@@ -160,16 +184,16 @@ const DocumentStats = () => {
 };
 
 const CollaboratorsList = () => {
-  const users = useRecoilValue(userNamesSelector);
+  // @example-start RecoilExampleCollaboratorsList
+  const users = useRecoilValue(userNamesSelector); // [!code highlight]
   const cursorPositions = useRecoilValue(cursorPositionsAtom);
   const currentUserId = useRecoilValue(currentUserIdAtom);
+  // @example-end RecoilExampleCollaboratorsList
 
   return (
     <Card className="mb-6">
       <CardHeader>
-        <CardTitle className="text-xl">
-          Active Collaborators
-        </CardTitle>
+        <CardTitle className="text-xl">Active Collaborators</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-2">
@@ -189,7 +213,10 @@ const CollaboratorsList = () => {
                 <div className="font-medium">
                   {user.name}
                   {user.id === currentUserId && (
-                    <span className="text-sm text-muted-foreground"> (You)</span>
+                    <span className="text-sm text-muted-foreground">
+                      {" "}
+                      (You)
+                    </span>
                   )}
                 </div>
                 <div className="text-xs text-muted-foreground">
@@ -205,8 +232,10 @@ const CollaboratorsList = () => {
 };
 
 const UserSwitcher = () => {
-  const [currentUserId, setCurrentUserId] = useRecoilState(currentUserIdAtom);
+  // @example-start RecoilExampleUserSwitcher
+  const [currentUserId, setCurrentUserId] = useRecoilState(currentUserIdAtom); // [!code highlight]
   const activeUsers = useRecoilValue(activeUsersAtom);
+  // @example-end RecoilExampleUserSwitcher
 
   return (
     <Card className="mb-6">
@@ -245,8 +274,8 @@ const RecoilExampleContent = () => {
       description="Collaborative document editor with atomic state"
       sourcePath="src/examples/external/RecoilExample.tsx"
       sourceLine={243}
+      snippets={snippets}
     >
-
       <UserSwitcher />
       <Editor />
       <DocumentStats />
@@ -259,19 +288,23 @@ const RecoilExampleContent = () => {
         <CardContent>
           <ul className="list-inside space-y-2 leading-relaxed text-muted-foreground">
             <li>
-              <Kbd>Recoil</Kbd> provides atomic and flexible state management for React
+              <Kbd>Recoil</Kbd> provides atomic and flexible state management
+              for React
             </li>
             <li>
               <Kbd>atom()</Kbd> creates a unit of state with a unique key
             </li>
             <li>
-              <Kbd>selector()</Kbd> defines derived state with automatic memoization
+              <Kbd>selector()</Kbd> defines derived state with automatic
+              memoization
             </li>
             <li>
-              <Kbd>atomFamily()</Kbd> creates a collection of related atoms with parameters
+              <Kbd>atomFamily()</Kbd> creates a collection of related atoms with
+              parameters
             </li>
             <li>
-              <Kbd>useRecoilState()</Kbd> works like useState but for Recoil atoms
+              <Kbd>useRecoilState()</Kbd> works like useState but for Recoil
+              atoms
             </li>
             <li>
               <Kbd>useRecoilValue()</Kbd> subscribes to atom value (read-only)
@@ -293,7 +326,9 @@ const RecoilExampleContent = () => {
         <CardContent>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <h3 className="mb-2 text-base font-semibold text-green-600 dark:text-green-400">✓ Advantages</h3>
+              <h3 className="mb-2 text-base font-semibold text-green-600 dark:text-green-400">
+                ✓ Advantages
+              </h3>
               <ul className="space-y-1 text-sm leading-relaxed text-muted-foreground">
                 <li>Designed specifically for React</li>
                 <li>Concurrent mode compatible</li>
@@ -333,7 +368,9 @@ const RecoilExampleContent = () => {
               </ul>
             </div>
             <div className="rounded-lg border bg-muted p-4">
-              <h3 className="mb-2 text-base font-semibold text-cyan-600 dark:text-cyan-400">Selectors</h3>
+              <h3 className="mb-2 text-base font-semibold text-cyan-600 dark:text-cyan-400">
+                Selectors
+              </h3>
               <ul className="m-0 space-y-1 text-sm leading-relaxed text-muted-foreground">
                 <li>Derived state</li>
                 <li>Read-only (or writable with set)</li>

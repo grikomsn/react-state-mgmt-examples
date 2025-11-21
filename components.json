@@ -8,7 +8,9 @@
     "utils": "@/lib/utils"
   },
   "iconLibrary": "lucide",
-  "registries": {},
+  "registries": {
+    "@kibo-ui": "https://www.kibo-ui.com/r/{name}.json"
+  },
   "rsc": false,
   "style": "new-york",
   "tailwind": {
