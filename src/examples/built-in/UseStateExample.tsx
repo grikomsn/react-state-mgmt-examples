@@ -55,14 +55,14 @@ const UseStateExample = () => {
       sourceLine={30}
       snippets={snippets}
     >
-      <Card className="mb-6">
+      <Card className="mb-4 md:mb-6">
         <CardHeader>
           <CardTitle>Counter</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="mb-4 flex items-center gap-4">
+          <div className="mb-3 md:mb-4 flex items-center gap-2 md:gap-4">
             <Button onClick={decrement}>-</Button>
-            <span className="text-3xl font-bold">{count}</span>
+            <span className="text-2xl md:text-3xl font-bold">{count}</span>
             <Button onClick={increment}>+</Button>
             <Button onClick={reset} variant="outline">
               Reset
@@ -71,7 +71,7 @@ const UseStateExample = () => {
         </CardContent>
       </Card>
 
-      <Card className="mb-6">
+      <Card className="mb-4 md:mb-6">
         <CardHeader>
           <CardTitle>History</CardTitle>
         </CardHeader>
@@ -92,7 +92,7 @@ const UseStateExample = () => {
         </CardContent>
       </Card>
 
-      <Card className="mb-6">
+      <Card className="mb-4 md:mb-6">
         <CardHeader>
           <CardTitle>Key Concepts</CardTitle>
         </CardHeader>

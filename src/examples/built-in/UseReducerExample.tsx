@@ -121,7 +121,7 @@ const UseReducerExample = () => {
 
   const content = (
     <>
-      <Card className="mb-6">
+      <Card className="mb-4 md:mb-6">
         <CardHeader>
           <CardTitle>Add Todo</CardTitle>
         </CardHeader>
@@ -139,7 +139,7 @@ const UseReducerExample = () => {
         </CardContent>
       </Card>
 
-      <Card className="mb-6">
+      <Card className="mb-4 md:mb-6">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>Todos</CardTitle>
@@ -210,7 +210,7 @@ const UseReducerExample = () => {
               </li>
             ))}
             {filteredTodos.length === 0 && (
-              <li className="py-8 text-center text-muted-foreground">
+              <li className="py-4 md:py-8 text-center text-muted-foreground">
                 No todos to display
               </li>
             )}
@@ -231,7 +231,7 @@ const UseReducerExample = () => {
     >
       {content}
 
-      <Card className="mb-6">
+      <Card className="mb-4 md:mb-6">
         <CardHeader>
           <CardTitle>Key Concepts</CardTitle>
         </CardHeader>

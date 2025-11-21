@@ -8,7 +8,7 @@ function App() {
     <BrowserRouter>
       <SidebarProvider>
         <Navigation />
-        <SidebarInset className="p-8">
+        <SidebarInset className="p-4 md:p-8">
           <Routes>
             {routes.map((route) => (
               <Route

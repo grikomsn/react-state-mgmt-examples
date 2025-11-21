@@ -23,11 +23,11 @@ const Navigation = () => {
 
   return (
     <Sidebar>
-      <SidebarHeader className="space-y-2 p-4">
-        <h1 className="text-2xl font-semibold text-sidebar-foreground">
+      <SidebarHeader className="space-y-1 md:space-y-2 p-3 md:p-4">
+        <h1 className="text-xl md:text-2xl font-semibold text-sidebar-foreground leading-tight">
           React State Management
         </h1>
-        <p className="text-sm text-muted-foreground">Examples & Patterns</p>
+        <p className="text-xs md:text-sm text-muted-foreground leading-snug">Examples & Patterns</p>
       </SidebarHeader>
       <SidebarContent>
         {routesByCategory.map(({ category, routes }) => (
@@ -50,7 +50,7 @@ const Navigation = () => {
           </SidebarGroup>
         ))}
       </SidebarContent>
-      <SidebarFooter className="flex flex-col gap-2 p-4">
+      <SidebarFooter className="flex flex-col gap-1.5 md:gap-2 p-3 md:p-4">
         <Label htmlFor="theme-select">Theme</Label>
         <NativeSelect
           id="theme-select"
