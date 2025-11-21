@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import type { ReactNode } from "react";
-import { ViewSourceLink } from "../../components/ui";
+import { ViewSourceLink } from "../../components/legacy";
 
 type Theme = "light" | "dark" | "blue";
 

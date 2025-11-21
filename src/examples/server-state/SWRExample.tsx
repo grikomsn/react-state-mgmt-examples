@@ -2,7 +2,7 @@ import useSWR, { mutate, SWRConfig } from "swr";
 import { useState } from "react";
 import { fetchUser, updateUser } from "../../api";
 import type { User } from "../../types";
-import { ViewSourceLink } from "../../components/ui";
+import { ViewSourceLink } from "../../components/legacy";
 
 const UserProfile = ({ userId }: { userId: number }) => {
   const { data, error, isLoading, isValidating } = useSWR<User>(

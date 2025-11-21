@@ -1,5 +1,5 @@
 import { usePreferencesStore } from "../../stores/zustand/store";
-import { ViewSourceLink } from "../../components/ui";
+import { ViewSourceLink } from "../../components/legacy";
 
 const UserSettings = () => {
   const user = usePreferencesStore((state) => state.user);

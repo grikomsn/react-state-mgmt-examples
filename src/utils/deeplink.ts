@@ -32,12 +32,12 @@ export const getFilePathFromUrl = (url: string): string => {
 
     // If no "src/" found, return the path as-is (might be edge case)
     return path;
-  } catch (error) {
+  } catch {
     // If URL parsing fails, use regex to extract path
     // Handle both http://, https://, and file:// protocols
     // Also handle malformed URLs like http:/localhost
     const match = cleanUrl.match(
-      /(?:file:\/\/|https?:\/\/[^\/]*\/?)(\/[^?#]+)/
+      /(?:file:\/\/|https?:\/\/[^/]*\/?)(\/[^?#]+)/
     );
     if (match) {
       let path = match[1];

@@ -7,7 +7,7 @@ import {
   atomFamily,
 } from "recoil";
 import { useState } from "react";
-import { ViewSourceLink } from "../../components/ui";
+import { ViewSourceLink } from "../../components/legacy";
 
 // Atoms
 const documentTextAtom = atom({

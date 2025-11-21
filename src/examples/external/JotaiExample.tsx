@@ -1,6 +1,6 @@
 import { atom, useAtom, useAtomValue } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import { ViewSourceLink } from "../../components/ui";
+import { ViewSourceLink } from "../../components/legacy";
 
 // Base atoms
 const firstNameAtom = atom("");

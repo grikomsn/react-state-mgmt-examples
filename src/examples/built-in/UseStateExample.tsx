@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ViewSourceLink } from "../../components/ui";
+import { ViewSourceLink } from "../../components/legacy";
 
 const UseStateExample = () => {
   const [count, setCount] = useState(0);

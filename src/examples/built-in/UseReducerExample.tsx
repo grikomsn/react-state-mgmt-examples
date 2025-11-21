@@ -1,5 +1,5 @@
 import { useReducer, useState } from "react";
-import { ViewSourceLink } from "../../components/ui";
+import { ViewSourceLink } from "../../components/legacy";
 
 interface Todo {
   id: number;

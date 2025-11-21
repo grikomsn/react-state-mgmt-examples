@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { dashboardStore } from "../../stores/mobx/store";
-import { ViewSourceLink } from "../../components/ui";
+import { ViewSourceLink } from "../../components/legacy";
 
 const StatCard = observer(
   ({

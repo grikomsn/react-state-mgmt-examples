@@ -7,7 +7,7 @@ import {
   clearCart,
 } from "../../stores/redux/store";
 import type { Product, RootState, AppDispatch } from "../../stores/redux/store";
-import { ViewSourceLink } from "../../components/ui";
+import { ViewSourceLink } from "../../components/legacy";
 
 const products: Product[] = [
   { id: 1, name: "React Fundamentals Course", price: 49.99, image: "📚" },

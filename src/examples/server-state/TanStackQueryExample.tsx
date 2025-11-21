@@ -7,7 +7,7 @@ import {
 } from "@tanstack/react-query";
 import { useState } from "react";
 import { fetchPosts, createPost } from "../../api";
-import { ViewSourceLink } from "../../components/ui";
+import { ViewSourceLink } from "../../components/legacy";
 
 const queryClient = new QueryClient({
   defaultOptions: {
