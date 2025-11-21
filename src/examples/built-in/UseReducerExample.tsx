@@ -11,10 +11,18 @@ import { Input } from "../../components/ui/input";
 import { Checkbox } from "../../components/ui/checkbox";
 import { Kbd } from "../../components/ui/kbd";
 import { Badge } from "../../components/ui/badge";
-import { createExampleSnippet } from "../../utils/example-snippets";
+import { createExampleSnippets } from "../../utils/example-snippets";
 import rawSource from "./UseReducerExample.tsx?raw";
 
-const snippet = createExampleSnippet(rawSource, "UseReducerExample");
+const snippetIds = ["UseReducerExampleReducer", "UseReducerExampleComponent"];
+const snippets = createExampleSnippets(rawSource, snippetIds).map((s) => ({
+  ...s,
+  label:
+    s.id === "UseReducerExampleReducer"
+      ? "todoReducer.ts"
+      : "UseReducerExample.tsx",
+  language: "tsx" as const,
+}));
 
 interface Todo {
   id: number;
@@ -45,8 +53,9 @@ const initialState: State = {
   filter: "all",
 };
 
-// @example-start UseReducerExample
-function todoReducer(state: State, action: Action): State { // [!code highlight]
+// @example-start UseReducerExampleReducer
+function todoReducer(state: State, action: Action): State {
+  // [!code highlight]
   switch (action.type) {
     case "ADD_TODO":
       return {
@@ -86,8 +95,10 @@ function todoReducer(state: State, action: Action): State { // [!code highlight]
       return state;
   }
 }
+// @example-end UseReducerExampleReducer
 
 const UseReducerExample = () => {
+  // @example-start UseReducerExampleComponent
   const [state, dispatch] = useReducer(todoReducer, initialState); // [!code highlight]
   const [input, setInput] = useState("");
 
@@ -107,16 +118,9 @@ const UseReducerExample = () => {
 
   const activeCount = state.todos.filter((t) => !t.completed).length;
   const completedCount = state.todos.filter((t) => t.completed).length;
-  // @example-end UseReducerExample
 
-  return (
-    <ExampleLayout
-      title="useReducer Hook"
-      description="Todo list with complex state management and filters"
-      sourcePath="src/examples/built-in/UseReducerExample.tsx"
-      sourceLine={102}
-      snippet={snippet}
-    >
+  const content = (
+    <>
       <Card className="mb-6">
         <CardHeader>
           <CardTitle>Add Todo</CardTitle>
@@ -148,7 +152,7 @@ const UseReducerExample = () => {
           <div className="mb-4 flex flex-wrap gap-2">
             <Button
               variant={state.filter === "all" ? "default" : "outline"}
-              onClick={() => dispatch({ type: "SET_FILTER", filter: "all" })}
+              onClick={() => dispatch({ type: "SET_FILTER", filter: "all" })} // [!code highlight]
             >
               All
             </Button>
@@ -186,7 +190,7 @@ const UseReducerExample = () => {
                 <Checkbox
                   checked={todo.completed}
                   onCheckedChange={() =>
-                    dispatch({ type: "TOGGLE_TODO", id: todo.id })
+                    dispatch({ type: "TOGGLE_TODO", id: todo.id }) // [!code highlight]
                   }
                 />
                 <span
@@ -199,7 +203,7 @@ const UseReducerExample = () => {
                 <Button
                   variant="destructive"
                   size="sm"
-                  onClick={() => dispatch({ type: "DELETE_TODO", id: todo.id })}
+                  onClick={() => dispatch({ type: "DELETE_TODO", id: todo.id })} // [!code highlight]
                 >
                   Delete
                 </Button>
@@ -213,6 +217,19 @@ const UseReducerExample = () => {
           </ul>
         </CardContent>
       </Card>
+    </>
+  );
+  // @example-end UseReducerExampleComponent
+
+  return (
+    <ExampleLayout
+      title="useReducer Hook"
+      description="Todo list with complex state management and filters"
+      sourcePath="src/examples/built-in/UseReducerExample.tsx"
+      sourceLine={102}
+      snippets={snippets}
+    >
+      {content}
 
       <Card className="mb-6">
         <CardHeader>

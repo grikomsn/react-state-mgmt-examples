@@ -9,12 +9,20 @@ import {
   CardContent,
 } from "../../components/ui/card";
 import { Kbd } from "../../components/ui/kbd";
-import { createExampleSnippet } from "../../utils/example-snippets";
+import { createExampleSnippets } from "../../utils/example-snippets";
 import rawSource from "./UseContextExample.tsx?raw";
 
-const snippet = createExampleSnippet(rawSource, "UseContextExample");
+const snippetIds = ["UseContextExampleProvider", "UseContextExampleConsumers"];
+const snippets = createExampleSnippets(rawSource, snippetIds).map((s) => ({
+  ...s,
+  label:
+    s.id === "UseContextExampleProvider"
+      ? "ThemeProvider.tsx"
+      : "ThemedComponents.tsx",
+  language: "tsx" as const,
+}));
 
-// @example-start UseContextExample
+// @example-start UseContextExampleProvider
 type Theme = "light" | "dark" | "blue";
 
 interface ThemeContextType {
@@ -36,11 +44,14 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState<Theme>("dark"); // [!code highlight]
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}> {/* [!code highlight] */}
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      {" "}
+      {/* [!code highlight] */}
       {children}
     </ThemeContext.Provider>
   );
 };
+// @example-end UseContextExampleProvider
 
 const themeStyles = {
   light: {
@@ -63,8 +74,9 @@ const themeStyles = {
   },
 };
 
+// @example-start UseContextExampleConsumers
 const ThemedCard = ({ title, content }: { title: string; content: string }) => {
-  const { theme } = useTheme();
+  const { theme } = useTheme(); // [!code highlight]
   const styles = themeStyles[theme];
 
   return (
@@ -85,7 +97,7 @@ const ThemedCard = ({ title, content }: { title: string; content: string }) => {
 };
 
 const ThemeSelector = () => {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme(); // [!code highlight]
 
   return (
     <div className="flex flex-wrap gap-2">
@@ -112,14 +124,14 @@ const ThemeSelector = () => {
 };
 
 const ThemeStatus = () => {
-  const { theme } = useTheme();
+  const { theme } = useTheme(); // [!code highlight]
   return (
     <p className="mt-2 text-sm text-muted-foreground">
       Current theme: <Kbd>{theme}</Kbd>
     </p>
   );
 };
-// @example-end UseContextExample
+// @example-end UseContextExampleConsumers
 
 const UseContextExample = () => {
   return (
@@ -129,7 +141,7 @@ const UseContextExample = () => {
         description="Global theme management with Context API"
         sourcePath="src/examples/built-in/UseContextExample.tsx"
         sourceLine={121}
-        snippet={snippet}
+        snippets={snippets}
       >
         <Card className="mb-6">
           <CardHeader>

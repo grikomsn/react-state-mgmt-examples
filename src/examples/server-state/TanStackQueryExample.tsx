@@ -26,17 +26,21 @@ import rawSource from "./TanStackQueryExample.tsx?raw";
 const snippetIds = [
   "TanStackQueryExamplePostsList",
   "TanStackQueryExampleCreatePostForm",
+  "TanStackQueryExampleConfig",
 ];
 const snippets = createExampleSnippets(rawSource, snippetIds).map((s) => ({
   ...s,
   label:
     s.id === "TanStackQueryExamplePostsList"
       ? "PostsList.tsx"
-      : "CreatePostForm.tsx",
+      : s.id === "TanStackQueryExampleCreatePostForm"
+      ? "CreatePostForm.tsx"
+      : "QueryClient.tsx",
   language: "tsx" as const,
 }));
 
-const queryClient = new QueryClient({
+// @example-start TanStackQueryExampleConfig
+const queryClient = new QueryClient({ // [!code highlight]
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
@@ -44,6 +48,7 @@ const queryClient = new QueryClient({
     },
   },
 });
+// @example-end TanStackQueryExampleConfig
 
 const PostsList = () => {
   // @example-start TanStackQueryExamplePostsList
@@ -143,8 +148,8 @@ const PostsList = () => {
       </div>
     </div>
   );
+  // @example-end TanStackQueryExamplePostsList
 };
-// @example-end TanStackQueryExamplePostsList
 
 const CreatePostForm = () => {
   // @example-start TanStackQueryExampleCreatePostForm
@@ -171,7 +176,6 @@ const CreatePostForm = () => {
       mutation.mutate({ title, body, author }); // [!code highlight]
     }
   };
-  // @example-end TanStackQueryExampleCreatePostForm
 
   return (
     <Card className="mb-6">
@@ -244,6 +248,7 @@ const CreatePostForm = () => {
       </CardContent>
     </Card>
   );
+  // @example-end TanStackQueryExampleCreatePostForm
 };
 
 const QueryStats = () => {

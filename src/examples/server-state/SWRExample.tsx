@@ -18,10 +18,19 @@ import { Kbd } from "../../components/ui/kbd";
 import { createExampleSnippets } from "../../utils/example-snippets";
 import rawSource from "./SWRExample.tsx?raw";
 
-const snippetIds = ["SWRExampleUserProfile", "SWRExampleMain"];
+const snippetIds = [
+  "SWRExampleUserProfile",
+  "SWRExampleMain",
+  "SWRExampleConfig",
+];
 const snippets = createExampleSnippets(rawSource, snippetIds).map((s) => ({
   ...s,
-  label: s.id === "SWRExampleUserProfile" ? "UserProfile.tsx" : "Main.tsx",
+  label:
+    s.id === "SWRExampleUserProfile"
+      ? "UserProfile.tsx"
+      : s.id === "SWRExampleMain"
+      ? "Main.tsx"
+      : "SWRConfig.tsx",
   language: "tsx" as const,
 }));
 
@@ -314,7 +323,6 @@ const RevalidationDemo = () => {
 const SWRExampleContent = () => {
   // @example-start SWRExampleMain
   const [userId, setUserId] = useState(1); // [!code highlight]
-  // @example-end SWRExampleMain
 
   return (
     <ExampleLayout
@@ -441,11 +449,13 @@ const SWRExampleContent = () => {
       </Card>
     </ExampleLayout>
   );
+  // @example-end SWRExampleMain
 };
 
+// @example-start SWRExampleConfig
 const SWRExample = () => {
   return (
-    <SWRConfig
+    <SWRConfig // [!code highlight]
       value={{
         refreshInterval: 0,
         revalidateOnFocus: true,
@@ -456,6 +466,7 @@ const SWRExample = () => {
       <SWRExampleContent />
     </SWRConfig>
   );
+  // @example-end SWRExampleConfig
 };
 
 export default SWRExample;

@@ -11,6 +11,13 @@ import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { Checkbox } from "../../components/ui/checkbox";
 import { Kbd } from "../../components/ui/kbd";
+import {
+  type BundledLanguage,
+  CodeBlock,
+  CodeBlockBody,
+  CodeBlockItem,
+  CodeBlockContent,
+} from "../../components/kibo-ui/code-block";
 import { createExampleSnippets } from "../../utils/example-snippets";
 import rawSource from "./ZustandExample.tsx?raw";
 
@@ -40,7 +47,6 @@ const UserSettings = () => {
   // @example-start ZustandExampleUserSettings
   const user = usePreferencesStore((state) => state.user); // [!code highlight]
   const updateUser = usePreferencesStore((state) => state.updateUser); // [!code highlight]
-  // @example-end ZustandExampleUserSettings
 
   return (
     <Card className="mb-6">
@@ -91,13 +97,13 @@ const UserSettings = () => {
       </CardContent>
     </Card>
   );
+  // @example-end ZustandExampleUserSettings
 };
 
 const AppearanceSettings = () => {
   // @example-start ZustandExampleAppearanceSettings
   const user = usePreferencesStore((state) => state.user); // [!code highlight]
   const updateUser = usePreferencesStore((state) => state.updateUser); // [!code highlight]
-  // @example-end ZustandExampleAppearanceSettings
 
   return (
     <Card className="mb-6">
@@ -156,6 +162,7 @@ const AppearanceSettings = () => {
       </CardContent>
     </Card>
   );
+  // @example-end ZustandExampleAppearanceSettings
 };
 
 const UISettings = () => {
@@ -163,7 +170,6 @@ const UISettings = () => {
   const ui = usePreferencesStore((state) => state.ui); // [!code highlight]
   const updateUI = usePreferencesStore((state) => state.updateUI); // [!code highlight]
   const toggleSidebar = usePreferencesStore((state) => state.toggleSidebar); // [!code highlight]
-  // @example-end ZustandExampleUISettings
 
   return (
     <Card className="mb-6">
@@ -210,13 +216,13 @@ const UISettings = () => {
       </CardContent>
     </Card>
   );
+  // @example-end ZustandExampleUISettings
 };
 
 const PreferencesPreview = () => {
   // @example-start ZustandExamplePreferencesPreview
   const user = usePreferencesStore((state) => state.user); // [!code highlight]
   const ui = usePreferencesStore((state) => state.ui); // [!code highlight]
-  // @example-end ZustandExamplePreferencesPreview
 
   return (
     <Card className="mb-6">
@@ -224,23 +230,45 @@ const PreferencesPreview = () => {
         <CardTitle>Current Preferences (Live)</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="rounded-lg border bg-muted p-4">
-          <pre className="m-0 text-sm">
-            {JSON.stringify({ user, ui }, null, 2)}
-          </pre>
-        </div>
+        <CodeBlock
+          defaultValue="preferences.json"
+          data={[
+            {
+              language: "json",
+              filename: "preferences.json",
+              code: JSON.stringify({ user, ui }, null, 2),
+            },
+          ]}
+        >
+          <CodeBlockBody>
+            {(item) => (
+              <CodeBlockItem
+                key={item.filename}
+                value={item.filename}
+                lineNumbers={false}
+              >
+                <CodeBlockContent
+                  language={item.language as BundledLanguage}
+                  syntaxHighlighting={true}
+                >
+                  {item.code}
+                </CodeBlockContent>
+              </CodeBlockItem>
+            )}
+          </CodeBlockBody>
+        </CodeBlock>
         <p className="mt-2 text-sm text-muted-foreground">
           💾 These preferences are automatically saved to localStorage
         </p>
       </CardContent>
     </Card>
   );
+  // @example-end ZustandExamplePreferencesPreview
 };
 
 const ZustandExample = () => {
   // @example-start ZustandExampleMain
   const resetToDefaults = usePreferencesStore((state) => state.resetToDefaults); // [!code highlight]
-  // @example-end ZustandExampleMain
 
   return (
     <ExampleLayout
@@ -334,6 +362,7 @@ const ZustandExample = () => {
       </Card>
     </ExampleLayout>
   );
+  // @example-end ZustandExampleMain
 };
 
 export default ZustandExample;

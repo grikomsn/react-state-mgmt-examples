@@ -1,13 +1,206 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>react-state-mgmt-examples</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <link rel="canonical" href="https://react-state-mgmt-examples.com/" />
+  <link rel="apple-touch-icon" href="/opengraph.jpg" />
+
+  <!-- Primary Meta Tags -->
+  <title>React State Management Examples - Comprehensive Patterns & Best Practices</title>
+  <meta name="title" content="React State Management Examples - Comprehensive Patterns & Best Practices" />
+  <meta name="description"
+    content="A comprehensive showcase of various state management patterns and libraries in React, featuring practical examples with modern best practices. Explore useState, useReducer, useContext, Redux Toolkit, Zustand, Jotai, MobX, Recoil, TanStack Query, and SWR." />
+  <meta name="keywords"
+    content="react, state management, redux, zustand, jotai, mobx, recoil, tanstack query, swr, react hooks, useState, useReducer, useContext, typescript, react examples" />
+  <meta name="robots" content="index, follow" />
+  <meta name="language" content="English" />
+  <meta name="author" content="React State Management Examples" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://react-state-mgmt-examples.com/" />
+  <meta property="og:title" content="React State Management Examples - Comprehensive Patterns & Best Practices" />
+  <meta property="og:description"
+    content="A comprehensive showcase of various state management patterns and libraries in React, featuring practical examples with modern best practices. Explore useState, useReducer, useContext, Redux Toolkit, Zustand, Jotai, MobX, Recoil, TanStack Query, and SWR." />
+  <meta property="og:image" content="/opengraph.jpg" />
+  <meta property="og:image:width" content="2002" />
+  <meta property="og:image:height" content="1166" />
+  <meta property="og:image:alt" content="React State Management Examples - Comprehensive Patterns & Best Practices" />
+  <meta property="og:site_name" content="React State Management Examples" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://react-state-mgmt-examples.com/" />
+  <meta name="twitter:title" content="React State Management Examples - Comprehensive Patterns & Best Practices" />
+  <meta name="twitter:description"
+    content="A comprehensive showcase of various state management patterns and libraries in React, featuring practical examples with modern best practices." />
+  <meta name="twitter:image" content="/opengraph.jpg" />
+  <meta name="twitter:image:alt" content="React State Management Examples - Comprehensive Patterns & Best Practices" />
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "React State Management Examples",
+    "description": "A comprehensive showcase of various state management patterns and libraries in React, featuring practical examples with modern best practices.",
+    "url": "https://react-state-mgmt-examples.com/",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://react-state-mgmt-examples.com/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "React State Management Examples",
+    "description": "Comprehensive examples of React state management patterns including useState, useReducer, useContext, Redux Toolkit, Zustand, Jotai, MobX, Recoil, TanStack Query, and SWR.",
+    "url": "https://react-state-mgmt-examples.com/",
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": [
+        {
+          "@type": "SoftwareApplication",
+          "position": 1,
+          "name": "useState Example",
+          "description": "Counter with history tracking - Simple state management for component-level state",
+          "applicationCategory": "WebApplication",
+          "programmingLanguage": "TypeScript",
+          "runtimePlatform": "React"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "position": 2,
+          "name": "useReducer Example",
+          "description": "Todo list with filters and complex state transitions",
+          "applicationCategory": "WebApplication",
+          "programmingLanguage": "TypeScript",
+          "runtimePlatform": "React"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "position": 3,
+          "name": "useContext Example",
+          "description": "Theme switcher with global state management",
+          "applicationCategory": "WebApplication",
+          "programmingLanguage": "TypeScript",
+          "runtimePlatform": "React"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "position": 4,
+          "name": "Redux Toolkit Example",
+          "description": "Shopping cart with DevTools integration - Industry-standard solution for large applications",
+          "applicationCategory": "WebApplication",
+          "programmingLanguage": "TypeScript",
+          "runtimePlatform": "React"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "position": 5,
+          "name": "Zustand Example",
+          "description": "User preferences with localStorage persistence - Minimal and fast state management",
+          "applicationCategory": "WebApplication",
+          "programmingLanguage": "TypeScript",
+          "runtimePlatform": "React"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "position": 6,
+          "name": "Jotai Example",
+          "description": "Complex form with atomic dependencies and derived state",
+          "applicationCategory": "WebApplication",
+          "programmingLanguage": "TypeScript",
+          "runtimePlatform": "React"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "position": 7,
+          "name": "MobX Example",
+          "description": "Real-time dashboard with observables and computed values",
+          "applicationCategory": "WebApplication",
+          "programmingLanguage": "TypeScript",
+          "runtimePlatform": "React"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "position": 8,
+          "name": "Recoil Example",
+          "description": "Collaborative document editor with atom families",
+          "applicationCategory": "WebApplication",
+          "programmingLanguage": "TypeScript",
+          "runtimePlatform": "React"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "position": 9,
+          "name": "TanStack Query Example",
+          "description": "Posts with pagination, caching, and mutations - Server state management",
+          "applicationCategory": "WebApplication",
+          "programmingLanguage": "TypeScript",
+          "runtimePlatform": "React"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "position": 10,
+          "name": "SWR Example",
+          "description": "User profile with automatic revalidation and optimistic updates",
+          "applicationCategory": "WebApplication",
+          "programmingLanguage": "TypeScript",
+          "runtimePlatform": "React"
+        }
+      ]
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "React State Management Examples",
+    "description": "A comprehensive showcase of various state management patterns and libraries in React, featuring practical examples with modern best practices.",
+    "applicationCategory": "WebApplication",
+    "operatingSystem": "Web Browser",
+    "programmingLanguage": "TypeScript",
+    "runtimePlatform": "React",
+    "softwareVersion": "1.0",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "useState examples",
+      "useReducer examples",
+      "useContext examples",
+      "Redux Toolkit integration",
+      "Zustand state management",
+      "Jotai atomic state",
+      "MobX observables",
+      "Recoil atoms",
+      "TanStack Query server state",
+      "SWR data fetching"
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>

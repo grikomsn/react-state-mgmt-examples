@@ -4,6 +4,40 @@
  */
 
 /**
+ * Dedents a code block by removing the minimum common indentation
+ * from all lines, preserving relative indentation
+ *
+ * @param code - The code string to dedent
+ * @returns The dedented code string
+ */
+const dedentCode = (code: string): string => {
+  const lines = code.split("\n");
+
+  // Find minimum indentation (excluding empty lines)
+  let minIndent = Infinity;
+  for (const line of lines) {
+    if (line.trim().length === 0) continue;
+    const indent = line.length - line.trimStart().length;
+    if (indent < minIndent) {
+      minIndent = indent;
+    }
+  }
+
+  // If no indentation found, return as-is
+  if (minIndent === Infinity || minIndent === 0) {
+    return code;
+  }
+
+  // Remove minimum indentation from all lines
+  return lines
+    .map((line) => {
+      if (line.trim().length === 0) return line;
+      return line.slice(minIndent);
+    })
+    .join("\n");
+};
+
+/**
  * Extracts code snippets between @example-start and @example-end markers
  *
  * @param source - The raw source code string
@@ -81,7 +115,10 @@ export const extractExampleSnippet = (
   const combined = snippets.join("\n\n");
 
   // Trim leading and trailing blank lines
-  return combined.replace(/^\n+|\n+$/g, "");
+  const trimmed = combined.replace(/^\n+|\n+$/g, "");
+
+  // Dedent the code to remove unnecessary indentation
+  return dedentCode(trimmed);
 };
 
 /**
@@ -118,5 +155,47 @@ export const createExampleSnippets = (
     })
     .filter(
       (snippet): snippet is { id: string; code: string } => snippet !== null
+    );
+};
+
+/**
+ * Creates example snippets with labels and language metadata
+ * Reduces boilerplate when creating multiple snippets with labels
+ *
+ * @param rawSource - The raw source code imported via `?raw`
+ * @param segments - Array of segment configurations with id, label, and optional language
+ * @returns Array of ExampleSnippet objects ready for ExampleLayout
+ *
+ * @example
+ * const snippets = createExampleSnippetsWithLabels(rawSource, [
+ *   { id: "UseStateExampleState", label: "State.tsx", language: "tsx" },
+ *   { id: "UseStateExampleUpdates", label: "Updates.tsx", language: "tsx" },
+ * ]);
+ */
+export const createExampleSnippetsWithLabels = (
+  rawSource: string,
+  segments: Array<{ id: string; label: string; language?: string }>
+): Array<{ id: string; code: string; label: string; language: string }> => {
+  return segments
+    .map((segment) => {
+      const code = extractExampleSnippet(rawSource, segment.id);
+      return code
+        ? {
+            id: segment.id,
+            code,
+            label: segment.label,
+            language: segment.language || "tsx",
+          }
+        : null;
+    })
+    .filter(
+      (
+        snippet
+      ): snippet is {
+        id: string;
+        code: string;
+        label: string;
+        language: string;
+      } => snippet !== null
     );
 };

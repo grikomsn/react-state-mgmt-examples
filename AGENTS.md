@@ -1,30 +1,29 @@
 # Agent Guidelines for react-state-mgmt-examples
 
-## Build & Test Commands
-- **Install**: `bun install` (preferred) or `npm install`
-- **Dev**: `bun dev` (starts Vite dev server on port 5173)
-- **Build**: `bun run build` (runs TypeScript compilation + Vite build)
-- **Lint**: `bun lint` (runs ESLint)
-- **Single test**: No test suite configured (this is a demo project)
+## Build & Test
 
-## Package Manager
-Use **Bun** instead of npm/pnpm/yarn per `.cursor/rules/use-bun-instead-of-node-vite-npm-pnpm.mdc`
+- **Install**: `bun install`
+- **Dev**: `bun dev` (Vite on port 5173)
+- **Build**: `bun run build`
+- **Lint**: `bun lint`
+- No test suite configured.
 
-## TypeScript
-- Strict mode enabled with `noUnusedLocals`, `noUnusedParameters`, `verbatimModuleSyntax`
-- Use type imports: `import type { Post } from "../types"`
-- Target ES2022, JSX transform: react-jsx
+## Tooling
 
-## Code Style
-- **Imports**: React Router from "react-router-dom", relative paths for local files
-- **Types**: Centralized in `src/types/index.ts`, use interfaces over types
-- **Functions**: Use arrow functions for components and utilities
-- **Error handling**: Mock APIs use `maybeThrowError()` from `src/api/utils.ts`
-- **Async**: Use async/await with delays via `delay()` utility
-- **Naming**: camelCase for variables/functions, PascalCase for components/types
+- Package manager: **Bun** (no npm/pnpm/yarn in commands).
+- TypeScript: strict, ES2022, React JSX; use `import type { ... } from "../types"`.
 
-## Architecture
-- API layer: Domain modules in `src/api/` (posts.ts, users.ts, dashboard.ts)
-- Barrel exports: `index.ts` files for clean imports
-- JSDoc comments for public APIs
-- No prop drilling: Use state management libraries shown in examples
+## Styling & UI
+
+- Tailwind CSS v4 via `src/index.css` with design tokens and dark mode.
+- Prefer shadcn UI components in `src/components/ui/`.
+- Use layout primitives in `src/components/layout/` (`ExampleLayout`, `PageHeader`, `PageContent`).
+
+## Code & Architecture
+
+- Imports: React Router from `"react-router-dom"`, local code via relative paths.
+- Types and interfaces: `src/types/index.ts` is the single source of truth.
+- Components and utilities: arrow functions, camelCase, PascalCase for components.
+- API layer: `src/api/` (`posts.ts`, `users.ts`, `dashboard.ts`).
+- State layer: Redux, Zustand, MobX in `src/stores/` with a barrel export.
+- Examples: `src/examples/` wired through `src/config/routes.ts`; avoid prop drilling by using the provided state libraries and context.

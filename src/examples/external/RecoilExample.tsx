@@ -131,7 +131,6 @@ const Editor = () => {
     }));
     setSelectionStart(newPosition);
   };
-  // @example-end RecoilExampleEditor
 
   return (
     <Card className="mb-6">
@@ -153,12 +152,12 @@ const Editor = () => {
       </CardContent>
     </Card>
   );
+  // @example-end RecoilExampleEditor
 };
 
 const DocumentStats = () => {
   // @example-start RecoilExampleDocumentStats
   const stats = useRecoilValue(documentStatsSelector); // [!code highlight]
-  // @example-end RecoilExampleDocumentStats
 
   return (
     <Card className="mb-6">
@@ -181,6 +180,7 @@ const DocumentStats = () => {
       </CardContent>
     </Card>
   );
+  // @example-end RecoilExampleDocumentStats
 };
 
 const CollaboratorsList = () => {
@@ -188,7 +188,6 @@ const CollaboratorsList = () => {
   const users = useRecoilValue(userNamesSelector); // [!code highlight]
   const cursorPositions = useRecoilValue(cursorPositionsAtom);
   const currentUserId = useRecoilValue(currentUserIdAtom);
-  // @example-end RecoilExampleCollaboratorsList
 
   return (
     <Card className="mb-6">
@@ -229,13 +228,13 @@ const CollaboratorsList = () => {
       </CardContent>
     </Card>
   );
+  // @example-end RecoilExampleCollaboratorsList
 };
 
 const UserSwitcher = () => {
   // @example-start RecoilExampleUserSwitcher
   const [currentUserId, setCurrentUserId] = useRecoilState(currentUserIdAtom); // [!code highlight]
   const activeUsers = useRecoilValue(activeUsersAtom);
-  // @example-end RecoilExampleUserSwitcher
 
   return (
     <Card className="mb-6">
@@ -265,6 +264,7 @@ const UserSwitcher = () => {
       </CardContent>
     </Card>
   );
+  // @example-end RecoilExampleUserSwitcher
 };
 
 const RecoilExampleContent = () => {

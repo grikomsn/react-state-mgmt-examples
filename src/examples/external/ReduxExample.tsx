@@ -43,7 +43,6 @@ const ProductCard = ({ product }: { product: Product }) => {
   const cartItem = useSelector((state: RootState) => // [!code highlight]
     state.cart.items.find((item) => item.id === product.id)
   );
-  // @example-end ReduxExampleProductCard
 
   return (
     <Card className="flex h-full flex-col">
@@ -66,13 +65,13 @@ const ProductCard = ({ product }: { product: Product }) => {
       </CardFooter>
     </Card>
   );
+  // @example-end ReduxExampleProductCard
 };
 
 const Cart = () => {
   // @example-start ReduxExampleCart
   const dispatch = useDispatch<AppDispatch>(); // [!code highlight]
   const items = useSelector((state: RootState) => state.cart.items); // [!code highlight]
-  // @example-end ReduxExampleCart
 
   const total = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -157,6 +156,7 @@ const Cart = () => {
       </div>
     </div>
   );
+  // @example-end ReduxExampleCart
 };
 
 const ReduxExampleContent = () => {

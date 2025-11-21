@@ -20,12 +20,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../components/ui/select";
-import { createExampleSnippet } from "../../utils/example-snippets";
+import {
+  type BundledLanguage,
+  CodeBlock,
+  CodeBlockBody,
+  CodeBlockItem,
+  CodeBlockContent,
+} from "../../components/kibo-ui/code-block";
+import { createExampleSnippets } from "../../utils/example-snippets";
 import rawSource from "./MobXExample.tsx?raw";
 
-const snippet = createExampleSnippet(rawSource, "MobXExample");
+const snippetIds = ["MobXExampleObserver", "MobXExampleComponent"];
+const snippets = createExampleSnippets(rawSource, snippetIds).map((s) => ({
+  ...s,
+  label: s.id === "MobXExampleObserver" ? "ObserverComponent.tsx" : "Main.tsx",
+  language: "tsx" as const,
+}));
 
+// @example-start MobXExampleObserver
 const StatCard = observer(
+  // [!code highlight]
   ({
     title,
     value,
@@ -63,6 +77,7 @@ const StatCard = observer(
     );
   }
 );
+// @example-end MobXExampleObserver
 
 const DashboardMetrics = observer(() => {
   return (
@@ -195,8 +210,9 @@ const DashboardControls = observer(() => {
   );
 });
 
-const MobXExample = observer(() => { // [!code highlight]
-  // @example-start MobXExample
+const MobXExample = observer(() => {
+  // [!code highlight]
+  // @example-start MobXExampleComponent
   useEffect(() => {
     // Initial fetch
     dashboardStore.fetchData(); // [!code highlight]
@@ -238,7 +254,7 @@ const MobXExample = observer(() => { // [!code highlight]
       }
     };
   }, [dashboardStore.autoRefresh, dashboardStore.refreshInterval]);
-  // @example-end MobXExample
+  // @example-end MobXExampleComponent
 
   return (
     <ExampleLayout
@@ -246,7 +262,7 @@ const MobXExample = observer(() => { // [!code highlight]
       description="Real-time dashboard with observable state and computed values"
       sourcePath="src/examples/external/MobXExample.tsx"
       sourceLine={237}
-      snippet={snippet}
+      snippets={snippets}
     >
       <DashboardControls />
 
@@ -278,21 +294,40 @@ const MobXExample = observer(() => { // [!code highlight]
           <CardTitle className="text-xl">Observable State</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="rounded border bg-muted p-4">
-            <pre className="m-0 text-sm">
-              {JSON.stringify(
-                {
-                  data: dashboardStore.data,
-                  isLoading: dashboardStore.isLoading,
-                  error: dashboardStore.error,
-                  autoRefresh: dashboardStore.autoRefresh,
-                  refreshInterval: dashboardStore.refreshInterval,
-                },
-                null,
-                2
+          <CodeBlock
+            defaultValue="state.json"
+            data={[
+              {
+                language: "json",
+                filename: "state.json",
+                code: JSON.stringify(
+                  {
+                    data: dashboardStore.data,
+                    isLoading: dashboardStore.isLoading,
+                    error: dashboardStore.error,
+                    autoRefresh: dashboardStore.autoRefresh,
+                    refreshInterval: dashboardStore.refreshInterval,
+                  },
+                  null,
+                  2
+                ),
+              },
+            ]}
+          >
+            <CodeBlockBody>
+              {(item) => (
+                <CodeBlockItem
+                  key={item.filename}
+                  value={item.filename}
+                  lineNumbers
+                >
+                  <CodeBlockContent language={item.language as BundledLanguage}>
+                    {item.code}
+                  </CodeBlockContent>
+                </CodeBlockItem>
               )}
-            </pre>
-          </div>
+            </CodeBlockBody>
+          </CodeBlock>
         </CardContent>
       </Card>
 

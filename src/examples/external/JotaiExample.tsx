@@ -20,11 +20,24 @@ import {
 } from "../../components/ui/select";
 import { Checkbox } from "../../components/ui/checkbox";
 import { Kbd } from "../../components/ui/kbd";
-import { createExampleSnippet } from "../../utils/example-snippets";
+import {
+  type BundledLanguage,
+  CodeBlock,
+  CodeBlockBody,
+  CodeBlockItem,
+  CodeBlockContent,
+} from "../../components/kibo-ui/code-block";
+import { createExampleSnippets } from "../../utils/example-snippets";
 import rawSource from "./JotaiExample.tsx?raw";
 
-const snippet = createExampleSnippet(rawSource, "JotaiExample");
+const snippetIds = ["JotaiExampleAtoms", "JotaiExampleComponent"];
+const snippets = createExampleSnippets(rawSource, snippetIds).map((s) => ({
+  ...s,
+  label: s.id === "JotaiExampleAtoms" ? "atoms.ts" : "Form.tsx",
+  language: "tsx" as const,
+}));
 
+// @example-start JotaiExampleAtoms
 // Base atoms
 const firstNameAtom = atom(""); // [!code highlight]
 const lastNameAtom = atom("");
@@ -35,7 +48,8 @@ const agreeToTermsAtom = atomWithStorage("agreeToTerms", false); // [!code highl
 const countryAtom = atom("us");
 
 // Derived atoms
-const fullNameAtom = atom((get) => { // [!code highlight]
+const fullNameAtom = atom((get) => {
+  // [!code highlight]
   const firstName = get(firstNameAtom);
   const lastName = get(lastNameAtom);
   return firstName && lastName ? `${firstName} ${lastName}` : "";
@@ -91,9 +105,10 @@ const formDataAtom = atom((get) => ({
   country: get(countryAtom),
   passwordStrength: get(passwordStrengthAtom),
 }));
+// @example-end JotaiExampleAtoms
 
 const JotaiExample = () => {
-  // @example-start JotaiExample
+  // @example-start JotaiExampleComponent
   const [firstName, setFirstName] = useAtom(firstNameAtom); // [!code highlight]
   const [lastName, setLastName] = useAtom(lastNameAtom);
   const [email, setEmail] = useAtom(emailAtom);
@@ -130,7 +145,7 @@ const JotaiExample = () => {
     if (score === 2) return "text-yellow-600 dark:text-yellow-400";
     return "text-green-600 dark:text-green-400";
   };
-  // @example-end JotaiExample
+  // @example-end JotaiExampleComponent
 
   return (
     <ExampleLayout
@@ -138,7 +153,7 @@ const JotaiExample = () => {
       description="Atomic state management with derived values and dependencies"
       sourcePath="src/examples/external/JotaiExample.tsx"
       sourceLine={130}
-      snippet={snippet}
+      snippets={snippets}
     >
       <Card className="mb-6">
         <CardHeader>
@@ -304,23 +319,33 @@ const JotaiExample = () => {
           <CardTitle>Form State (Live)</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="rounded-lg border bg-muted p-4">
-            <pre className="m-0 text-sm">
-              {JSON.stringify(formData, null, 2)}
-            </pre>
-          </div>
-          <div className="mt-2 text-sm text-muted-foreground">
-            Form valid:{" "}
-            <code
-              className={
-                formValid
-                  ? "text-green-600 dark:text-green-400"
-                  : "text-red-600 dark:text-red-400"
-              }
-            >
-              {formValid ? "true" : "false"}
-            </code>
-          </div>
+          <CodeBlock
+            defaultValue="form-state.json"
+            data={[
+              {
+                language: "json",
+                filename: "form-state.json",
+                code: JSON.stringify({ ...formData, formValid }, null, 2),
+              },
+            ]}
+          >
+            <CodeBlockBody>
+              {(item) => (
+                <CodeBlockItem
+                  key={item.filename}
+                  value={item.filename}
+                  lineNumbers={false}
+                >
+                  <CodeBlockContent
+                    language={item.language as BundledLanguage}
+                    syntaxHighlighting={true}
+                  >
+                    {item.code}
+                  </CodeBlockContent>
+                </CodeBlockItem>
+              )}
+            </CodeBlockBody>
+          </CodeBlock>
         </CardContent>
       </Card>
 

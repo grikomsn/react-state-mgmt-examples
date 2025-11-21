@@ -9,16 +9,26 @@ import {
 } from "../../components/ui/card";
 import { Badge } from "../../components/ui/badge";
 import { Kbd } from "../../components/ui/kbd";
-import { createExampleSnippet } from "../../utils/example-snippets";
+import { createExampleSnippets } from "../../utils/example-snippets";
 import rawSource from "./UseStateExample.tsx?raw";
 
-const snippet = createExampleSnippet(rawSource, "UseStateExample");
+const snippetIds = ["UseStateExampleState", "UseStateExampleUpdates"];
+const snippets = createExampleSnippets(rawSource, snippetIds).map((s) => ({
+  ...s,
+  label:
+    s.id === "UseStateExampleState"
+      ? "State.tsx"
+      : "Updates.tsx",
+  language: "tsx" as const,
+}));
 
 const UseStateExample = () => {
-  // @example-start UseStateExample
+  // @example-start UseStateExampleState
   const [count, setCount] = useState(0); // [!code highlight]
   const [history, setHistory] = useState<number[]>([0]);
+  // @example-end UseStateExampleState
 
+  // @example-start UseStateExampleUpdates
   const increment = () => {
     const newCount = count + 1;
     setCount(newCount); // [!code highlight]
@@ -35,7 +45,7 @@ const UseStateExample = () => {
     setCount(0);
     setHistory([0]);
   };
-  // @example-end UseStateExample
+  // @example-end UseStateExampleUpdates
 
   return (
     <ExampleLayout
@@ -43,7 +53,7 @@ const UseStateExample = () => {
       description="Basic state management with counter and history tracking"
       sourcePath="src/examples/built-in/UseStateExample.tsx"
       sourceLine={30}
-      snippet={snippet}
+      snippets={snippets}
     >
       <Card className="mb-6">
         <CardHeader>

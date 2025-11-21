@@ -4,9 +4,14 @@ import { PageContent } from "./PageContent";
 import { PageHeader } from "./PageHeader";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "../ui/accordion";
+import {
   type BundledLanguage,
   CodeBlock,
-  CodeBlockHeader,
   CodeBlockBody,
   CodeBlockItem,
   CodeBlockContent,
@@ -74,16 +79,6 @@ export const ExampleLayout = ({
     );
   }
 
-  // Build CodeBlock data array
-  const codeBlockData = displaySnippets.map((s) => ({
-    language: s.language || defaultLanguage,
-    filename: s.label || s.id,
-    code: s.code,
-  }));
-
-  // Use first snippet's filename as default
-  const defaultFilename = codeBlockData[0]?.filename || filename;
-
   return (
     <PageContent>
       <PageHeader
@@ -101,26 +96,51 @@ export const ExampleLayout = ({
           <CardTitle>{snippetTitle}</CardTitle>
         </CardHeader>
         <CardContent>
-          <CodeBlock defaultValue={defaultFilename} data={codeBlockData}>
-            <CodeBlockHeader>
-              <div className="px-4 py-2 text-sm font-medium">
-                {defaultFilename}
-              </div>
-            </CodeBlockHeader>
-            <CodeBlockBody>
-              {(item) => (
-                <CodeBlockItem
-                  key={item.filename}
-                  value={item.filename}
-                  lineNumbers
-                >
-                  <CodeBlockContent language={item.language as BundledLanguage}>
-                    {item.code}
-                  </CodeBlockContent>
-                </CodeBlockItem>
-              )}
-            </CodeBlockBody>
-          </CodeBlock>
+          <Accordion
+            type="single"
+            collapsible
+            defaultValue={displaySnippets[0]?.id}
+            className="w-full"
+          >
+            {displaySnippets.map((snippet) => {
+              const snippetFilename = snippet.label || snippet.id;
+              const snippetLanguage = snippet.language || defaultLanguage;
+              const codeBlockData = [
+                {
+                  language: snippetLanguage,
+                  filename: snippetFilename,
+                  code: snippet.code,
+                },
+              ];
+
+              return (
+                <AccordionItem key={snippet.id} value={snippet.id}>
+                  <AccordionTrigger className="font-mono">
+                    {snippetFilename}
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <CodeBlock defaultValue={snippetFilename} data={codeBlockData}>
+                      <CodeBlockBody>
+                        {(item) => (
+                          <CodeBlockItem
+                            key={item.filename}
+                            value={item.filename}
+                            lineNumbers
+                          >
+                            <CodeBlockContent
+                              language={item.language as BundledLanguage}
+                            >
+                              {item.code}
+                            </CodeBlockContent>
+                          </CodeBlockItem>
+                        )}
+                      </CodeBlockBody>
+                    </CodeBlock>
+                  </AccordionContent>
+                </AccordionItem>
+              );
+            })}
+          </Accordion>
         </CardContent>
       </Card>
     </PageContent>
