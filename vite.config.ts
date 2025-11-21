@@ -1,8 +1,9 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-import { resolve } from "path";
+import react from "@vitejs/plugin-react";
 import { readFileSync } from "fs";
+import { resolve } from "path";
+import { defineConfig } from "vite";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 // Try to get GitHub repo URL from package.json
 let githubRepo = "https://github.com/grikomsn/react-state-mgmt-examples";
@@ -26,7 +27,7 @@ try {
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [tailwindcss(), react()],
+  plugins: [tsconfigPaths(), tailwindcss(), react()],
   define: {
     __WORKSPACE_PATH__: JSON.stringify(
       process.env.VITE_WORKSPACE_PATH || resolve(process.cwd())
