@@ -1,4 +1,5 @@
 import { generateDeeplink, getFilePathFromUrl } from "../../utils/deeplink";
+import { Button } from "../ui/button";
 
 interface ViewSourceLinkProps {
   /**
@@ -47,26 +48,31 @@ export const ViewSourceLink = ({
   const deeplink = generateDeeplink(sourcePath, line);
 
   return (
-    <a
-      href={deeplink}
-      className="inline-flex items-center gap-2 rounded border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm font-medium text-gray-200 transition-all hover:border-cyan-400 hover:bg-gray-700 hover:text-cyan-400"
-      title={`Open ${displayPath} in editor`}
+    <Button
+      asChild
+      variant="outline"
+      size="sm"
     >
-      <svg
-        className="h-4 w-4"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
+      <a
+        href={deeplink}
+        title={`Open ${displayPath} in editor`}
       >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-        />
-      </svg>
-      {label}
-    </a>
+        <svg
+          className="h-4 w-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+          />
+        </svg>
+        {label}
+      </a>
+    </Button>
   );
 };

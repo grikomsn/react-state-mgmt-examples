@@ -1,7 +1,25 @@
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { dashboardStore } from "../../stores/mobx/store";
-import { ViewSourceLink } from "../../components/legacy";
+import { ExampleLayout } from "../../components/layout";
+import { Button } from "../../components/ui/button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "../../components/ui/card";
+import { Alert, AlertDescription } from "../../components/ui/alert";
+import { Checkbox } from "../../components/ui/checkbox";
+import { Label } from "../../components/ui/label";
+import { Kbd } from "../../components/ui/kbd";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select";
 
 const StatCard = observer(
   ({
@@ -16,26 +34,26 @@ const StatCard = observer(
     trend?: "up" | "down" | "neutral";
   }) => {
     const trendColors = {
-      up: "text-green-400",
-      down: "text-red-400",
+      up: "text-green-600 dark:text-green-400",
+      down: "text-red-600 dark:text-red-400",
       neutral: "text-gray-500",
     };
 
     return (
-      <div className="rounded-lg border border-gray-800 bg-gray-950 p-6">
-        <div className="mb-2 text-sm text-gray-500">{title}</div>
+      <Card className="p-6">
+        <div className="mb-2 text-sm text-muted-foreground">{title}</div>
         <div className="flex items-baseline gap-1">
-          <span className="text-3xl font-bold text-cyan-400">
+          <span className="text-3xl font-bold text-cyan-600 dark:text-cyan-400">
             {typeof value === "number" ? value.toLocaleString() : value}
           </span>
-          {suffix && <span className="text-base text-gray-500">{suffix}</span>}
+          {suffix && <span className="text-base text-muted-foreground">{suffix}</span>}
         </div>
         {trend && (
           <div className={`mt-1 text-xs ${trendColors[trend]}`}>
             {trend === "up" ? "↑" : trend === "down" ? "↓" : "→"} {trend}
           </div>
         )}
-      </div>
+      </Card>
     );
   }
 );
@@ -71,91 +89,104 @@ const DashboardMetrics = observer(() => {
 const ComputedMetrics = observer(() => {
   const qualityColor =
     dashboardStore.dataQuality === "Excellent"
-      ? "text-green-400"
+      ? "text-green-600 dark:text-green-400"
       : dashboardStore.dataQuality === "Good"
-      ? "text-cyan-400"
+      ? "text-cyan-600 dark:text-cyan-400"
       : dashboardStore.dataQuality === "Fair"
-      ? "text-yellow-400"
-      : "text-red-400";
+      ? "text-yellow-600 dark:text-yellow-400"
+      : "text-red-600 dark:text-red-400";
 
   return (
-    <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
-      <h2 className="mb-4 text-xl text-gray-200">Computed Metrics</h2>
-      <p className="mb-4 text-sm text-gray-500">
-        These values are automatically computed from observable data using MobX
-        getters
-      </p>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div className="rounded border border-gray-800 bg-gray-950 p-4">
-          <div className="mb-1 text-sm text-gray-500">Conversion Rate</div>
-          <div className="text-2xl font-bold text-cyan-400">
-            {dashboardStore.conversionRate}%
+    <Card className="mb-6">
+      <CardHeader>
+        <CardTitle className="text-xl">
+          Computed Metrics
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="mb-4 text-sm text-muted-foreground">
+          These values are automatically computed from observable data using
+          MobX getters
+        </p>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="rounded border p-4">
+            <div className="mb-1 text-sm text-muted-foreground">Conversion Rate</div>
+            <div className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">
+              {dashboardStore.conversionRate}%
+            </div>
+          </div>
+          <div className="rounded border p-4">
+            <div className="mb-1 text-sm text-muted-foreground">Data Quality</div>
+            <div className={`text-2xl font-bold ${qualityColor}`}>
+              {dashboardStore.dataQuality}
+            </div>
           </div>
         </div>
-        <div className="rounded border border-gray-800 bg-gray-950 p-4">
-          <div className="mb-1 text-sm text-gray-500">Data Quality</div>
-          <div className={`text-2xl font-bold ${qualityColor}`}>
-            {dashboardStore.dataQuality}
-          </div>
-        </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 });
 
 const DashboardControls = observer(() => {
   return (
-    <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => dashboardStore.fetchData()}
-            disabled={dashboardStore.isLoading}
-            className="rounded bg-cyan-500 px-4 py-2 text-sm font-medium text-gray-950 transition-all hover:bg-cyan-600 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {dashboardStore.isLoading ? "Loading..." : "Refresh Data"}
-          </button>
-          <button
-            onClick={() => dashboardStore.reset()}
-            className="rounded border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-200 transition-all hover:bg-gray-700 active:scale-95"
-          >
-            Reset
-          </button>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={dashboardStore.autoRefresh}
-              onChange={(e) => dashboardStore.setAutoRefresh(e.target.checked)}
-              className="h-4 w-4 cursor-pointer"
-            />
-            <span className="text-sm text-gray-200">Auto-refresh</span>
-          </label>
-
-          {dashboardStore.autoRefresh && (
-            <select
-              value={dashboardStore.refreshInterval}
-              onChange={(e) =>
-                dashboardStore.setRefreshInterval(Number(e.target.value))
-              }
-              className="rounded border border-gray-700 bg-gray-800 px-2 py-1 text-sm text-gray-200 focus:border-cyan-400 focus:outline-none"
+    <Card className="mb-6">
+      <CardContent className="pt-6">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex flex-wrap gap-2">
+            <Button
+              onClick={() => dashboardStore.fetchData()}
+              disabled={dashboardStore.isLoading}
+              className="bg-cyan-500 text-gray-950 hover:bg-cyan-600"
             >
-              <option value={3000}>3s</option>
-              <option value={5000}>5s</option>
-              <option value={10000}>10s</option>
-            </select>
-          )}
-        </div>
-      </div>
+              {dashboardStore.isLoading ? "Loading..." : "Refresh Data"}
+            </Button>
+            <Button
+              onClick={() => dashboardStore.reset()}
+              variant="outline"
+            >
+              Reset
+            </Button>
+          </div>
 
-      {dashboardStore.lastUpdated && (
-        <p className="mt-2 text-xs text-gray-500">
-          Last updated: {dashboardStore.lastUpdated.toLocaleTimeString()}
-        </p>
-      )}
-    </div>
+          <div className="flex items-center gap-4">
+            <Label className="flex cursor-pointer items-center gap-2">
+              <Checkbox
+                checked={dashboardStore.autoRefresh}
+                onCheckedChange={(checked) =>
+                  dashboardStore.setAutoRefresh(checked === true)
+                }
+                className="h-4 w-4"
+              />
+              <span className="text-sm">Auto-refresh</span>
+            </Label>
+
+            {dashboardStore.autoRefresh && (
+              <Select
+                value={dashboardStore.refreshInterval.toString()}
+                onValueChange={(value) =>
+                  dashboardStore.setRefreshInterval(Number(value))
+                }
+              >
+                <SelectTrigger className="w-20">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="3000">3s</SelectItem>
+                  <SelectItem value="5000">5s</SelectItem>
+                  <SelectItem value="10000">10s</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          </div>
+        </div>
+
+        {dashboardStore.lastUpdated && (
+          <p className="mt-2 text-xs text-muted-foreground">
+            Last updated: {dashboardStore.lastUpdated.toLocaleTimeString()}
+          </p>
+        )}
+      </CardContent>
+    </Card>
   );
 });
 
@@ -203,128 +234,127 @@ const MobXExample = observer(() => {
   }, [dashboardStore.autoRefresh, dashboardStore.refreshInterval]);
 
   return (
-    <div className="mx-auto max-w-4xl">
-      <div className="mb-8 border-b-2 border-gray-800 pb-4">
-        <div className="mb-2 flex items-start justify-between gap-4">
-          <div className="flex-1">
-            <h1 className="mb-2 text-3xl text-cyan-400">MobX</h1>
-            <p className="text-gray-500">
-              Real-time dashboard with observable state and computed values
-            </p>
-          </div>
-          <ViewSourceLink url={import.meta.url} />
-        </div>
-      </div>
-
+    <ExampleLayout
+      title="MobX"
+      description="Real-time dashboard with observable state and computed values"
+      sourcePath="src/examples/external/MobXExample.tsx"
+      sourceLine={237}
+    >
       <DashboardControls />
 
       {dashboardStore.error && (
-        <div className="mb-6 rounded border border-red-800 bg-red-900/30 p-4 text-red-200">
-          Error: {dashboardStore.error}
-        </div>
+        <Alert variant="destructive" className="mb-6">
+          <AlertDescription>Error: {dashboardStore.error}</AlertDescription>
+        </Alert>
       )}
 
-      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
-        <h2 className="mb-4 text-xl text-gray-200">Dashboard Metrics</h2>
-        {dashboardStore.isLoading && !dashboardStore.lastUpdated ? (
-          <div className="py-8 text-center text-gray-500">
-            Loading dashboard data...
-          </div>
-        ) : (
-          <DashboardMetrics />
-        )}
-      </div>
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Dashboard Metrics</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {dashboardStore.isLoading && !dashboardStore.lastUpdated ? (
+            <div className="py-8 text-center text-muted-foreground">
+              Loading dashboard data...
+            </div>
+          ) : (
+            <DashboardMetrics />
+          )}
+        </CardContent>
+      </Card>
 
       <ComputedMetrics />
 
-      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
-        <h2 className="mb-4 text-xl text-gray-200">Observable State</h2>
-        <div className="rounded border border-gray-800 bg-gray-950 p-4">
-          <pre className="m-0 text-sm">
-            {JSON.stringify(
-              {
-                data: dashboardStore.data,
-                isLoading: dashboardStore.isLoading,
-                error: dashboardStore.error,
-                autoRefresh: dashboardStore.autoRefresh,
-                refreshInterval: dashboardStore.refreshInterval,
-              },
-              null,
-              2
-            )}
-          </pre>
-        </div>
-      </div>
-
-      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
-        <h2 className="mb-4 text-xl text-gray-200">Key Concepts</h2>
-        <ul className="list-inside space-y-2 leading-relaxed text-gray-500">
-          <li>
-            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
-              MobX
-            </code>{" "}
-            provides reactive state management through observables
-          </li>
-          <li>
-            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
-              makeAutoObservable
-            </code>{" "}
-            automatically makes class properties observable
-          </li>
-          <li>
-            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
-              observer
-            </code>{" "}
-            HOC makes React components reactive to observable changes
-          </li>
-          <li>
-            Computed values (getters) are cached and only recompute when
-            dependencies change
-          </li>
-          <li>
-            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
-              runInAction
-            </code>{" "}
-            ensures state modifications in async code are tracked
-          </li>
-          <li>
-            Fine-grained reactivity - components only re-render when observables
-            they use change
-          </li>
-          <li>Object-oriented approach with classes and methods</li>
-          <li>
-            Automatic dependency tracking - no manual subscriptions needed
-          </li>
-        </ul>
-      </div>
-
-      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
-        <h2 className="mb-4 text-xl text-gray-200">MobX Features</h2>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div>
-            <h3 className="mb-2 text-base text-green-400">✓ Advantages</h3>
-            <ul className="space-y-1 text-sm leading-relaxed text-gray-500">
-              <li>Minimal boilerplate</li>
-              <li>Automatic dependency tracking</li>
-              <li>Excellent performance</li>
-              <li>Computed values are efficient</li>
-              <li>OOP-friendly architecture</li>
-              <li>Easy to learn and use</li>
-            </ul>
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle className="text-xl">
+            Observable State
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="rounded border bg-muted p-4">
+            <pre className="m-0 text-sm">
+              {JSON.stringify(
+                {
+                  data: dashboardStore.data,
+                  isLoading: dashboardStore.isLoading,
+                  error: dashboardStore.error,
+                  autoRefresh: dashboardStore.autoRefresh,
+                  refreshInterval: dashboardStore.refreshInterval,
+                },
+                null,
+                2
+              )}
+            </pre>
           </div>
-          <div>
-            <h3 className="mb-2 text-base text-cyan-400">📋 Best For</h3>
-            <ul className="space-y-1 text-sm leading-relaxed text-gray-500">
-              <li>Complex domain models</li>
-              <li>Real-time data dashboards</li>
-              <li>Applications with computed values</li>
-              <li>When you prefer OOP patterns</li>
-              <li>Large applications</li>
-            </ul>
+        </CardContent>
+      </Card>
+
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Key Concepts</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul className="list-inside space-y-2 leading-relaxed text-muted-foreground">
+            <li>
+              <Kbd>MobX</Kbd> provides reactive state management through observables
+            </li>
+            <li>
+              <Kbd>makeAutoObservable</Kbd> automatically makes class properties observable
+            </li>
+            <li>
+              <Kbd>observer</Kbd> HOC makes React components reactive to observable changes
+            </li>
+            <li>
+              Computed values (getters) are cached and only recompute when
+              dependencies change
+            </li>
+            <li>
+              <Kbd>runInAction</Kbd> ensures state modifications in async code are tracked
+            </li>
+            <li>
+              Fine-grained reactivity - components only re-render when
+              observables they use change
+            </li>
+            <li>Object-oriented approach with classes and methods</li>
+            <li>
+              Automatic dependency tracking - no manual subscriptions needed
+            </li>
+          </ul>
+        </CardContent>
+      </Card>
+
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>MobX Features</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div>
+              <h3 className="mb-2 text-base font-semibold text-green-600 dark:text-green-400">✓ Advantages</h3>
+              <ul className="space-y-1 text-sm leading-relaxed text-muted-foreground">
+                <li>Minimal boilerplate</li>
+                <li>Automatic dependency tracking</li>
+                <li>Excellent performance</li>
+                <li>Computed values are efficient</li>
+                <li>OOP-friendly architecture</li>
+                <li>Easy to learn and use</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="mb-2 text-base font-semibold">📋 Best For</h3>
+              <ul className="space-y-1 text-sm leading-relaxed text-muted-foreground">
+                <li>Complex domain models</li>
+                <li>Real-time data dashboards</li>
+                <li>Applications with computed values</li>
+                <li>When you prefer OOP patterns</li>
+                <li>Large applications</li>
+              </ul>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </CardContent>
+      </Card>
+    </ExampleLayout>
   );
 });
 

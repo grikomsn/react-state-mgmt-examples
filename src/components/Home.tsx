@@ -1,122 +1,109 @@
 import { Link } from "react-router-dom";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "./ui/card";
+import { PageContent, PageHeader } from "./layout";
+
+const ExampleCard = ({
+  to,
+  title,
+  description,
+}: {
+  to: string;
+  title: string;
+  description: string;
+}) => {
+  return (
+    <Link to={to} className="block h-full">
+      <Card className="h-full transition-all hover:-translate-y-0.5 hover:shadow-md">
+        <CardHeader className="flex-1">
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{description}</CardDescription>
+        </CardHeader>
+      </Card>
+    </Link>
+  );
+};
 
 const Home = () => {
   return (
-    <div className="mx-auto max-w-7xl">
-      <h1 className="mb-4 text-4xl text-cyan-400">
-        React State Management Examples
-      </h1>
-      <p className="mb-12 text-lg leading-relaxed text-gray-500">
-        Explore comprehensive examples of various state management patterns in
-        React. Each example demonstrates key concepts and best practices.
-      </p>
+    <PageContent>
+      <PageHeader
+        title="React State Management Examples"
+        description="Explore comprehensive examples of various state management patterns in React. Each example demonstrates key concepts and best practices."
+      />
 
-      <section className="mb-12">
-        <h2 className="mb-4 border-b-2 border-gray-800 pb-2 text-2xl text-gray-200">
-          Built-in React Hooks
-        </h2>
-        <div className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
-          <Link
+      <section className="mb-12 space-y-4">
+        <h2 className="text-2xl font-semibold">Built-in React Hooks</h2>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
+          <ExampleCard
             to="/usestate"
-            className="block rounded-lg border border-gray-800 bg-gray-900 p-6 transition-all hover:-translate-y-0.5 hover:border-cyan-400"
-          >
-            <h3 className="mb-2 text-xl text-cyan-400">useState</h3>
-            <p className="text-sm text-gray-500">
-              Counter with history tracking
-            </p>
-          </Link>
-          <Link
+            title="useState"
+            description="Counter with history tracking"
+          />
+          <ExampleCard
             to="/usereducer"
-            className="block rounded-lg border border-gray-800 bg-gray-900 p-6 transition-all hover:-translate-y-0.5 hover:border-cyan-400"
-          >
-            <h3 className="mb-2 text-xl text-cyan-400">useReducer</h3>
-            <p className="text-sm text-gray-500">Todo list with filters</p>
-          </Link>
-          <Link
+            title="useReducer"
+            description="Todo list with filters"
+          />
+          <ExampleCard
             to="/usecontext"
-            className="block rounded-lg border border-gray-800 bg-gray-900 p-6 transition-all hover:-translate-y-0.5 hover:border-cyan-400"
-          >
-            <h3 className="mb-2 text-xl text-cyan-400">useContext</h3>
-            <p className="text-sm text-gray-500">
-              Theme switcher with global state
-            </p>
-          </Link>
+            title="useContext"
+            description="Theme switcher with global state"
+          />
         </div>
       </section>
 
-      <section className="mb-12">
-        <h2 className="mb-4 border-b-2 border-gray-800 pb-2 text-2xl text-gray-200">
-          External State Libraries
-        </h2>
-        <div className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
-          <Link
+      <section className="mb-12 space-y-4">
+        <h2 className="text-2xl font-semibold">External State Libraries</h2>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
+          <ExampleCard
             to="/redux"
-            className="block rounded-lg border border-gray-800 bg-gray-900 p-6 transition-all hover:-translate-y-0.5 hover:border-cyan-400"
-          >
-            <h3 className="mb-2 text-xl text-cyan-400">Redux Toolkit</h3>
-            <p className="text-sm text-gray-500">Shopping cart with DevTools</p>
-          </Link>
-          <Link
+            title="Redux Toolkit"
+            description="Shopping cart with DevTools"
+          />
+          <ExampleCard
             to="/zustand"
-            className="block rounded-lg border border-gray-800 bg-gray-900 p-6 transition-all hover:-translate-y-0.5 hover:border-cyan-400"
-          >
-            <h3 className="mb-2 text-xl text-cyan-400">Zustand</h3>
-            <p className="text-sm text-gray-500">
-              User preferences with persistence
-            </p>
-          </Link>
-          <Link
+            title="Zustand"
+            description="User preferences with persistence"
+          />
+          <ExampleCard
             to="/jotai"
-            className="block rounded-lg border border-gray-800 bg-gray-900 p-6 transition-all hover:-translate-y-0.5 hover:border-cyan-400"
-          >
-            <h3 className="mb-2 text-xl text-cyan-400">Jotai</h3>
-            <p className="text-sm text-gray-500">
-              Form with atomic dependencies
-            </p>
-          </Link>
-          <Link
+            title="Jotai"
+            description="Form with atomic dependencies"
+          />
+          <ExampleCard
             to="/mobx"
-            className="block rounded-lg border border-gray-800 bg-gray-900 p-6 transition-all hover:-translate-y-0.5 hover:border-cyan-400"
-          >
-            <h3 className="mb-2 text-xl text-cyan-400">MobX</h3>
-            <p className="text-sm text-gray-500">Real-time dashboard</p>
-          </Link>
-          <Link
+            title="MobX"
+            description="Real-time dashboard"
+          />
+          <ExampleCard
             to="/recoil"
-            className="block rounded-lg border border-gray-800 bg-gray-900 p-6 transition-all hover:-translate-y-0.5 hover:border-cyan-400"
-          >
-            <h3 className="mb-2 text-xl text-cyan-400">Recoil</h3>
-            <p className="text-sm text-gray-500">Collaborative editor</p>
-          </Link>
+            title="Recoil"
+            description="Collaborative editor"
+          />
         </div>
       </section>
 
-      <section className="mb-12">
-        <h2 className="mb-4 border-b-2 border-gray-800 pb-2 text-2xl text-gray-200">
-          Server State Management
-        </h2>
-        <div className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
-          <Link
+      <section className="mb-12 space-y-4">
+        <h2 className="text-2xl font-semibold">Server State Management</h2>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
+          <ExampleCard
             to="/tanstack-query"
-            className="block rounded-lg border border-gray-800 bg-gray-900 p-6 transition-all hover:-translate-y-0.5 hover:border-cyan-400"
-          >
-            <h3 className="mb-2 text-xl text-cyan-400">TanStack Query</h3>
-            <p className="text-sm text-gray-500">
-              Posts with pagination and mutations
-            </p>
-          </Link>
-          <Link
+            title="TanStack Query"
+            description="Posts with pagination and mutations"
+          />
+          <ExampleCard
             to="/swr"
-            className="block rounded-lg border border-gray-800 bg-gray-900 p-6 transition-all hover:-translate-y-0.5 hover:border-cyan-400"
-          >
-            <h3 className="mb-2 text-xl text-cyan-400">SWR</h3>
-            <p className="text-sm text-gray-500">
-              User profile with revalidation
-            </p>
-          </Link>
+            title="SWR"
+            description="User profile with revalidation"
+          />
         </div>
       </section>
-    </div>
+    </PageContent>
   );
 };
 

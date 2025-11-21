@@ -7,7 +7,19 @@ import {
 } from "@tanstack/react-query";
 import { useState } from "react";
 import { fetchPosts, createPost } from "../../api";
-import { ViewSourceLink } from "../../components/legacy";
+import { ExampleLayout } from "../../components/layout";
+import { Button } from "../../components/ui/button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "../../components/ui/card";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
+import { Textarea } from "../../components/ui/textarea";
+import { Alert, AlertDescription } from "../../components/ui/alert";
+import { Kbd } from "../../components/ui/kbd";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -47,10 +59,15 @@ const PostsList = () => {
 
   if (error) {
     return (
-      <div className="rounded border border-red-800 bg-red-900/30 p-4 text-red-200">
-        Error loading posts:{" "}
-        {error instanceof Error ? error.message : "Unknown error"}
-      </div>
+      <Alert
+        variant="destructive"
+        className="border-red-800 bg-red-900/30 text-red-200"
+      >
+        <AlertDescription>
+          Error loading posts:{" "}
+          {error instanceof Error ? error.message : "Unknown error"}
+        </AlertDescription>
+      </Alert>
     );
   }
 
@@ -58,42 +75,45 @@ const PostsList = () => {
     <div>
       <div className="flex flex-col gap-4">
         {data?.posts.map((post) => (
-          <div
-            key={post.id}
-            className="rounded-lg border border-gray-800 bg-gray-950 p-6"
-          >
-            <h3 className="m-0 mb-2 text-lg text-cyan-400">{post.title}</h3>
-            <p className="m-0 mb-4 leading-relaxed text-gray-200">
-              {post.body}
-            </p>
-            <div className="flex justify-between text-sm text-gray-500">
-              <span>By {post.author}</span>
-              <span>{new Date(post.createdAt).toLocaleDateString()}</span>
-            </div>
-          </div>
+          <Card key={post.id}>
+            <CardHeader>
+              <CardTitle className="text-lg">
+                {post.title}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="m-0 mb-4 leading-relaxed text-muted-foreground">
+                {post.body}
+              </p>
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>By {post.author}</span>
+                <span>{new Date(post.createdAt).toLocaleDateString()}</span>
+              </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
 
       <div className="mt-6 flex items-center justify-between">
         <div className="flex gap-2">
-          <button
+          <Button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="rounded bg-cyan-500 px-4 py-2 text-sm font-medium text-gray-950 transition-all hover:bg-cyan-600 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+            className="bg-cyan-500 text-gray-950 hover:bg-cyan-600"
           >
             Previous
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => {
               setPage((p) => p + 1);
               prefetchNextPage();
             }}
             disabled={page >= totalPages}
             onMouseEnter={prefetchNextPage}
-            className="rounded bg-cyan-500 px-4 py-2 text-sm font-medium text-gray-950 transition-all hover:bg-cyan-600 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+            className="bg-cyan-500 text-gray-950 hover:bg-cyan-600"
           >
             Next
-          </button>
+          </Button>
         </div>
 
         <div className="flex items-center gap-4">
@@ -101,7 +121,7 @@ const PostsList = () => {
             Page {page} of {totalPages}
           </span>
           {isFetching && (
-            <span className="text-xs text-cyan-400">Updating...</span>
+            <span className="text-xs text-cyan-600 dark:text-cyan-400">Updating...</span>
           )}
         </div>
       </div>
@@ -135,68 +155,75 @@ const CreatePostForm = () => {
   };
 
   return (
-    <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
-      <h2 className="mb-4 text-xl text-gray-200">Create New Post</h2>
-      <form onSubmit={handleSubmit} className="grid gap-4">
-        <div>
-          <label className="mb-1 block text-sm text-gray-500">Title</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter post title"
-            disabled={mutation.isPending}
-            className="w-full rounded border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-200 focus:border-cyan-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-          />
-        </div>
-
-        <div>
-          <label className="mb-1 block text-sm text-gray-500">Content</label>
-          <textarea
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            placeholder="Enter post content"
-            disabled={mutation.isPending}
-            className="min-h-[100px] w-full resize-y rounded border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-200 focus:border-cyan-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-          />
-        </div>
-
-        <div>
-          <label className="mb-1 block text-sm text-gray-500">Author</label>
-          <input
-            type="text"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-            placeholder="Your name"
-            disabled={mutation.isPending}
-            className="w-full rounded border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-200 focus:border-cyan-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-          />
-        </div>
-
-        {mutation.isError && (
-          <div className="rounded border border-red-800 bg-red-900/30 p-3 text-sm text-red-200">
-            Error:{" "}
-            {mutation.error instanceof Error
-              ? mutation.error.message
-              : "Failed to create post"}
+    <Card className="mb-6">
+      <CardHeader>
+        <CardTitle className="text-xl">Create New Post</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="grid gap-6">
+          <div className="space-y-2">
+            <Label>Title</Label>
+            <Input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter post title"
+              disabled={mutation.isPending}
+            />
           </div>
-        )}
 
-        {mutation.isSuccess && (
-          <div className="rounded border border-green-800 bg-green-900/30 p-3 text-sm text-green-200">
-            Post created successfully!
+          <div className="space-y-2">
+            <Label>Content</Label>
+            <Textarea
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              placeholder="Enter post content"
+              disabled={mutation.isPending}
+              className="min-h-[100px]"
+            />
           </div>
-        )}
 
-        <button
-          type="submit"
-          disabled={mutation.isPending || !title || !body || !author}
-          className="rounded bg-cyan-500 px-4 py-2 text-sm font-medium text-gray-950 transition-all hover:bg-cyan-600 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {mutation.isPending ? "Creating..." : "Create Post"}
-        </button>
-      </form>
-    </div>
+          <div className="space-y-2">
+            <Label>Author</Label>
+            <Input
+              type="text"
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+              placeholder="Your name"
+              disabled={mutation.isPending}
+            />
+          </div>
+
+          {mutation.isError && (
+            <Alert
+              variant="destructive"
+              className="border-red-800 bg-red-900/30 text-red-200"
+            >
+              <AlertDescription>
+                Error:{" "}
+                {mutation.error instanceof Error
+                  ? mutation.error.message
+                  : "Failed to create post"}
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {mutation.isSuccess && (
+            <Alert className="border-green-800 bg-green-900/30 text-green-200">
+              <AlertDescription>Post created successfully!</AlertDescription>
+            </Alert>
+          )}
+
+          <Button
+            type="submit"
+            disabled={mutation.isPending || !title || !body || !author}
+            className="bg-cyan-500 text-gray-950 hover:bg-cyan-600"
+          >
+            {mutation.isPending ? "Creating..." : "Create Post"}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
   );
 };
 
@@ -205,132 +232,137 @@ const QueryStats = () => {
   const mutations = queryClient.getMutationCache().getAll();
 
   return (
-    <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
-      <h2 className="mb-4 text-xl text-gray-200">Query Cache Status</h2>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <div className="rounded border border-gray-800 bg-gray-950 p-4">
-          <div className="text-2xl font-bold text-cyan-400">
-            {queries.length}
+    <Card className="mb-6">
+      <CardHeader>
+        <CardTitle className="text-xl">
+          Query Cache Status
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="rounded border p-4">
+            <div className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">
+              {queries.length}
+            </div>
+            <div className="text-sm text-muted-foreground">Cached Queries</div>
           </div>
-          <div className="text-sm text-gray-500">Cached Queries</div>
-        </div>
-        <div className="rounded border border-gray-800 bg-gray-950 p-4">
-          <div className="text-2xl font-bold text-green-400">
-            {queries.filter((q) => q.state.status === "success").length}
+          <div className="rounded border p-4">
+            <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+              {queries.filter((q) => q.state.status === "success").length}
+            </div>
+            <div className="text-sm text-muted-foreground">Successful</div>
           </div>
-          <div className="text-sm text-gray-500">Successful</div>
-        </div>
-        <div className="rounded border border-gray-800 bg-gray-950 p-4">
-          <div className="text-2xl font-bold text-yellow-400">
-            {mutations.length}
+          <div className="rounded border p-4">
+            <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">
+              {mutations.length}
+            </div>
+            <div className="text-sm text-muted-foreground">Mutations</div>
           </div>
-          <div className="text-sm text-gray-500">Mutations</div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 
 const TanStackQueryExampleContent = () => {
   return (
-    <div className="mx-auto max-w-4xl">
-      <div className="mb-8 border-b-2 border-gray-800 pb-4">
-        <div className="mb-2 flex items-start justify-between gap-4">
-          <div className="flex-1">
-            <h1 className="mb-2 text-3xl text-cyan-400">
-              TanStack Query (React Query)
-            </h1>
-            <p className="text-gray-500">
-              Server state management with caching, pagination, and mutations
-            </p>
-          </div>
-          <ViewSourceLink url={import.meta.url} />
-        </div>
-      </div>
+    <ExampleLayout
+      title="TanStack Query (React Query)"
+      description="Server state management with caching, pagination, and mutations"
+      sourcePath="src/examples/server-state/TanStackQueryExample.tsx"
+      sourceLine={269}
+    >
 
       <CreatePostForm />
 
-      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
-        <h2 className="mb-4 text-xl text-gray-200">Posts</h2>
-        <PostsList />
-      </div>
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Posts</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <PostsList />
+        </CardContent>
+      </Card>
 
       <QueryStats />
 
-      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
-        <h2 className="mb-4 text-xl text-gray-200">Key Concepts</h2>
-        <ul className="list-inside space-y-2 leading-relaxed text-gray-500">
-          <li>
-            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
-              TanStack Query
-            </code>{" "}
-            (React Query) manages server state with automatic caching
-          </li>
-          <li>
-            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
-              useQuery
-            </code>{" "}
-            fetches and caches data with automatic background updates
-          </li>
-          <li>
-            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
-              useMutation
-            </code>{" "}
-            handles data modifications (POST, PUT, DELETE)
-          </li>
-          <li>Query keys identify and organize cached data</li>
-          <li>
-            Automatic refetching on window focus, network reconnect, and
-            intervals
-          </li>
-          <li>Built-in loading, error, and success states</li>
-          <li>Query invalidation triggers automatic refetch</li>
-          <li>Prefetching improves perceived performance</li>
-          <li>Optimistic updates for instant UI feedback</li>
-        </ul>
-      </div>
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Key Concepts</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul className="list-inside space-y-2 leading-relaxed text-muted-foreground">
+            <li>
+              <Kbd>TanStack Query</Kbd> (React Query) manages server state with automatic caching
+            </li>
+            <li>
+              <Kbd>useQuery</Kbd> fetches and caches data with automatic background updates
+            </li>
+            <li>
+              <Kbd>useMutation</Kbd> handles data modifications (POST, PUT, DELETE)
+            </li>
+            <li>Query keys identify and organize cached data</li>
+            <li>
+              Automatic refetching on window focus, network reconnect, and
+              intervals
+            </li>
+            <li>Built-in loading, error, and success states</li>
+            <li>Query invalidation triggers automatic refetch</li>
+            <li>Prefetching improves perceived performance</li>
+            <li>Optimistic updates for instant UI feedback</li>
+          </ul>
+        </CardContent>
+      </Card>
 
-      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
-        <h2 className="mb-4 text-xl text-gray-200">TanStack Query Features</h2>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div>
-            <h3 className="mb-2 text-base text-green-400">✓ Advantages</h3>
-            <ul className="space-y-1 text-sm leading-relaxed text-gray-500">
-              <li>Automatic caching and deduplication</li>
-              <li>Background refetching</li>
-              <li>Pagination and infinite scroll</li>
-              <li>Request cancellation</li>
-              <li>Parallel and dependent queries</li>
-              <li>DevTools for debugging</li>
-            </ul>
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>TanStack Query Features</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div>
+              <h3 className="mb-2 text-base font-semibold text-green-600 dark:text-green-400">✓ Advantages</h3>
+              <ul className="space-y-1 text-sm leading-relaxed text-muted-foreground">
+                <li>Automatic caching and deduplication</li>
+                <li>Background refetching</li>
+                <li>Pagination and infinite scroll</li>
+                <li>Request cancellation</li>
+                <li>Parallel and dependent queries</li>
+                <li>DevTools for debugging</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="mb-2 text-base font-semibold">📋 Best For</h3>
+              <ul className="space-y-1 text-sm leading-relaxed text-muted-foreground">
+                <li>Apps with server data</li>
+                <li>RESTful APIs</li>
+                <li>Real-time data updates</li>
+                <li>Paginated or infinite lists</li>
+                <li>Complex data fetching needs</li>
+              </ul>
+            </div>
           </div>
-          <div>
-            <h3 className="mb-2 text-base text-cyan-400">📋 Best For</h3>
-            <ul className="space-y-1 text-sm leading-relaxed text-gray-500">
-              <li>Apps with server data</li>
-              <li>RESTful APIs</li>
-              <li>Real-time data updates</li>
-              <li>Paginated or infinite lists</li>
-              <li>Complex data fetching needs</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
-      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
-        <h2 className="mb-4 text-xl text-gray-200">Cache Behavior</h2>
-        <p className="mb-4 text-gray-500">
-          TanStack Query automatically manages cache lifecycle:
-        </p>
-        <ul className="list-inside space-y-2 leading-relaxed text-gray-500">
-          <li>Fresh data is served immediately from cache</li>
-          <li>Stale data is refetched in the background</li>
-          <li>Failed queries are retried automatically</li>
-          <li>Inactive queries are garbage collected</li>
-          <li>Prefetched data improves navigation speed</li>
-        </ul>
-      </div>
-    </div>
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Cache Behavior</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="mb-4 text-muted-foreground">
+            TanStack Query automatically manages cache lifecycle:
+          </p>
+          <ul className="list-inside space-y-2 leading-relaxed text-muted-foreground">
+            <li>Fresh data is served immediately from cache</li>
+            <li>Stale data is refetched in the background</li>
+            <li>Failed queries are retried automatically</li>
+            <li>Inactive queries are garbage collected</li>
+            <li>Prefetched data improves navigation speed</li>
+          </ul>
+        </CardContent>
+      </Card>
+    </ExampleLayout>
   );
 };
 

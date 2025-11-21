@@ -1,5 +1,16 @@
 import { useReducer, useState } from "react";
-import { ViewSourceLink } from "../../components/legacy";
+import { ExampleLayout } from "../../components/layout";
+import { Button } from "../../components/ui/button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "../../components/ui/card";
+import { Input } from "../../components/ui/input";
+import { Checkbox } from "../../components/ui/checkbox";
+import { Kbd } from "../../components/ui/kbd";
+import { Badge } from "../../components/ui/badge";
 
 interface Todo {
   id: number;
@@ -93,146 +104,132 @@ const UseReducerExample = () => {
   const completedCount = state.todos.filter((t) => t.completed).length;
 
   return (
-    <div className="mx-auto max-w-4xl">
-      <div className="mb-8 border-b-2 border-gray-800 pb-4">
-        <div className="mb-2 flex items-start justify-between gap-4">
-          <div className="flex-1">
-            <h1 className="mb-2 text-3xl text-cyan-400">useReducer Hook</h1>
-            <p className="text-gray-500">
-              Todo list with complex state management and filters
-            </p>
+    <ExampleLayout
+      title="useReducer Hook"
+      description="Todo list with complex state management and filters"
+      sourcePath="src/examples/built-in/UseReducerExample.tsx"
+      sourceLine={102}
+    >
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Add Todo</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="flex items-center gap-2">
+            <Input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="What needs to be done?"
+              className="flex-1"
+            />
+            <Button type="submit">Add</Button>
+          </form>
+        </CardContent>
+      </Card>
+
+      <Card className="mb-6">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle>Todos</CardTitle>
+            <Badge variant="secondary">
+              {activeCount} active • {completedCount} completed
+            </Badge>
           </div>
-          <ViewSourceLink url={import.meta.url} />
-        </div>
-      </div>
-
-      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
-        <h2 className="mb-4 text-xl text-gray-200">Add Todo</h2>
-        <form onSubmit={handleSubmit} className="flex items-center gap-2">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="What needs to be done?"
-            className="flex-1 rounded border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-200 focus:border-cyan-400 focus:outline-none"
-          />
-          <button
-            type="submit"
-            className="rounded bg-cyan-500 px-4 py-2 text-sm font-medium text-gray-950 transition-all hover:bg-cyan-600 active:scale-95"
-          >
-            Add
-          </button>
-        </form>
-      </div>
-
-      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="m-0 text-xl text-gray-200">Todos</h2>
-          <div className="text-sm text-gray-500">
-            {activeCount} active • {completedCount} completed
-          </div>
-        </div>
-
-        <div className="mb-4 flex flex-wrap gap-2">
-          <button
-            className={`rounded px-4 py-2 text-sm font-medium transition-all active:scale-95 ${
-              state.filter === "all"
-                ? "bg-cyan-500 text-gray-950 hover:bg-cyan-600"
-                : "border border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700"
-            }`}
-            onClick={() => dispatch({ type: "SET_FILTER", filter: "all" })}
-          >
-            All
-          </button>
-          <button
-            className={`rounded px-4 py-2 text-sm font-medium transition-all active:scale-95 ${
-              state.filter === "active"
-                ? "bg-cyan-500 text-gray-950 hover:bg-cyan-600"
-                : "border border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700"
-            }`}
-            onClick={() => dispatch({ type: "SET_FILTER", filter: "active" })}
-          >
-            Active
-          </button>
-          <button
-            className={`rounded px-4 py-2 text-sm font-medium transition-all active:scale-95 ${
-              state.filter === "completed"
-                ? "bg-cyan-500 text-gray-950 hover:bg-cyan-600"
-                : "border border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700"
-            }`}
-            onClick={() =>
-              dispatch({ type: "SET_FILTER", filter: "completed" })
-            }
-          >
-            Completed
-          </button>
-          <button
-            className="rounded bg-red-600 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-red-700 active:scale-95 disabled:cursor-not-allowed disabled:bg-gray-800 disabled:text-gray-600"
-            onClick={() => dispatch({ type: "CLEAR_COMPLETED" })}
-            disabled={completedCount === 0}
-          >
-            Clear Completed
-          </button>
-        </div>
-
-        <ul className="list-none space-y-2">
-          {filteredTodos.map((todo) => (
-            <li
-              key={todo.id}
-              className={`flex items-center gap-3 rounded border border-gray-800 bg-gray-950 p-3 ${
-                todo.completed ? "opacity-60" : ""
-              }`}
+        </CardHeader>
+        <CardContent>
+          <div className="mb-4 flex flex-wrap gap-2">
+            <Button
+              variant={state.filter === "all" ? "default" : "outline"}
+              onClick={() => dispatch({ type: "SET_FILTER", filter: "all" })}
             >
-              <input
-                type="checkbox"
-                checked={todo.completed}
-                onChange={() => dispatch({ type: "TOGGLE_TODO", id: todo.id })}
-                className="h-5 w-5 cursor-pointer"
-              />
-              <span
-                className={`flex-1 ${
-                  todo.completed
-                    ? "text-gray-500 line-through"
-                    : "text-gray-200"
+              All
+            </Button>
+            <Button
+              variant={state.filter === "active" ? "default" : "outline"}
+              onClick={() => dispatch({ type: "SET_FILTER", filter: "active" })}
+            >
+              Active
+            </Button>
+            <Button
+              variant={state.filter === "completed" ? "default" : "outline"}
+              onClick={() =>
+                dispatch({ type: "SET_FILTER", filter: "completed" })
+              }
+            >
+              Completed
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => dispatch({ type: "CLEAR_COMPLETED" })}
+              disabled={completedCount === 0}
+            >
+              Clear Completed
+            </Button>
+          </div>
+
+          <ul className="list-none space-y-2">
+            {filteredTodos.map((todo) => (
+              <li
+                key={todo.id}
+                className={`flex items-center gap-3 rounded-lg border p-3 ${
+                  todo.completed ? "opacity-60" : ""
                 }`}
               >
-                {todo.text}
-              </span>
-              <button
-                className="rounded bg-red-600 px-2 py-1 text-xs font-medium text-white transition-all hover:bg-red-700 active:scale-95"
-                onClick={() => dispatch({ type: "DELETE_TODO", id: todo.id })}
-              >
-                Delete
-              </button>
-            </li>
-          ))}
-          {filteredTodos.length === 0 && (
-            <li className="py-8 text-center text-gray-500">
-              No todos to display
-            </li>
-          )}
-        </ul>
-      </div>
+                <Checkbox
+                  checked={todo.completed}
+                  onCheckedChange={() =>
+                    dispatch({ type: "TOGGLE_TODO", id: todo.id })
+                  }
+                />
+                <span
+                  className={`flex-1 ${
+                    todo.completed ? "text-muted-foreground line-through" : ""
+                  }`}
+                >
+                  {todo.text}
+                </span>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => dispatch({ type: "DELETE_TODO", id: todo.id })}
+                >
+                  Delete
+                </Button>
+              </li>
+            ))}
+            {filteredTodos.length === 0 && (
+              <li className="py-8 text-center text-muted-foreground">
+                No todos to display
+              </li>
+            )}
+          </ul>
+        </CardContent>
+      </Card>
 
-      <div className="mb-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
-        <h2 className="mb-4 text-xl text-gray-200">Key Concepts</h2>
-        <ul className="list-inside space-y-2 leading-relaxed text-gray-500">
-          <li>
-            <code className="rounded bg-gray-800 px-1 py-0.5 text-xs text-cyan-400">
-              useReducer
-            </code>{" "}
-            is ideal for complex state logic with multiple sub-values
-          </li>
-          <li>Centralizes state update logic in a reducer function</li>
-          <li>Actions describe "what happened" rather than "how to update"</li>
-          <li>Makes state transitions explicit and predictable</li>
-          <li>
-            Better for state that depends on previous state or involves multiple
-            operations
-          </li>
-        </ul>
-      </div>
-    </div>
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Key Concepts</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul className="list-inside space-y-2 leading-relaxed text-muted-foreground">
+            <li>
+              <Kbd>useReducer</Kbd> is ideal for complex state logic with
+              multiple sub-values
+            </li>
+            <li>Centralizes state update logic in a reducer function</li>
+            <li>
+              Actions describe "what happened" rather than "how to update"
+            </li>
+            <li>Makes state transitions explicit and predictable</li>
+            <li>
+              Better for state that depends on previous state or involves
+              multiple operations
+            </li>
+          </ul>
+        </CardContent>
+      </Card>
+    </ExampleLayout>
   );
 };
 

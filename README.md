@@ -193,6 +193,44 @@ This project follows a **modular architecture** with clear separation of concern
 
 See [ARCHITECTURE.md](./ARCHITECTURE.md) for detailed information.
 
+## 🎨 Styling Guidelines
+
+This project follows a **shadcn-first** approach to styling:
+
+### Principles
+
+1. **Always prefer shadcn UI components** from `src/components/ui/` over custom CSS
+2. **Use theme tokens** (`text-foreground`, `bg-background`, `text-muted-foreground`, etc.) instead of hardcoded colors
+3. **Minimize wrapper divs** - use semantic HTML and shadcn layout components
+4. **Reuse layout primitives** - use `ExampleLayout`, `PageHeader`, `PageContent` from `src/components/layout/`
+
+### Layout Components
+
+- **`ExampleLayout`**: Standard wrapper for example pages with title, description, and source link
+- **`PageHeader`**: Consistent page headers with optional actions
+- **`PageContent`**: Max-width container for page content
+
+### When to Add a Wrapper
+
+✅ **Good**: Using semantic HTML (`<section>`, `<article>`) or shadcn components (`<Card>`, `<Tabs>`)
+✅ **Good**: Grouping related content in shadcn components
+❌ **Avoid**: Purely structural `<div>` wrappers just for spacing
+❌ **Avoid**: Custom CSS classes for layout that shadcn utilities can handle
+
+### Theme Tokens
+
+Use these theme-aware tokens instead of hardcoded colors:
+
+- `text-foreground` / `bg-background` - Primary text/background
+- `text-muted-foreground` / `bg-muted` - Secondary text/background
+- `border` - Border colors
+- `primary`, `secondary`, `accent` - Semantic colors
+- `destructive` - Error/danger states
+
+### Code Examples
+
+Use the `<Kbd>` component for inline code/keyboard references instead of `<code>` tags with custom styling.
+
 ## ⚡ Performance Optimizations
 
 - **Utility CSS Classes**: Reduced inline styles for smaller bundle size
