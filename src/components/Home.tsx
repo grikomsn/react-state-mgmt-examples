@@ -31,9 +31,9 @@ const Home = () => {
         description="Explore comprehensive examples of various state management patterns in React. Each example demonstrates key concepts and best practices."
       />
 
-      <section className="mb-12 space-y-4">
-        <h2 className="text-2xl font-semibold">Built-in React Hooks</h2>
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
+      <section className="mb-6 md:mb-12 space-y-2 md:space-y-4">
+        <h2 className="text-xl md:text-2xl font-semibold leading-tight">Built-in React Hooks</h2>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-2 md:gap-4">
           <ExampleCard
             to="/usestate"
             title="useState"
@@ -52,9 +52,9 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="mb-12 space-y-4">
-        <h2 className="text-2xl font-semibold">External State Libraries</h2>
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
+      <section className="mb-6 md:mb-12 space-y-2 md:space-y-4">
+        <h2 className="text-xl md:text-2xl font-semibold leading-tight">External State Libraries</h2>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-2 md:gap-4">
           <ExampleCard
             to="/redux"
             title="Redux Toolkit"
@@ -83,9 +83,9 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="mb-12 space-y-4">
-        <h2 className="text-2xl font-semibold">Server State Management</h2>
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
+      <section className="mb-6 md:mb-12 space-y-2 md:space-y-4">
+        <h2 className="text-xl md:text-2xl font-semibold leading-tight">Server State Management</h2>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-2 md:gap-4">
           <ExampleCard
             to="/tanstack-query"
             title="TanStack Query"

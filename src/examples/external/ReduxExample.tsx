@@ -80,7 +80,7 @@ const Cart = () => {
 
   if (items.length === 0) {
     return (
-      <div className="py-8 text-center text-muted-foreground">
+      <div className="py-4 md:py-8 text-center text-muted-foreground text-sm md:text-base">
         Your cart is empty
       </div>
     );
@@ -99,9 +99,9 @@ const Cart = () => {
         {items.map((item) => (
           <li
             key={item.id}
-            className="flex items-center gap-4 rounded-lg border p-4"
+            className="flex items-center gap-2 md:gap-4 rounded-lg border p-3 md:p-4"
           >
-            <div className="text-3xl">{item.image}</div>
+            <div className="text-2xl md:text-3xl">{item.image}</div>
             <div className="flex-1">
               <div className="font-medium">{item.name}</div>
               <div className="text-sm text-muted-foreground">

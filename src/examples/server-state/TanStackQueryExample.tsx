@@ -74,7 +74,7 @@ const PostsList = () => {
 
   if (isLoading) {
     return (
-      <div className="py-8 text-center text-gray-500">Loading posts...</div>
+      <div className="py-4 md:py-8 text-center text-gray-500 text-sm md:text-base">Loading posts...</div>
     );
   }
 
@@ -94,14 +94,14 @@ const PostsList = () => {
 
   return (
     <div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2 md:gap-4">
         {data?.posts.map((post) => (
           <Card key={post.id}>
             <CardHeader>
-              <CardTitle className="text-lg">{post.title}</CardTitle>
+              <CardTitle className="text-base md:text-lg">{post.title}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="m-0 mb-4 leading-relaxed text-muted-foreground">
+              <p className="m-0 mb-2 md:mb-4 leading-snug md:leading-relaxed text-muted-foreground text-sm md:text-base">
                 {post.body}
               </p>
               <div className="flex justify-between text-sm text-muted-foreground">
@@ -113,7 +113,7 @@ const PostsList = () => {
         ))}
       </div>
 
-      <div className="mt-6 flex items-center justify-between">
+      <div className="mt-4 md:mt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div className="flex gap-2">
           <Button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
@@ -135,8 +135,8 @@ const PostsList = () => {
           </Button>
         </div>
 
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-gray-500">
+        <div className="flex items-center gap-2 md:gap-4">
+          <span className="text-xs md:text-sm text-gray-500">
             Page {page} of {totalPages}
           </span>
           {isFetching && (
@@ -178,13 +178,13 @@ const CreatePostForm = () => {
   };
 
   return (
-    <Card className="mb-6">
+    <Card className="mb-4 md:mb-6">
       <CardHeader>
-        <CardTitle className="text-xl">Create New Post</CardTitle>
+        <CardTitle className="text-lg md:text-xl">Create New Post</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="grid gap-6">
-          <div className="space-y-2">
+        <form onSubmit={handleSubmit} className="grid gap-3 md:gap-6">
+          <div className="space-y-1.5 md:space-y-2">
             <Label>Title</Label>
             <Input
               type="text"
@@ -256,14 +256,14 @@ const QueryStats = () => {
   const mutations = queryClient.getMutationCache().getAll();
 
   return (
-    <Card className="mb-6">
+    <Card className="mb-4 md:mb-6">
       <CardHeader>
-        <CardTitle className="text-xl">Query Cache Status</CardTitle>
+        <CardTitle className="text-lg md:text-xl">Query Cache Status</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <div className="rounded border p-4">
-            <div className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">
+        <div className="grid grid-cols-1 gap-2 md:gap-4 md:grid-cols-3">
+          <div className="rounded border p-3 md:p-4">
+            <div className="text-xl md:text-2xl font-bold text-cyan-600 dark:text-cyan-400">
               {queries.length}
             </div>
             <div className="text-sm text-muted-foreground">Cached Queries</div>

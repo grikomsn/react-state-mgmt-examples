@@ -84,7 +84,7 @@ const UserProfile = ({ userId }: { userId: number }) => {
 
   if (isLoading) {
     return (
-      <div className="py-8 text-center text-muted-foreground">
+      <div className="py-4 md:py-8 text-center text-muted-foreground text-sm md:text-base">
         Loading user profile...
       </div>
     );

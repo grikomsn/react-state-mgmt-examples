@@ -91,7 +91,7 @@ export const ExampleLayout = ({
         }
       />
       {children}
-      <Card className="mb-6">
+      <Card className="mb-4 md:mb-6">
         <CardHeader>
           <CardTitle>{snippetTitle}</CardTitle>
         </CardHeader>
